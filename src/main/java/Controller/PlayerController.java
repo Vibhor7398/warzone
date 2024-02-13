@@ -1,16 +1,16 @@
 package Controller;
 
-import Models.CountryModel;
-import Models.PlayerModel;
+import Models.Country;
+import Models.Player;
 
 public class PlayerController {
-    private PlayerModel d_playerModel;
+    private Player d_player;
 
     public PlayerController(String p_name) {
-        this.d_playerModel = new PlayerModel(p_name);
+        this.d_player = new Player(p_name);
     }
 
-    public void assignCountry(CountryModel countryModel) {
-        this.d_playerModel.addCountry(countryModel);
+    public void assignCountry(Country country) {
+        this.d_player.addCountry(country);
     }
 }
