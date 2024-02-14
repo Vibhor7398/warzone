@@ -159,7 +159,6 @@ public class CommandValidationService {
             return false;
         }
 
-        MathService l_ms = new MathService();
         return (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && !p_cmd[2].trim().isEmpty();
     }
 
