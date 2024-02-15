@@ -1,5 +1,5 @@
 import Controller.GameEngineController;
-import Models.Map;
+import Models.Maps;
 import Views.MapView;
 
 import java.io.File;
@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             GameEngineController engine = new GameEngineController();
-            Map map = new Map();
+            Maps map = new Maps();
             map.loadMap("src/main/resources/Maps/canada.map");
             MapView mapView=new MapView();
             mapView.showMap(map.getContinents(),map.getCountries());

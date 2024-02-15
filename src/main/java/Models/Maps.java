@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 
-public class Map {
+public class Maps {
     private LinkedHashMap<String, Continent> d_continents;
     private LinkedHashMap<String, Country> d_countries;
     private boolean d_isMapValid;
@@ -15,7 +15,7 @@ public class Map {
     private String d_currentFileName;
 
 
-    public Map() {
+    public Maps() {
         this.d_continents = new LinkedHashMap<>();
         this.d_countries = new LinkedHashMap<>();
     }
@@ -103,6 +103,7 @@ public class Map {
                     }
                 }
             }
+
 
 
 
