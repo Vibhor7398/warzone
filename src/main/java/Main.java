@@ -10,7 +10,7 @@ public class Main {
         try {
             GameEngineController engine = new GameEngineController();
             Map map = new Map();
-            map.loadMap(new File("src/main/resources/Maps/canada.map"));
+            map.loadMap("src/main/resources/Maps/canada.map");
             MapView mapView=new MapView();
             mapView.showMap(map.getContinents(),map.getCountries());
         } catch (IOException e) {

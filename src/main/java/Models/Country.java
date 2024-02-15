@@ -43,10 +43,19 @@ public class Country {
         this.d_name = d_name;
     }
 
+
+    public String getContinentId() {
+        return d_continentId;
+    }
+
     public void addNeighbor(Country p_country) {
         if (!(this.d_neighbors.containsKey(this))) {
             this.d_neighbors.put(this, new LinkedHashMap<>());
         }
         this.d_neighbors.get(this).put(p_country.d_name, p_country);
+    }
+
+    public LinkedHashMap<String, Country> getNeighbors() {
+        return d_neighbors.get(this);
     }
 }

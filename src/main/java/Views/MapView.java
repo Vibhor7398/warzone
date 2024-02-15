@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class MapView {
     public void showContinents(HashMap<String, Continent> p_continents){
         System.out.println("Displaying Continents");
-        System.out.println("ID|Name| Control Value|Countries");
+        System.out.println("ID|Name| Control Value| Number of Countries");
         p_continents.values().forEach(p_continent->{
             System.out.print(String.valueOf(p_continent.getId())+"|");
             System.out.print(p_continent.getName()+"|");
