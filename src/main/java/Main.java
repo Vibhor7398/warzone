@@ -1,8 +1,6 @@
 import Controller.GameEngineController;
 import Models.Maps;
 import Views.MapView;
-
-import java.io.File;
 import java.io.IOException;
 
 public class Main {

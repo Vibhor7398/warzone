@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 
 
 public class Maps {
@@ -104,8 +105,49 @@ public class Maps {
                 }
             }
 
+    public void validateMap() {
+        this.d_isMapValid = validateFullConnectivity(this.d_countries) &&
+                validateContinentExistence() &&
+                validateNeighborExistence() &&
+                validateContinentConnectivity();
+    }
 
+    public void traverseMap(Country country, Map<String, Boolean> visited) {
+        visited.put(country.getName(), true);
+        country.getNeighbors().forEach((name, neighbor) -> {
+            if (Boolean.FALSE.equals(visited.get(name))) {
+                traverseMap(neighbor, visited);
+            }
+        });
+    }
 
+    public boolean validateContinentExistence() {
+        return this.d_countries.values().stream()
+                .allMatch(country -> this.d_continents.containsKey(country.getContinentId()));
+    }
+
+    public boolean validateNeighborExistence() {
+        return this.d_countries.values().stream()
+                .flatMap(country -> country.getNeighbors().values().stream())
+                .allMatch(neighbor -> this.d_countries.containsKey(neighbor.getName()));
+    }
+
+    public boolean validateContinentConnectivity() {
+        return this.d_continents.values().stream()
+                .allMatch(continent -> validateFullConnectivity(continent.getCountries()));
+    }
+
+    public boolean validateFullConnectivity(Map<String, Country> countries) {
+        if (countries.isEmpty()) return true;
+
+        LinkedHashMap<String, Boolean> visited = new LinkedHashMap<>();
+        countries.values().forEach(country -> visited.put(country.getName(), false));
+
+        Country startingCountry = countries.values().iterator().next(); // Starting from the first country
+        traverseMap(startingCountry, visited);
+
+        return visited.values().stream().allMatch(Boolean.TRUE::equals);
+    }
 
 
 
