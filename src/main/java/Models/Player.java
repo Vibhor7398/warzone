@@ -7,9 +7,12 @@ public class Player {
     private String d_name;
     private HashMap<Integer, Country> d_countryList;
 
+    private int d_armies;
+
     public Player(String p_name) {
         this.setName(p_name);
         d_countryList = new HashMap<Integer, Country>();
+        d_armies=0;
     }
     public void setName(String p_name) {
         this.d_name = p_name;
