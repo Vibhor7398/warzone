@@ -3,7 +3,6 @@ package Controller;
 import Models.Continent;
 import Models.Country;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class MapController {
     private HashMap<String, Continent> d_continents;
@@ -22,4 +21,6 @@ public class MapController {
         return d_countries;
     }
 
- }
+
+
+}
