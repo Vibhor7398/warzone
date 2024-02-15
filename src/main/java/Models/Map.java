@@ -1,21 +1,11 @@
 package Models;
 
-import Views.MapView;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class Map {
     private LinkedHashMap<String, Continent> d_continents;
@@ -104,9 +94,11 @@ public class Map {
                     }
                     if (readingContinents) {
                         processContinentLine(line);
-                    } else if (readingCountries) {
+                    }
+                    if (readingCountries) {
                         processCountryLine(line);
-                    } else if (readingBorders) {
+                    }
+                    if (readingBorders) {
                         processBorderLine(line);
                     }
                 }
