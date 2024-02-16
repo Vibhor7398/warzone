@@ -1,6 +1,5 @@
 package Models;
 
-import Interface.Order;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,7 +9,7 @@ public class Player {
     private String d_name;
     private HashMap<Integer, Country> d_countryList;
     private ArrayList<Order> d_orderList;
-    private int d_armies;
+    private int d_armiesCount;
     private ArrayList<Country> d_countriesOwned;
     private Order d_currentOrder;
     private Queue<String> d_orderArgs;
@@ -18,7 +17,7 @@ public class Player {
     public Player(String p_name) {
         this.setName(p_name);
         d_countryList = new HashMap<Integer, Country>();
-        d_armies=0;
+        d_armiesCount=0;
         d_orderList = new ArrayList<Order>();
         d_countriesOwned = new ArrayList<Country>();
     }
@@ -32,11 +31,11 @@ public class Player {
     }
 
     public void setArmies(int p_armies){
-        d_armies = p_armies;
+        d_armiesCount = p_armies;
     }
 
     public int getArmies(){
-        return d_armies;
+        return d_armiesCount;
     }
 
     public void setCountriesOwned(ArrayList<Country> p_countriesOwned){
@@ -96,8 +95,10 @@ public class Player {
 
     private void handleDeployOrder(ArrayList<String> command) {
         System.out.println("Deploying the orders: ");
-        d_currentOrder = new Deploy(this, command.get(0), Integer.parseInt(command.get(1)));
-        d_orderList.add(d_currentOrder);
+        Order ob = new Order();
+        ob.deployOrder(this, command.get(0), Integer.parseInt(command.get(1)));
+        //d_currentOrder = new Deploy(this, command.get(0), Integer.parseInt(command.get(1)));
+        //d_orderList.add(d_currentOrder);
     }
 
     private void handleInvalidCommand() {
