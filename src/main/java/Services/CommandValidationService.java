@@ -9,7 +9,7 @@ public class CommandValidationService {
         if(p_cmd == null){
             return false;
         }
-        String[] l_cmdArr = p_cmd.trim().split("\\ ");
+        String[] l_cmdArr = p_cmd.trim().split(" ");
 
         String l_baseCmd = getBaseCommand(p_cmd);
         switch (l_baseCmd) {
@@ -26,23 +26,18 @@ public class CommandValidationService {
                 return validateEditContinentCommand(l_cmdArr);
 
             case "editcountry":
-                System.out.println("editcountry");
                 return validateEditCountryCommand(l_cmdArr);
 
             case "editneighbor":
-                System.out.println("editneighbor");
                 return validateEditNeighborCommand(l_cmdArr);
 
             case "validatemap":
-                System.out.println("validatemap");
                 return true;
 
             case "gameplayer":
-                System.out.println("gameplayer");
                 return validateGamePlayerCommand(l_cmdArr);
 
             case "assigncountries":
-                System.out.println("assigncountries");
                 return true;
 
             default:
@@ -52,7 +47,7 @@ public class CommandValidationService {
     }
 
     public String getBaseCommand(String p_cmd){
-        return p_cmd.trim().split("\\ ")[0];
+        return p_cmd.trim().split(" ")[0];
     }
 
     private boolean validateLoadMapCommand(String[] p_cmd) {

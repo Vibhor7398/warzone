@@ -24,8 +24,7 @@ public class CommandService {
             System.out.println(d_isValid);
             if(d_isValid){
                 String l_baseCmd = l_cvs.getBaseCommand(d_command);
-                String[] l_cmdArr = d_command.trim().split("\\ ");
-
+                String[] l_cmdArr = d_command.trim().split(" ");
 
                 switch (l_baseCmd){
                     case "loadmap":
@@ -62,15 +61,18 @@ public class CommandService {
                         break;
 
                     case "validatemap":
-                        System.out.println("validatemap");
+                        executeValidateMap();
                         break;
 
                     case "gameplayer":
-                        System.out.println("gameplayer");
+                        if(l_cmdArr[1].trim().equals("-add"))
+                            executeAddGamePlayer(l_cmdArr[2]);
+                        else if(l_cmdArr[1].trim().equals("-remove"))
+                            executeRemoveGamePlayer(l_cmdArr[2]);
                         break;
 
                     case "assigncountries":
-                        System.out.println("assigncountries");
+                        executeAssignCountries();
                         break;
                 }
             }
@@ -114,5 +116,21 @@ public class CommandService {
 
     private void executeRemoveNeighbor(int p_countryID, int p_neighborcountryID){
 //        RemoveNeighbor
+    }
+
+    private void executeValidateMap(){
+//        Validate Map
+    }
+
+    private void executeAddGamePlayer(String p_gameplayer){
+//        Add Game Player
+    }
+
+    private void executeRemoveGamePlayer(String p_gameplayer){
+//        Remove Game Player
+    }
+
+    private void executeAssignCountries(){
+//        Assign Countries
     }
 }
