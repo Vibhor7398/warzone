@@ -43,4 +43,8 @@ public class Continent {
     public void addCountry(Country p_country) {
         d_countries.put(p_country.getName(), p_country);
     }
+
+    public String getColor() {
+        return d_color;
+    }
 }

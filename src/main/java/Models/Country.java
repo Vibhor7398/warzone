@@ -31,23 +31,37 @@ public class Country {
         return d_id;
     }
 
-    public void setId(int d_id) {
-        this.d_id = d_id;
+    public void setId(int p_id) {
+        this.d_id = p_id;
     }
 
     public String getName() {
         return d_name;
     }
 
-    public void setName(String d_name) {
-        this.d_name = d_name;
+    public void setName(String p_name) {
+        this.d_name = p_name;
     }
 
+
+    public int getArmies(){
+        return this.d_armies;
+    }
+
+    public void setArmies(int p_armies){
+         this.d_armies=p_armies;
+    }
 
     public String getContinentId() {
         return d_continentId;
     }
 
+    public String getXCoordinate() {
+        return d_xCoordinate;
+    }
+    public String getYCoordinate() {
+        return d_yCoordinate;
+    }
     public void addNeighbor(Country p_country) {
         if (!(this.d_neighbors.containsKey(this))) {
             this.d_neighbors.put(this, new LinkedHashMap<>());

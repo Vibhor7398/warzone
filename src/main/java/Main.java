@@ -1,6 +1,8 @@
 import Controller.GameEngineController;
 import Models.Maps;
 import Views.MapView;
+
+import java.io.File;
 import java.io.IOException;
 
 public class Main {
@@ -11,6 +13,9 @@ public class Main {
             map.loadMap("src/main/resources/Maps/canada.map");
             MapView mapView=new MapView();
             mapView.showMap(map.getContinents(),map.getCountries());
+            map.validateMap();
+            map.saveMap(new File("src/main/resources/Maps/canada-copy.map"));
+            System.out.println(map.isMapValid());
         } catch (IOException e) {
             System.out.println(e);
 

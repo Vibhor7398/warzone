@@ -1,12 +1,15 @@
 package Models;
 
 
+import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Map;
-
+import java.util.Comparator;
+import java.nio.file.StandardOpenOption;
+import java.util.stream.Collectors;
 
 public class Maps {
     private LinkedHashMap<String, Continent> d_continents;
@@ -14,7 +17,7 @@ public class Maps {
     private boolean d_isMapValid;
     private boolean d_mapFileLoaded;
     private String d_currentFileName;
-
+//    private String d_currentFile;
 
     public Maps() {
         this.d_continents = new LinkedHashMap<>();
@@ -46,6 +49,7 @@ public class Maps {
         String[] parts = line.split(" ");
         Country country = new Country(Integer.parseInt(parts[0]), parts[1], parts[2], parts[3], parts[4]);
         d_countries.put(parts[1], country);
+
         //TL:DR Add a validation before adding country to the continent; check if the continent exists or not
         d_continents.get(parts[2].trim()).addCountry(country);
     }
@@ -105,13 +109,37 @@ public class Maps {
                 }
             }
 
-    public void validateMap() {
-        this.d_isMapValid = validateFullConnectivity(this.d_countries) &&
-                validateContinentExistence() &&
-                validateNeighborExistence() &&
-                validateContinentConnectivity();
+    public boolean isMapValid(){
+        return this.d_isMapValid;
     }
 
+
+    public void validateMap() {
+        this.d_isMapValid = validateExistence() && validateConnectivity();
+    }
+
+    public boolean validateExistence() {
+        boolean continentsExist = this.d_countries.values().stream()
+                .allMatch(country -> this.d_continents.containsKey(country.getContinentId()));
+        if (!continentsExist) return false;
+        return this.d_countries.values().stream()
+                .flatMap(country -> country.getNeighbors().values().stream())
+                .allMatch(neighbor -> this.d_countries.containsKey(neighbor.getName()));
+    }
+    public boolean validateFullConnectivity(Map<String, Country> countries) {
+        if (countries.isEmpty()) return true;
+        LinkedHashMap<String, Boolean> visited = new LinkedHashMap<>();
+        countries.values().forEach(country -> visited.put(country.getName(), false));
+        traverseMap(countries.values().iterator().next(), visited);
+        return visited.values().stream().allMatch(Boolean.TRUE::equals);
+    }
+
+    public boolean validateConnectivity() {
+        for (Continent continent : this.d_continents.values()) {
+            if (!validateFullConnectivity(continent.getCountries())) return false;
+        }
+        return this.d_countries.isEmpty() || validateFullConnectivity(this.d_countries);
+    }
     public void traverseMap(Country country, Map<String, Boolean> visited) {
         visited.put(country.getName(), true);
         country.getNeighbors().forEach((name, neighbor) -> {
@@ -121,39 +149,5 @@ public class Maps {
         });
     }
 
-    public boolean validateContinentExistence() {
-        return this.d_countries.values().stream()
-                .allMatch(country -> this.d_continents.containsKey(country.getContinentId()));
-    }
-
-    public boolean validateNeighborExistence() {
-        return this.d_countries.values().stream()
-                .flatMap(country -> country.getNeighbors().values().stream())
-                .allMatch(neighbor -> this.d_countries.containsKey(neighbor.getName()));
-    }
-
-    public boolean validateContinentConnectivity() {
-        return this.d_continents.values().stream()
-                .allMatch(continent -> validateFullConnectivity(continent.getCountries()));
-    }
-
-    public boolean validateFullConnectivity(Map<String, Country> countries) {
-        if (countries.isEmpty()) return true;
-
-        LinkedHashMap<String, Boolean> visited = new LinkedHashMap<>();
-        countries.values().forEach(country -> visited.put(country.getName(), false));
-
-        Country startingCountry = countries.values().iterator().next(); // Starting from the first country
-        traverseMap(startingCountry, visited);
-
-        return visited.values().stream().allMatch(Boolean.TRUE::equals);
-    }
-
-
-
-
-
-
-
-
+  
 }
