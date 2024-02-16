@@ -1,8 +1,6 @@
 package Models;
 
 import Interface.Order;
-import Models.Country;
-import Models.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,15 +10,15 @@ public class Deploy implements Order {
     Player d_player;
     Country d_country;
     String d_countryName;
-    int d_countryId;
+    //String d_countryId;
     int d_numberOfArmies;
     private HashMap<Integer, Country> d_countryList;
 
-    public Deploy(Player p_player, int p_countryId, int p_numberOfArmies) {
+    public Deploy(Player p_player, String p_countryName, int p_numberOfArmies) {
         d_player = p_player;
-        d_countryId = p_countryId;
+        d_countryName = p_countryName;
         d_numberOfArmies = p_numberOfArmies;
-        d_country = new Country(p_countryId, getCountryName(p_countryId));
+        //d_country = new Country(p_countryId, getCountryName(p_countryId));
     }
 
 
@@ -30,7 +28,7 @@ public class Deploy implements Order {
         if (d_player.getArmies() >= d_numberOfArmies) {
             ArrayList<String> countriesOwned = new ArrayList<>();
             for (Country country : d_player.getCountriesOwned()) {
-                countriesOwned.add(country.getCountryName(p_countryId));
+                countriesOwned.add(country.getName());
             }
 
             if (!countriesOwned.contains(d_countryName)) {
@@ -65,7 +63,7 @@ public class Deploy implements Order {
         } else {
             System.out.println("Invalid Order.\n");
         }
-        }
+    }
 
     @Override
     public void printOrder() {

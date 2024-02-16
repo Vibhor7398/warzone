@@ -69,7 +69,6 @@ public class Player {
 
     public void setOrder(String p_orderArgs) {
         d_orderArgs.add(p_orderArgs);
-        //d_orderArgs = p_orderArgs;
     }
 
     private void issueOrder() {
@@ -97,7 +96,7 @@ public class Player {
 
     private void handleDeployOrder(ArrayList<String> command) {
         System.out.println("Deploying the orders: ");
-        d_currentOrder = new Deploy(this, Integer.parseInt(command.get(0)), Integer.parseInt(command.get(1)));
+        d_currentOrder = new Deploy(this, command.get(0), Integer.parseInt(command.get(1)));
         d_orderList.add(d_currentOrder);
     }
 
