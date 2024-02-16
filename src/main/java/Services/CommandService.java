@@ -9,13 +9,15 @@ public class CommandService {
 //     Maps map = new Maps();
 //     MapView mapView=new MapView();
 
-
     CommandValidationService l_cvs = new CommandValidationService();
-    public void getNextCommand(){
+    public String getNextCommand(){
         System.out.println("Please enter your command");
         Scanner l_sc = new Scanner(System.in);
         d_command = l_sc.nextLine();
-        d_isValid = l_cvs.validateCommand(d_command);
+        if(!l_cvs.validateCommand(d_command)){
+            return getNextCommand();
+        }
+        return d_command;
     }
 
     public void start(){
@@ -24,7 +26,7 @@ public class CommandService {
             System.out.println(d_isValid);
             if(d_isValid){
                 String l_baseCmd = l_cvs.getBaseCommand(d_command);
-                String[] l_cmdArr = d_command.trim().split(" ");
+                String[] l_cmdArr = d_command.trim().split("\\ ");
 
                 switch (l_baseCmd){
                     case "loadmap":
@@ -73,6 +75,10 @@ public class CommandService {
 
                     case "assigncountries":
                         executeAssignCountries();
+                        break;
+
+                    case "deploy":
+                        executeDeploy(Integer.parseInt(l_cmdArr[1]), Integer.parseInt(l_cmdArr[2]));
                         break;
                 }
             }
@@ -132,5 +138,9 @@ public class CommandService {
 
     private void executeAssignCountries(){
 //        Assign Countries
+    }
+
+    private void executeDeploy(int p_countryID, int num){
+//        Deploy
     }
 }

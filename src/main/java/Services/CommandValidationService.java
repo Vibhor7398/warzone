@@ -40,6 +40,9 @@ public class CommandValidationService {
             case "assigncountries":
                 return true;
 
+            case "deploy":
+                return validateDeployCommand(l_cmdArr);
+
             default:
                 System.out.println("Please try again");
                 return false;
@@ -152,4 +155,17 @@ public class CommandValidationService {
         return (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && !p_cmd[2].trim().isEmpty();
     }
 
+    private boolean validateDeployCommand(String[] p_cmd){
+        if(p_cmd.length != 3){
+            return false;
+        }
+
+        if (p_cmd[0] == null || p_cmd[1] == null || p_cmd[2] == null) {
+            System.out.println("Parameter mismatch. Try again.");
+            return false;
+        }
+
+        MathService l_ms = new MathService();
+        return l_ms.isInteger(p_cmd[1]) && l_ms.isInteger(p_cmd[2]);
+    }
 }
