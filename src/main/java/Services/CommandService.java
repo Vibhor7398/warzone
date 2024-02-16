@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class CommandService {
     public String d_command;
-    public boolean d_isValid;
 
 //     Maps map = new Maps();
 //     MapView mapView=new MapView();
@@ -23,67 +22,61 @@ public class CommandService {
     public void start(){
         while (true){
             getNextCommand();
-            System.out.println(d_isValid);
-            if(d_isValid){
-                String l_baseCmd = l_cvs.getBaseCommand(d_command);
-                String[] l_cmdArr = d_command.trim().split("\\ ");
+            String l_baseCmd = l_cvs.getBaseCommand(d_command);
+            String[] l_cmdArr = d_command.trim().split("\\ ");
 
-                switch (l_baseCmd){
-                    case "loadmap":
-                        executeLoadMap(l_cmdArr[1]);
-                        break;
+            switch (l_baseCmd){
+                case "loadmap":
+                    executeLoadMap(l_cmdArr[1]);
+                    break;
 
-                    case "showmap":
-                        executeShowMap();
-                        break;
+                case "showmap":
+                    executeShowMap();
+                    break;
 
-                    case "savemap":
-                        executeSaveMap();
-                        break;
+                case "savemap":
+                    executeSaveMap();
+                    break;
 
-                    case "editcontinent":
-                        if(l_cmdArr[1].trim().equals("-add"))
-                            executeAddContinent(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
-                        else if(l_cmdArr[1].trim().equals("-remove"))
-                            executeRemoveContinent(Integer.parseInt(l_cmdArr[2]));
-                        break;
+                case "editcontinent":
+                    if(l_cmdArr[1].trim().equals("-add"))
+                        executeAddContinent(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
+                    else if(l_cmdArr[1].trim().equals("-remove"))
+                        executeRemoveContinent(Integer.parseInt(l_cmdArr[2]));
+                    break;
 
-                    case "editcountry":
-                        if(l_cmdArr[1].trim().equals("-add"))
-                            executeAddCountry(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
-                        else if(l_cmdArr[1].trim().equals("-remove"))
-                            executeRemoveCountry(Integer.parseInt(l_cmdArr[2]));
-                        break;
+                case "editcountry":
+                    if(l_cmdArr[1].trim().equals("-add"))
+                        executeAddCountry(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
+                    else if(l_cmdArr[1].trim().equals("-remove"))
+                        executeRemoveCountry(Integer.parseInt(l_cmdArr[2]));
+                    break;
 
-                    case "editneighbor":
-                        if(l_cmdArr[1].trim().equals("-add"))
-                            executeAddNeighbor(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
-                        else if(l_cmdArr[1].trim().equals("-remove"))
-                            executeRemoveNeighbor(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
-                        break;
+                case "editneighbor":
+                    if(l_cmdArr[1].trim().equals("-add"))
+                        executeAddNeighbor(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
+                    else if(l_cmdArr[1].trim().equals("-remove"))
+                        executeRemoveNeighbor(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
+                    break;
 
-                    case "validatemap":
-                        executeValidateMap();
-                        break;
+                case "validatemap":
+                    executeValidateMap();
+                    break;
 
-                    case "gameplayer":
-                        if(l_cmdArr[1].trim().equals("-add"))
-                            executeAddGamePlayer(l_cmdArr[2]);
-                        else if(l_cmdArr[1].trim().equals("-remove"))
-                            executeRemoveGamePlayer(l_cmdArr[2]);
-                        break;
+                case "gameplayer":
+                    if(l_cmdArr[1].trim().equals("-add"))
+                        executeAddGamePlayer(l_cmdArr[2]);
+                    else if(l_cmdArr[1].trim().equals("-remove"))
+                        executeRemoveGamePlayer(l_cmdArr[2]);
+                    break;
 
-                    case "assigncountries":
-                        executeAssignCountries();
-                        break;
+                case "assigncountries":
+                    executeAssignCountries();
+                    break;
 
-                    case "deploy":
-                        executeDeploy(Integer.parseInt(l_cmdArr[1]), Integer.parseInt(l_cmdArr[2]));
-                        break;
-                }
-            }
-            else {
-                System.out.println("Invalid Command");
+                case "deploy":
+                    executeDeploy(Integer.parseInt(l_cmdArr[1]), Integer.parseInt(l_cmdArr[2]));
+                    break;
             }
         }
     }
