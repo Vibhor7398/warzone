@@ -13,6 +13,8 @@ public class Main {
             map.loadMap("src/main/resources/Maps/canada.map");
             MapView mapView=new MapView();
             mapView.showMap(map.getContinents(),map.getCountries());
+            map.editContinent("add", "Africa", 4);
+            mapView.showMap(map.getContinents(),map.getCountries());
         } catch (IOException e) {
             System.out.println(e);
 

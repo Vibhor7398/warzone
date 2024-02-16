@@ -3,6 +3,7 @@ package Models;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -104,14 +105,63 @@ public class Maps {
                 }
             }
 
+            public void addContinent(String continentName, int continentValue) {
+                String line  = continentName + " " + continentValue + " " + "#000";
+                processContinentLine(line);
+            }
 
+            public void removeContinent(String p_continentName) {
+                boolean continentFound = false;
+                d_continents.values().forEach(l_continent -> {
+                    if(l_continent.getName().equals(p_continentName)) {
+                        d_continents.remove(l_continent.getId());
+                        System.out.println("Removed '" + p_continentName + ".");
+                        return;
+                    }
+                });
+                if(!continentFound) {
+                    System.out.println("Continent that you are trying to remove does not exit");
+                }
+            }
+            
+            
 
+            public boolean continentAlreadyExists(String p_continentName) {
+                for(Map.Entry<String, Continent> mapEntry : d_continents.entrySet()) {
+                    Continent continent = mapEntry.getValue();
+                    if(continent.getName().equals(p_continentName)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
+    
+            public void editContinent(String p_operation, String p_continentName, int p_continentValue) {
+                if (p_continentName == null) {
+                    System.out.println("Error: Continent name cannot be null.");
+                    return;
+                }
+            
+                if(!d_continents.isEmpty() && continentAlreadyExists(p_continentName)) {
+                    System.out.println("The continent which you are trying to add already exist!");
+                    return;
+                }
 
+                switch (p_operation) {
+                    case "add":
+                        addContinent(p_continentName, p_continentValue);
+                        break;
 
-
-
-
-
-
-}
+                    case "remove":
+                        removeContinent(p_continentName);
+                        break;
+                
+                    default:
+                        System.out.println("Invalid operation: " + p_operation);
+                        break;
+                }  
+                
+                
+        }
+    }
