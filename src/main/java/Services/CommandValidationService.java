@@ -12,21 +12,17 @@ public class CommandValidationService {
         String[] l_cmdArr = p_cmd.trim().split("\\ ");
 
         String l_baseCmd = getBaseCommand(p_cmd);
-        switch (l_baseCmd.toLowerCase()) {
+        switch (l_baseCmd) {
             case "loadmap":
-                System.out.println("loadmap");
                 return validateLoadMapCommand(l_cmdArr);
 
             case "showmap":
-                System.out.println("showmap");
                 return true;
 
             case "savemap":
-                System.out.println("savemap");
                 return validateSaveMapCommand(l_cmdArr);
 
             case "editcontinent":
-                System.out.println("editcontinent");
                 return validateEditContinentCommand(l_cmdArr);
 
             case "editcountry":
@@ -55,12 +51,11 @@ public class CommandValidationService {
         }
     }
 
-    private String getBaseCommand(String p_cmd){
+    public String getBaseCommand(String p_cmd){
         return p_cmd.trim().split("\\ ")[0];
     }
 
     private boolean validateLoadMapCommand(String[] p_cmd) {
-
         if(p_cmd.length != 2){
             return false;
         }
