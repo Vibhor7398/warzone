@@ -149,5 +149,42 @@ public class Maps {
         });
     }
 
-  
+    public void saveMap(File p_file) throws IOException {
+        if (!p_file.exists()) {
+            System.out.println("The file doesn't exist, creating a new file.");
+            p_file.createNewFile();
+        }
+        StringBuilder contentBuilder = new StringBuilder();
+
+        // Adding the file section
+        String baseName = p_file.getName().split("\\.")[0];
+        String line = String.format("pic %s_pic.jpg\nmap %s_map.gif\ncrd %s.cards\n\n", baseName, baseName, baseName);
+        contentBuilder.append("[files]\n").append(line);
+
+        // Adding the continent
+        String continents = d_continents.values().stream()
+                .sorted(Comparator.comparingInt(Continent::getId))
+                .map(continent -> String.format("%s %d %s\n", continent.getName(), continent.getControlValue(), continent.getColor()))
+                .collect(Collectors.joining());
+        contentBuilder.append("[continents]\n").append(continents).append("\n");
+
+        // Adding the country
+        String countries = d_countries.values().stream()
+                .sorted(Comparator.comparingInt(Country::getId))
+                .map(country -> String.format("%d %s %s %s %s\n", country.getId(), country.getName(), country.getContinentId(), country.getXCoordinate(), country.getYCoordinate()))
+                .collect(Collectors.joining());
+        contentBuilder.append("[countries]\n").append(countries).append("\n");
+
+        // Adding the neighbours
+        String borders = d_countries.values().stream()
+                .map(country -> {
+                    String neighbors = country.getNeighbors().values().stream()
+                            .map(neighbor -> String.valueOf(neighbor.getId()))
+                            .collect(Collectors.joining(" "));
+                    return country.getId() + " " + neighbors + "\n";
+                })
+                .collect(Collectors.joining());
+        contentBuilder.append("[borders]\n").append(borders);
+        Files.write(Paths.get(p_file.getPath()), contentBuilder.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE);
+    }
 }
