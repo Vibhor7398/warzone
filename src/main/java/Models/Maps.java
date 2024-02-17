@@ -2,6 +2,7 @@ package Models;
 
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.nio.file.Files;
@@ -112,13 +113,16 @@ public class Maps {
 
             public void removeContinent(String p_continentName) {
                 boolean continentFound = false;
-                d_continents.values().forEach(l_continent -> {
-                    if(l_continent.getName().equals(p_continentName)) {
-                        d_continents.remove(l_continent.getId());
-                        System.out.println("Removed '" + p_continentName + ".");
+                Iterator<Continent> iterator = d_continents.values().iterator();
+                while (iterator.hasNext()) {
+                    Continent l_continent = iterator.next();
+                    if (l_continent.getName().equals(p_continentName)) {
+                        continentFound = true;
+                        iterator.remove();
+                        System.out.println("Removed '" + p_continentName + "'.");
                         return;
                     }
-                });
+                }
                 if(!continentFound) {
                     System.out.println("Continent that you are trying to remove does not exit");
                 }
@@ -130,6 +134,16 @@ public class Maps {
                 for(Map.Entry<String, Continent> mapEntry : d_continents.entrySet()) {
                     Continent continent = mapEntry.getValue();
                     if(continent.getName().equals(p_continentName)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public boolean continentAlreadyExists(int p_continentId) {
+                for(Map.Entry<String, Continent> mapEntry : d_continents.entrySet()) {
+                    Continent continent = mapEntry.getValue();
+                    if(continent.getId() == p_continentId) {
                         return true;
                     }
                 }
@@ -160,8 +174,57 @@ public class Maps {
                     default:
                         System.out.println("Invalid operation: " + p_operation);
                         break;
-                }  
-                
-                
+                }   
+        }
+
+        public void addCountry(String p_countryName, int p_continentId) {
+            int id = d_countries.size() + 1;
+            String line  = id + " " + p_countryName + " " + p_continentId + " " + 0 + " " + 0;
+            processCountryLine(line);
+        }
+
+        public void removeCountry(String p_countryName) {
+            boolean countryRemoved = false;
+            Iterator<Country> iterator = d_countries.values().iterator();
+            while (iterator.hasNext()) {
+                Country l_country = iterator.next();
+                if (l_country.getName().equals(p_countryName)) {
+                    countryRemoved = true;
+                    iterator.remove();
+                    d_continents.get(l_country.getContinentId()).removeCountry(p_countryName);
+                    System.out.println("Removed '" + p_countryName + "'.");
+                    return;
+                }
+            }
+            if(!countryRemoved) {
+                System.out.println("Country that you are trying to remove does not exit");
+            }
+        }
+        
+
+        public void editCountry(String p_operation, String p_countryName, int p_continentId) {
+            if (p_countryName == null) {
+                System.out.println("Error: Country name cannot be null.");
+                return;
+            }
+
+            if(!d_continents.isEmpty() && !continentAlreadyExists(p_continentId)) {
+                System.out.println("Continent does not exist!");
+                return;
+            }
+
+            switch (p_operation) {
+                case "add":
+                    addCountry(p_countryName, p_continentId);
+                    break;
+
+                case "remove":
+                    removeCountry(p_countryName);
+                    break;
+            
+                default:
+                    System.out.println("Invalid operation: " + p_operation);
+                    break;
+            }   
         }
     }
