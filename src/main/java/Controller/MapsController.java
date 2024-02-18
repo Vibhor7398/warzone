@@ -154,6 +154,16 @@ public class MapsController {
         });
     }
 
+    public boolean countryAlreadyExists(String p_country) {
+        for (Map.Entry<String, Country> mapEntry : d_countries.entrySet()) {
+            Country country = mapEntry.getValue();
+            if (country.getName().equals(p_country)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addCountry(String p_countryName, String p_continentName) {
         int continentId = -1;
         for (Continent continent : d_continents.values()) {
@@ -165,6 +175,11 @@ public class MapsController {
         
         if(!d_continents.isEmpty() && !continentAlreadyExists(p_continentName)) {
             System.out.println(p_continentName + "Continent does not exist!");
+            return;
+        }
+
+        if(!d_countries.isEmpty() && countryAlreadyExists(p_countryName)) {
+            System.out.println(p_countryName + "Country already exists!");
             return;
         }
         int id = d_countries.size() + 1;
