@@ -200,6 +200,11 @@ public class GameEngineController {
     }
 
     private void executeAssignCountries(){
+        if(d_players.size() < 2){
+            System.out.println("Cannot play with less than 2 players");
+            CommandValidationService.setD_hasGameStarted(false);
+            return;
+        }
         HashMap<String, Country> l_listOfCountries = d_map.getD_countries();
         int l_NumPlayers = d_players.size();
         int l_playerIndex = 0;
@@ -212,6 +217,7 @@ public class GameEngineController {
             }
         }
         System.out.println("executeAssignCountries");
+        CommandValidationService.setD_hasGameStarted(true);
         Reinforcement.assignReinforcements(d_players);
 //        printCountryPlayerMapping(); // TODO : to be removed
     }

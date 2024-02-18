@@ -79,7 +79,6 @@ public class CommandValidationService {
 
             case "assigncountries":
                 if(l_cmdArr.length==1){
-                    d_hasGameStarted = true;
                     return true;
                 }
                 return false;
