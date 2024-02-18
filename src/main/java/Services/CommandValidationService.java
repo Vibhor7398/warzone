@@ -96,11 +96,11 @@ public class CommandValidationService {
                 return false;
             }
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-add") && l_ms.isInteger(p_cmd[2]) && l_ms.isInteger(p_cmd[3]);
+            return p_cmd[1].trim().equals("-add") && !p_cmd[2].trim().isEmpty() && l_ms.isInteger(p_cmd[3]);
         }
         else {
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-remove") && l_ms.isInteger(p_cmd[2]);
+            return p_cmd[1].trim().equals("-remove") && !p_cmd[2].trim().isEmpty();
         }
     }
 
@@ -120,11 +120,11 @@ public class CommandValidationService {
                 return false;
             }
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-add") && l_ms.isInteger(p_cmd[2]) && l_ms.isInteger(p_cmd[3]);
+            return p_cmd[1].trim().equals("-add") && !p_cmd[2].trim().isEmpty() && !p_cmd[3].trim().isEmpty();
         }
         else {
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-remove") && l_ms.isInteger(p_cmd[2]);
+            return p_cmd[1].trim().equals("-remove") && !p_cmd[2].trim().isEmpty();
         }
     }
 
@@ -139,7 +139,7 @@ public class CommandValidationService {
         }
 
         MathService l_ms = new MathService();
-        return (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && l_ms.isInteger(p_cmd[2]) && l_ms.isInteger(p_cmd[3]);
+        return (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && !p_cmd[2].trim().isEmpty() && !p_cmd[3].trim().isEmpty();
     }
 
     private boolean validateGamePlayerCommand(String[] p_cmd){
@@ -166,6 +166,6 @@ public class CommandValidationService {
         }
 
         MathService l_ms = new MathService();
-        return l_ms.isInteger(p_cmd[1]) && l_ms.isInteger(p_cmd[2]);
+        return l_ms.isInteger(p_cmd[1]) && !p_cmd[2].trim().isEmpty();
     }
 }
