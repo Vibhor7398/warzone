@@ -1,7 +1,7 @@
 package Services;
 
 
-import Controller.MapController;
+import Controller.MapsController;
 import Models.Continent;
 import Models.Country;
 import Models.Player;
@@ -20,7 +20,7 @@ public class Reinforcement {
 
             l_finalReinforceCount = Math.max(l_noOfCountriesOwned/3 , 5);
 
-            HashMap<String, Continent> map = new MapController().getContinents();
+            HashMap<String, Continent> map = new MapsController().getContinents();
 
             for(Continent l_continent : map.values()){
                 l_isAllCountriesOwned = true;
@@ -31,7 +31,7 @@ public class Reinforcement {
                     }
                 }
                 if(l_isAllCountriesOwned){
-                    l_finalReinforceCount += l_continent.getControlValue();
+                    l_finalReinforceCount += l_continent.getContinentValue();
                 }
             }
             l_player.setArmies(l_player.getArmies()+l_finalReinforceCount);

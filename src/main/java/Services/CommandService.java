@@ -1,6 +1,7 @@
 package Services;
 
 import Constants.AppConstants;
+import Controller.MapsController;
 import Models.Maps;
 import Views.MapView;
 
@@ -10,9 +11,7 @@ import java.util.Scanner;
 
 public class CommandService {
     CommandValidationService d_cvs = new CommandValidationService();
-    Maps maps = new Maps();
-    MapView mapView = new MapView();
-
+        MapsController maps=new MapsController();
     public String getNextCommand(){
         System.out.println("Please enter your command");
         Scanner l_sc = new Scanner(System.in);
@@ -103,7 +102,7 @@ public class CommandService {
     }
 
     private void executeShowMap(){
-        mapView.showMap(maps.getContinents(),maps.getCountries());
+        maps.showMap();
         System.out.println("executeShowMap");
     }
 
@@ -122,22 +121,22 @@ public class CommandService {
     }
 
     private void executeAddContinent(String p_continentID, int p_continentvalue){
-//        AddContinent
+        maps.addContinent(p_continentID,p_continentvalue);
         System.out.println("executeAddContinent");
     }
 
     private void executeRemoveContinent(String p_continentID){
-//        RemoveContinent
+        maps.removeContinent(p_continentID);
         System.out.println("executeRemoveContinent");
     }
 
     private void executeAddCountry(String p_countryID, String p_continentID){
-//        AddCountry
+        maps.addCountry(p_countryID,p_continentID);
         System.out.println("executeAddCountry");
     }
 
     private void executeRemoveCountry(String p_countryID){
-//        RemoveCountry
+        maps.removeCountry(p_countryID);
         System.out.println("executeRemoveCountry");
     }
 
@@ -152,8 +151,14 @@ public class CommandService {
     }
 
     private void executeValidateMap(){
-//        Validate Map
-        System.out.println("executeValidateMap");
+        maps.validateMap();
+        boolean l_isValid = maps.isMapValid();
+        if (l_isValid) {
+            System.out.print("Status of map: Valid");
+        }
+        else {
+            System.out.print("Status of map: Invalid");
+        }
     }
 
     private void executeAddGamePlayer(String p_gameplayer){
