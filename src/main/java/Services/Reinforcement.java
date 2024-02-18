@@ -6,12 +6,13 @@ import Models.Continent;
 import Models.Country;
 import Models.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class Reinforcement {
 
-    public static void assignReinforce(Player[] p_playerList){
+    public static void assignReinforcements(ArrayList<Player> p_playerList){
         for(Player l_player : p_playerList){
             int l_noOfCountriesOwned = l_player.getCountriesOwned().size();
             int l_finalReinforceCount;
