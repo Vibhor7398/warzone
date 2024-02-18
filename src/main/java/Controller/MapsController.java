@@ -3,7 +3,6 @@ import Models.Maps;
 import Models.Continent;
 import Models.Country;
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.io.IOException;
@@ -18,8 +17,8 @@ public class MapsController {
 
     public MapsController() {
         this.maps = new Maps();
-        this.d_continents = this.maps.getContinents();
-        this.d_countries = this.maps.getCountries();
+        d_continents = this.maps.getContinents();
+        d_countries = this.maps.getCountries();
     }
 
     public LinkedHashMap<String, Country> getD_countries() {
@@ -215,7 +214,6 @@ public class MapsController {
         }
     }
 
-
     public void loadMap(String p_file) throws IOException {
         String l_content = Files.readString(Paths.get(p_file));
         String[] l_lines = l_content.split("\n");
@@ -261,10 +259,10 @@ public class MapsController {
                     " | Number of Countries: " + p_continent.getCountries().size());
             p_continent.getCountries().forEach((countryId, country) -> {
                 System.out.println("\tCountry ID: " + country.getId() + " | Name: " + country.getName()+" | Armies: " + country.getArmies());
-                LinkedHashMap<String, Country> neighborsMap = country.getNeighbors();
-                if (!neighborsMap.isEmpty()) {
-                    String neighbors = String.join(", ", neighborsMap.keySet());
-                    System.out.println("\t\tNeighbors: " + neighbors);
+                LinkedHashMap<String, Country> l_neighborsMap = country.getNeighbors();
+                if (!l_neighborsMap.isEmpty()) {
+                    String l_neighbors = String.join(", ", l_neighborsMap.keySet());
+                    System.out.println("\t\tNeighbors: " + l_neighbors);
                 } else {
                     System.out.println("\t\tNeighbors: None");
                 }
@@ -273,28 +271,28 @@ public class MapsController {
         });
     }
 
-    private Country findCountryByName(String name) {
-        for (Country country : d_countries.values()) {
-            if (String.valueOf(country.getName()).equals(name)) {
-                return country;
+    private Country findCountryByName(String p_name) {
+        for (Country l_country : d_countries.values()) {
+            if (String.valueOf(l_country.getName()).equals(p_name)) {
+                return l_country;
             }
         }
         return null;
     }
 
-    public void editNeighbors(String p_operation, String countryName, String neighborName) {
-        if(findCountryByName(countryName)==null){
+    public void editNeighbors(String p_operation, String p_countryName, String p_neighborName) {
+        if(findCountryByName(p_countryName)==null){
             System.out.println("Country doesn't exists!");
             return;
         }
-        if(findCountryByName(neighborName)==null){
+        if(findCountryByName(p_neighborName)==null){
             System.out.println("Neighbor country doesn't exists!");
             return;
         }
-        Country country = findCountryByName(countryName);
-        Country neighbour=findCountryByName(neighborName);
+        Country country = findCountryByName(p_countryName);
+        Country neighbour=findCountryByName(p_neighborName);
         if("add".equals(p_operation)) {
-            if(country.findNeighborByName(neighborName)){
+            if(country.findNeighborByName(p_neighborName)){
                 System.out.println("Neighbor already exists!");
                 return;
             }
@@ -302,82 +300,51 @@ public class MapsController {
         }
 
         if("remove".equals(p_operation)) {
-            if(country.findNeighborByName(neighborName)){
+            if(country.findNeighborByName(p_neighborName)){
                 country.removeNeighborById(neighbour.getId());
                 return;
             }
-            System.out.println("The neighbor you are trying to remove doesnot exist");
+            System.out.println("The neighbor you are trying to remove doesn't exist");
         }
     }
-
-
-
-
-        // if (country == null) {
-        //     System.out.println("Country not found");
-        //     return;
-        // }
-        // Country neighbor = country.findNeighborByName(neighborName);
-        // country.getNeighborsByName(neighborName);
-
-        // if (neighbor != null) {
-        //     // Country neighbor = neighborOptional.get();
-        //     if ("add".equals(p_operation)) {
-        //         System.out.println("The neigbor already exists");
-        //     }
-        //     if ("remove".equals(p_operation)) {
-        //         country.removeNeighborById(neighbor.getId());
-        //     }
-        // } else {
-        //     // Neighbor not found
-        //     if ("add".equals(p_operation)) {
-        //         country.addNeighbor(neighbor);
-        //     }
-        //     if ("remove".equals(p_operation)) {
-        //         System.out.println("Neighbor not found.");
-
-        //     }
-        //     return;
-        
-    
 
     public void saveMap(File p_file) throws IOException {
         if (!p_file.exists()) {
             System.out.println("The file doesn't exist, creating a new file.");
             p_file.createNewFile();
         }
-        StringBuilder contentBuilder = new StringBuilder();
+        StringBuilder l_contentBuilder = new StringBuilder();
 
         // Adding the file section
-        String baseName = p_file.getName().split("\\.")[0];
-        String line = String.format("pic %s_pic.jpg\nmap %s_map.gif\ncrd %s.cards\n\n", baseName, baseName, baseName);
-        contentBuilder.append("[files]\n").append(line);
+        String l_baseName = p_file.getName().split("\\.")[0];
+        String line = String.format("pic %s_pic.jpg\nmap %s_map.gif\ncrd %s.cards\n\n", l_baseName, l_baseName, l_baseName);
+        l_contentBuilder.append("[files]\n").append(line);
 
         // Adding the continent
-        String continents = d_continents.values().stream()
+        String l_continents = d_continents.values().stream()
                 .sorted(Comparator.comparingInt(Continent::getId))
-                .map(continent -> String.format("%s %d %s\n", continent.getName(), continent.getContinentValue(), continent.getColor()))
+                .map(l_continent -> String.format("%s %d %s\n", l_continent.getName(), l_continent.getContinentValue(), l_continent.getColor()))
                 .collect(Collectors.joining());
-        contentBuilder.append("[continents]\n").append(continents).append("\n");
+        l_contentBuilder.append("[continents]\n").append(l_continents).append("\n");
 
         // Adding the country
-        String countries = d_countries.values().stream()
+        String l_countries = d_countries.values().stream()
                 .sorted(Comparator.comparingInt(Country::getId))
-                .map(country -> String.format("%d %s %s %s %s\n", country.getId(), country.getName(), country.getContinentId(), country.getXCoordinate(), country.getYCoordinate()))
+                .map(l_country -> String.format("%d %s %s %s %s\n", l_country.getId(), l_country.getName(), l_country.getContinentId(), l_country.getXCoordinate(), l_country.getYCoordinate()))
                 .collect(Collectors.joining());
-        contentBuilder.append("[countries]\n").append(countries).append("\n");
+        l_contentBuilder.append("[countries]\n").append(l_countries).append("\n");
 
         // Adding the neighbours
-        String borders = d_countries.values().stream()
+        String l_borders = d_countries.values().stream()
                 .map(country -> {
-                    String neighbors = country.getNeighbors().values().stream()
+                    String l_neighbors = country.getNeighbors().values().stream()
                             .map(neighbor -> String.valueOf(neighbor.getId()))
                             .collect(Collectors.joining(" "));
-                    return country.getId() + " " + neighbors + "\n";
+                    return country.getId() + " " + l_neighbors + "\n";
                 })
                 .collect(Collectors.joining());
-        System.out.println(borders);
-        contentBuilder.append("[borders]\n").append(borders);
-        Files.write(Paths.get(p_file.getPath()), contentBuilder.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE);
+
+        l_contentBuilder.append("[borders]\n").append(l_borders);
+        Files.writeString(Paths.get(p_file.getPath()), l_contentBuilder.toString(), StandardOpenOption.WRITE);
     }
 }
