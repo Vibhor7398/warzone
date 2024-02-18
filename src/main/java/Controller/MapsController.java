@@ -154,8 +154,9 @@ public class MapsController {
         });
     }
 
-    public void addCountry(String p_countryName, int p_continentId) {
-        if(p_continentId != -1 && !d_continents.isEmpty() && !continentAlreadyExists(p_continentId)) {
+    public void addCountry(String p_countryName, String p_continentId) {
+
+        if(!d_continents.isEmpty() && !continentAlreadyExists(p_continentId)) {
             System.out.println(p_continentId + "Continent does not exist!");
             return;
         }
@@ -184,28 +185,28 @@ public class MapsController {
     }
 
 
-    public void editCountry(String p_operation, String p_countryName, OptionalInt p_continentId) {
-        int l_continentId = p_continentId.orElse(-1);
-
-        if (p_countryName == null) {
-            System.out.println("Error: Country name cannot be null.");
-            return;
-        }
-
-        switch (p_operation) {
-            case "add":
-                addCountry(p_countryName, l_continentId);
-                break;
-
-            case "remove":
-                removeCountry(p_countryName);
-                break;
-
-            default:
-                System.out.println("Invalid operation: " + p_operation);
-                break;
-        }
-    }
+//    public void editCountry(String p_operation, String p_countryName, OptionalInt p_continentId) {
+//        int l_continentId = p_continentId.orElse(-1);
+//
+//        if (p_countryName == null) {
+//            System.out.println("Error: Country name cannot be null.");
+//            return;
+//        }
+//
+//        switch (p_operation) {
+//            case "add":
+//                addCountry(p_countryName, l_continentId);
+//                break;
+//
+//            case "remove":
+//                removeCountry(p_countryName);
+//                break;
+//
+//            default:
+//                System.out.println("Invalid operation: " + p_operation);
+//                break;
+//        }
+//    }
     public void editContinent(String p_operation, String p_continentName, int... p_continentValue) {
         int continentValue;
         if (p_continentValue.length > 0) {
