@@ -17,7 +17,7 @@ public class CommandValidationService {
                 return validateLoadMapCommand(l_cmdArr);
 
             case "showmap":
-                return true;
+                return l_cmdArr.length==1;
 
             case "savemap":
                 return validateSaveMapCommand(l_cmdArr);
@@ -32,13 +32,13 @@ public class CommandValidationService {
                 return validateEditNeighborCommand(l_cmdArr);
 
             case "validatemap":
-                return true;
+                return l_cmdArr.length==1;
 
             case "gameplayer":
                 return validateGamePlayerCommand(l_cmdArr);
 
             case "assigncountries":
-                return true;
+                return l_cmdArr.length==1;
 
             case "deploy":
                 return validateDeployCommand(l_cmdArr);
@@ -96,11 +96,11 @@ public class CommandValidationService {
                 return false;
             }
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-add") && l_ms.isInteger(p_cmd[2]) && !p_cmd[3].trim().isEmpty();
+            return p_cmd[1].trim().equals("-add") && !p_cmd[2].trim().isEmpty() && l_ms.isInteger(p_cmd[3]);
         }
         else {
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-remove") && l_ms.isInteger(p_cmd[2]);
+            return p_cmd[1].trim().equals("-remove") && !p_cmd[2].trim().isEmpty();
         }
     }
 
@@ -120,11 +120,11 @@ public class CommandValidationService {
                 return false;
             }
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-add") && l_ms.isInteger(p_cmd[2]) && l_ms.isInteger(p_cmd[3]);
+            return p_cmd[1].trim().equals("-add") && !p_cmd[2].trim().isEmpty() && !p_cmd[3].trim().isEmpty();
         }
         else {
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-remove") && l_ms.isInteger(p_cmd[2]);
+            return p_cmd[1].trim().equals("-remove") && !p_cmd[2].trim().isEmpty();
         }
     }
 
@@ -139,7 +139,7 @@ public class CommandValidationService {
         }
 
         MathService l_ms = new MathService();
-        return (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && l_ms.isInteger(p_cmd[2]) && l_ms.isInteger(p_cmd[3]);
+        return (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && !p_cmd[2].trim().isEmpty() && !p_cmd[3].trim().isEmpty();
     }
 
     private boolean validateGamePlayerCommand(String[] p_cmd){
@@ -166,6 +166,6 @@ public class CommandValidationService {
         }
 
         MathService l_ms = new MathService();
-        return l_ms.isInteger(p_cmd[1]) && l_ms.isInteger(p_cmd[2]);
+        return l_ms.isInteger(p_cmd[1]) && !p_cmd[2].trim().isEmpty();
     }
 }

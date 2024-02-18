@@ -40,23 +40,23 @@ public class CommandService {
 
                 case "editcontinent":
                     if(l_cmdArr[1].trim().equals("-add"))
-                        executeAddContinent(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
+                        executeAddContinent(l_cmdArr[2], Integer.parseInt(l_cmdArr[3]));
                     else if(l_cmdArr[1].trim().equals("-remove"))
-                        executeRemoveContinent(Integer.parseInt(l_cmdArr[2]));
+                        executeRemoveContinent(l_cmdArr[2]);
                     break;
 
                 case "editcountry":
                     if(l_cmdArr[1].trim().equals("-add"))
-                        executeAddCountry(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
+                        executeAddCountry(l_cmdArr[2], l_cmdArr[3]);
                     else if(l_cmdArr[1].trim().equals("-remove"))
-                        executeRemoveCountry(Integer.parseInt(l_cmdArr[2]));
+                        executeRemoveCountry(l_cmdArr[2]);
                     break;
 
                 case "editneighbor":
                     if(l_cmdArr[1].trim().equals("-add"))
-                        executeAddNeighbor(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
+                        executeAddNeighbor(l_cmdArr[2], l_cmdArr[3]);
                     else if(l_cmdArr[1].trim().equals("-remove"))
-                        executeRemoveNeighbor(Integer.parseInt(l_cmdArr[2]), Integer.parseInt(l_cmdArr[3]));
+                        executeRemoveNeighbor(l_cmdArr[2], l_cmdArr[3]);
                     break;
 
                 case "validatemap":
@@ -75,7 +75,7 @@ public class CommandService {
                     break;
 
                 case "deploy":
-                    executeDeploy(Integer.parseInt(l_cmdArr[1]), Integer.parseInt(l_cmdArr[2]));
+                    executeDeploy(l_cmdArr[1], Integer.parseInt(l_cmdArr[2]));
                     break;
             }
         }
@@ -93,27 +93,27 @@ public class CommandService {
 //        mapView.SaveMap();
     }
 
-    private void executeAddContinent(int p_continentID, int p_continentvalue){
+    private void executeAddContinent(String p_continentID, int p_continentvalue){
 //        AddContinent
     }
 
-    private void executeRemoveContinent(int p_continentID){
+    private void executeRemoveContinent(String p_continentID){
 //        RemoveContinent
     }
 
-    private void executeAddCountry(int p_countryID, int p_continentID){
+    private void executeAddCountry(String p_countryID, String p_continentID){
 //        AddCountry
     }
 
-    private void executeRemoveCountry(int p_countryID){
+    private void executeRemoveCountry(String p_countryID){
 //        RemoveCountry
     }
 
-    private void executeAddNeighbor(int p_countryID, int p_neighborcountryID){
+    private void executeAddNeighbor(String p_countryID, String p_neighborcountryID){
 //        AddNeighbor
     }
 
-    private void executeRemoveNeighbor(int p_countryID, int p_neighborcountryID){
+    private void executeRemoveNeighbor(String p_countryID, String p_neighborcountryID){
 //        RemoveNeighbor
     }
 
@@ -133,7 +133,7 @@ public class CommandService {
 //        Assign Countries
     }
 
-    private void executeDeploy(int p_countryID, int num){
+    private void executeDeploy(String p_countryID, int num){
 //        Deploy
     }
 }
