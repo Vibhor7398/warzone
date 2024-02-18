@@ -2,7 +2,6 @@ package Controller;
 import Models.Maps;
 import Models.Continent;
 import Models.Country;
-
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
@@ -23,6 +22,9 @@ public class MapsController {
         this.d_countries = this.maps.getCountries();
     }
 
+    public LinkedHashMap<String, Country> getD_countries() {
+        return d_countries;
+    }
 
     public boolean isMapValid() {
         return this.maps.getMapValid();
@@ -159,6 +161,16 @@ public class MapsController {
         });
     }
 
+    public boolean countryAlreadyExists(String p_country) {
+        for (Map.Entry<String, Country> mapEntry : d_countries.entrySet()) {
+            Country country = mapEntry.getValue();
+            if (country.getName().equals(p_country)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addCountry(String p_countryName, String p_continentName) {
         int continentId = -1;
         for (Continent continent : d_continents.values()) {
@@ -170,6 +182,11 @@ public class MapsController {
         
         if(!d_continents.isEmpty() && !continentAlreadyExists(p_continentName)) {
             System.out.println(p_continentName + "Continent does not exist!");
+            return;
+        }
+
+        if(!d_countries.isEmpty() && countryAlreadyExists(p_countryName)) {
+            System.out.println(p_countryName + "Country already exists!");
             return;
         }
         int id = d_countries.size() + 1;
@@ -264,33 +281,63 @@ public class MapsController {
     }
 
     public void editNeighbors(String p_operation, String countryName, String neighborName) {
-        Country country = findCountryByName(countryName);
-        if (country == null) {
-            System.out.println("Country not found");
+        if(findCountryByName(countryName)==null){
+            System.out.println("Country doesn't exists!");
             return;
         }
-        Optional<Country> neighborOptional = country.getNeighborsByName(neighborName);
-        if (neighborOptional.isPresent()) {
-            Country neighbor = neighborOptional.get();
-            if ("add".equals(p_operation)) {
-                System.out.println("The neighbor already exists");
-            }
-            if ("remove".equals(p_operation)) {
-                country.removeNeighborById(neighbor.getId());
-            }
-        } else {
-            // Neighbor not found
-            if ("add".equals(p_operation)) {
-
-
-            }
-            if ("remove".equals(p_operation)) {
-                System.out.println("Neighbor not found.");
-
-            }
+        if(findCountryByName(neighborName)==null){
+            System.out.println("Neighbor country doesn't exists!");
             return;
+        }
+        Country country = findCountryByName(countryName);
+        Country neighbour=findCountryByName(neighborName);
+        if("add".equals(p_operation)) {
+            if(country.findNeighborByName(neighborName)){
+                System.out.println("Neighbor already exists!");
+                return;
+            }
+            country.addNeighbor(neighbour);
+        }
+
+        if("remove".equals(p_operation)) {
+            if(country.findNeighborByName(neighborName)){
+                country.removeNeighborById(neighbour.getId());
+                return;
+            }
+            System.out.println("The neighbor you are trying to remove doesnot exist");
         }
     }
+
+
+
+
+        // if (country == null) {
+        //     System.out.println("Country not found");
+        //     return;
+        // }
+        // Country neighbor = country.findNeighborByName(neighborName);
+        // country.getNeighborsByName(neighborName);
+
+        // if (neighbor != null) {
+        //     // Country neighbor = neighborOptional.get();
+        //     if ("add".equals(p_operation)) {
+        //         System.out.println("The neigbor already exists");
+        //     }
+        //     if ("remove".equals(p_operation)) {
+        //         country.removeNeighborById(neighbor.getId());
+        //     }
+        // } else {
+        //     // Neighbor not found
+        //     if ("add".equals(p_operation)) {
+        //         country.addNeighbor(neighbor);
+        //     }
+        //     if ("remove".equals(p_operation)) {
+        //         System.out.println("Neighbor not found.");
+
+        //     }
+        //     return;
+        
+    
 
     public void saveMap(File p_file) throws IOException {
         if (!p_file.exists()) {

@@ -78,10 +78,15 @@ public class Country {
         return this.d_neighbors.get(this);
     }
 
-    public Optional<Country> getNeighborsByName(String name) {
-        return d_neighbors.get(this).values().stream()
-            .filter(neighbor -> name.equals(neighbor.getName()))
-            .findFirst();
+    public boolean findNeighborByName(String name) {
+        LinkedHashMap<String, Country> neighbors = d_neighbors.get(this);
+    
+        for (Country neighbor : neighbors.values()) {
+            if (name.equals(neighbor.getName())) {
+                return true;
+            }
+        }
+        return false; 
     }
 
     public LinkedHashMap<String, Country> getNeighborsOfCountry(String countryName) {
@@ -97,8 +102,4 @@ public class Country {
         LinkedHashMap<String, Country> neighbors = d_neighbors.get(this);
         neighbors.values().removeIf(neighbor -> id == neighbor.getId());
     }
-
-
-
-
 }
