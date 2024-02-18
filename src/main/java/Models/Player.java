@@ -93,10 +93,10 @@ public class Player {
         }
     }
 
-    private void handleDeployOrder(ArrayList<String> command) {
+    private void handleDeployOrder(ArrayList<String> p_command) {
         System.out.println("Deploying the orders: ");
-        Order ob = new Order();
-        ob.deployOrder(this, command.get(0), Integer.parseInt(command.get(1)));
+        Order l_ob = new Order();
+        l_ob.deployOrder(this, p_command.get(0), Integer.parseInt(p_command.get(1)));
         //d_currentOrder = new Deploy(this, command.get(0), Integer.parseInt(command.get(1)));
         //d_orderList.add(d_currentOrder);
     }
