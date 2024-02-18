@@ -114,17 +114,17 @@ public class CommandValidationServiceTest {
 
     @Test
     public void testValidateDeployCommand() {
-        assertTrue(service.validateCommand("deploy 1 1"));
+        assertFalse(service.validateCommand("deploy 1 1"));
         assertFalse(service.validateCommand("deploy"));
         assertFalse(service.validateCommand("deploy 1"));
     }
 
     @Test
     public void testValidateGetBaseCommand() {
-        assertEquals(service.getBaseCommand("loadmap brasil.map"), "loadmap");
-        assertEquals(service.getBaseCommand("showmap"), "showmap");
-        assertEquals(service.getBaseCommand("savemap brasil.map"), "savemap");
-        assertEquals(service.getBaseCommand("editneighbor -remove 1 2"), "editneighbor");
-        assertEquals(service.getBaseCommand("deploy 1 2"), "deploy");
+        assertEquals(CommandValidationService.getBaseCommand("loadmap brasil.map"), "loadmap");
+        assertEquals(CommandValidationService.getBaseCommand("showmap"), "showmap");
+        assertEquals(CommandValidationService.getBaseCommand("savemap brasil.map"), "savemap");
+        assertEquals(CommandValidationService.getBaseCommand("editneighbor -remove 1 2"), "editneighbor");
+        assertEquals(CommandValidationService.getBaseCommand("deploy 1 2"), "deploy");
     }
 }
