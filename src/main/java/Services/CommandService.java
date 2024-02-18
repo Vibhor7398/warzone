@@ -3,12 +3,7 @@ package Services;
 import java.util.Scanner;
 
 public class CommandService {
-    public String d_command;
-
-//     Maps map = new Maps();
-//     MapView mapView=new MapView();
-
-    CommandValidationService l_cvs = new CommandValidationService();
+    CommandValidationService d_cvs = new CommandValidationService();
     public String getNextCommand(){
         System.out.println("Please enter your command");
         Scanner l_sc = new Scanner(System.in);
