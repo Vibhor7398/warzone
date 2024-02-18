@@ -16,8 +16,8 @@ public class Main {
             mapsController.validateMap();
             System.out.println(mapsController.isMapValid());
             mapsController.editNeighbors("add","New_Brunswick","N&L-Newfoundland");
-            mapsController.editContinent("add","Africa");
-//            mapsController.editCountry("add","Africa", OptionalInt.of(7));
+            mapsController.addContinent("Africa", 3);
+           mapsController.addCountry("India", "Africa");
 //            mapsController.showMap();
             mapsController.showMap();
             mapsController.validateMap();
