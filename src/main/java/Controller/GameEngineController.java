@@ -1,13 +1,19 @@
 package Controller;
 
 import Constants.AppConstants;
+import Models.Country;
+import Models.Player;
 import Services.CommandService;
 import Services.CommandValidationService;
+import Services.Reinforcement;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameEngineController {
+    private static ArrayList<Player> d_players;
     public static MapsController getD_map() {
         return d_map;
     }
@@ -20,6 +26,7 @@ public class GameEngineController {
 
     public GameEngineController(){
         d_map = new MapsController();
+        d_players = new ArrayList<>();
     }
 
     public void executeCommand(String p_command){
@@ -161,18 +168,25 @@ public class GameEngineController {
 
     private void executeAddGamePlayer(String p_gameplayer){
         //TODO : add game player
+        int l_playerIndex = doesPlayerExists(p_gameplayer);
+        if (l_playerIndex != -1){
+            System.out.println("Player name already exists!");
+        }
+        else{
+            d_players.add(new Player(p_gameplayer));
+        }
         System.out.println("executeAddGamePlayer");
     }
 
-    private void executeRemoveGamePlayer(String p_gameplayer){
-//        Remove Game Player
-        System.out.println("executeRemoveGamePlayer");
+    private int doesPlayerExists(String p_gameplayer){
+        for(int i = 0 ; i < d_players.size() ; i++){
+            if(d_players.get(i).getName().equals(p_gameplayer)){
+                return i;
+            }
+        }
+        return -1;
     }
 
-    private void executeAssignCountries(){
-//        Assign Countries
-        System.out.println("executeAssignCountries");
-    }
 
     private void executeDeploy(String p_countryID, int num){
 //        Deploy
