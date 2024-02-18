@@ -1,9 +1,18 @@
 package Services;
 
+import Constants.AppConstants;
+import Models.Maps;
+import Views.MapView;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CommandService {
     CommandValidationService d_cvs = new CommandValidationService();
+    Maps maps = new Maps();
+    MapView mapView = new MapView();
+
     public String getNextCommand(){
         System.out.println("Please enter your command");
         Scanner l_sc = new Scanner(System.in);
@@ -81,23 +90,30 @@ public class CommandService {
             case "deploy":
                 executeDeploy(l_cmdArr[1], Integer.parseInt(l_cmdArr[2]));
                 break;
-
-            case "exit":
         }
     }
 
     private void executeLoadMap(String p_filename){
-//         map.loadMap(p_filename);
+        try {
+            maps.loadMap(AppConstants.MapsPath+p_filename);
+        } catch (IOException e) {
+            System.out.print("Check input path! ");
+        }
         System.out.println("executeLoadMap");
     }
 
     private void executeShowMap(){
-//        mapView.showMap(map.getContinents(),map.getCountries());
+        mapView.showMap(maps.getContinents(),maps.getCountries());
         System.out.println("executeShowMap");
     }
 
     private void executeSaveMap(String p_filename){
-//        mapView.SaveMap();
+        File file = new File(AppConstants.MapsPath+p_filename);
+        try {
+            maps.saveMap(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("executeSaveMap");
     }
 
