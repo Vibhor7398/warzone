@@ -16,6 +16,8 @@ public class Country {
     public Country(int p_id, String p_name) {
         this.d_id = p_id;
         this.d_name = p_name;
+        this.d_neighbors = new LinkedHashMap<>();
+        this.d_neighbors.put(this, new LinkedHashMap<>());
     }
     public Country(int p_id, String p_name, String p_continentId, String p_xCoordinate, String p_yCoordinate) {
         this.d_id = p_id;
@@ -72,8 +74,8 @@ public class Country {
     }
 
     public LinkedHashMap<String, Country> getNeighbors() {
-        //TODO : handle null case
-        return d_neighbors.get(this);
+        this.d_neighbors.computeIfAbsent(this, k -> new LinkedHashMap<>());
+        return this.d_neighbors.get(this);
     }
 
     public boolean findNeighborByName(String name) {

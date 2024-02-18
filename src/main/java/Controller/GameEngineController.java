@@ -3,7 +3,6 @@ package Controller;
 import Constants.AppConstants;
 import Models.Country;
 import Models.Player;
-import Services.CommandService;
 import Services.CommandValidationService;
 import Services.Reinforcement;
 
@@ -106,12 +105,12 @@ public class GameEngineController {
     }
 
     private void executeSaveMap(String p_filename){
-        d_map.validateMap();
-        boolean l_isValid = d_map.isMapValid();
-        if(!l_isValid){
-            System.out.println("Map is invalid!");
-            return;
-        }
+//        d_map.validateMap();
+//        boolean l_isValid = d_map.isMapValid();
+//        if(!l_isValid){
+//            System.out.println("Map is invalid!");
+//            return;
+//        }
         File file = new File(AppConstants.MapsPath+p_filename);
         try {
             d_map.saveMap(file);
