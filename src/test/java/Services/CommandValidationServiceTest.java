@@ -15,11 +15,31 @@ public class CommandValidationServiceTest {
     }
 
     @Test
-    public void testValidateLoadMapCommand() {
+    public void testCommandValidationService_validateCommand_valid() {
         assertTrue(service.validateCommand("loadmap brasil.map"));
+
+
+
+
+    }
+
+    @Test
+    public void testCommandValidationService_validateCommand_nonExistentMap(){
         assertFalse(service.validateCommand("loadmap asia.map"));
+    }
+
+    @Test
+    public void testCommandValidationService_validateCommand_incorrectCommand(){
         assertFalse(service.validateCommand("loadmap"));
+    }
+
+    @Test
+    public void testCommandValidationService_validateCommand_incorrectCommand2(){
         assertFalse(service.validateCommand("loadmap brasil.map 1"));
+    }
+
+    @Test
+    public void testCommandValidationService_validateCommand_incorrectCommand3(){
         assertFalse(service.validateCommand(""));
     }
 

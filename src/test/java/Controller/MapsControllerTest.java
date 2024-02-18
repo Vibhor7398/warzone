@@ -69,6 +69,7 @@ public class MapsControllerTest {
                 d_mapsController.getD_countries().get("India").getNeighbors().containsKey("China"));
     }
 
+    @Test
     public void addNeighbor_InvalidCountry() {
         d_mapsController.addContinent("Asia", 5);
         d_mapsController.addCountry("India", "Asia");
