@@ -16,8 +16,6 @@ public class Maps {
     private LinkedHashMap<String, Country> d_countries;
     private boolean d_isMapValid;
     private boolean d_mapFileLoaded;
-    private String d_currentFileName;
-//    private String d_currentFile;
 
     public Maps() {
         this.d_continents = new LinkedHashMap<>();
@@ -149,6 +147,11 @@ public class Maps {
         });
     }
 
+
+    public void editMap(String p_fileName) throws IOException {
+        this.d_mapFileLoaded = true;
+        loadMap(p_fileName);
+    }
     public void saveMap(File p_file) throws IOException {
         if (!p_file.exists()) {
             System.out.println("The file doesn't exist, creating a new file.");
@@ -164,7 +167,7 @@ public class Maps {
         // Adding the continent
         String continents = d_continents.values().stream()
                 .sorted(Comparator.comparingInt(Continent::getId))
-                .map(continent -> String.format("%s %d %s\n", continent.getName(), continent.getControlValue(), continent.getColor()))
+                .map(continent -> String.format("%s %d %s\n", continent.getName(), continent.getContinentValue(), continent.getColor()))
                 .collect(Collectors.joining());
         contentBuilder.append("[continents]\n").append(continents).append("\n");
 
@@ -187,4 +190,5 @@ public class Maps {
         contentBuilder.append("[borders]\n").append(borders);
         Files.write(Paths.get(p_file.getPath()), contentBuilder.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE);
     }
+
 }
