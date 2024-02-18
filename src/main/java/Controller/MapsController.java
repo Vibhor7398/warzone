@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 
 public class MapsController {
     private Maps maps;
-    private LinkedHashMap<String, Continent> d_continents;
-    private LinkedHashMap<String, Country> d_countries;
+    private static LinkedHashMap<String, Continent> d_continents;
+    private static LinkedHashMap<String, Country> d_countries;
 
     public MapsController() {
         this.maps = new Maps();
@@ -30,8 +30,8 @@ public class MapsController {
     public boolean isMapValid() {
         return this.maps.getMapValid();
     }
-    public LinkedHashMap<String,Continent> getContinents(){
-        return this.d_continents;
+    public static LinkedHashMap<String,Continent> getContinents(){
+        return d_continents;
     }
     public boolean continentAlreadyExists(String p_continentName) {
         for (Map.Entry<String, Continent> mapEntry : d_continents.entrySet()) {
