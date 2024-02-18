@@ -85,7 +85,7 @@ public class GameEngineController {
                 break;
 
             case "deploy":
-                executeDeploy(l_cmdArr[1], Integer.parseInt(l_cmdArr[2]));
+                executeDeploy();
                 break;
         }
     }
@@ -105,17 +105,17 @@ public class GameEngineController {
     }
 
     private void executeSaveMap(String p_filename){
-//        d_map.validateMap();
-//        boolean l_isValid = d_map.isMapValid();
-//        if(!l_isValid){
-//            System.out.println("Map is invalid!");
-//            return;
-//        }
+        d_map.validateMap();
+        boolean l_isValid = d_map.isMapValid();
+        if(!l_isValid){
+            System.out.println("Map is invalid!");
+            return;
+        }
         File file = new File(AppConstants.MapsPath+p_filename);
         try {
             d_map.saveMap(file);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Map could not be saved!");
         }
         System.out.println("executeSaveMap");
     }
@@ -125,7 +125,7 @@ public class GameEngineController {
         try {
             d_map.editMap(file);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Map could not be created");
         }
         System.out.println("executeEditMap");
     }
@@ -172,7 +172,6 @@ public class GameEngineController {
     }
 
     private void executeAddGamePlayer(String p_gameplayer){
-        //TODO : add game player
         int l_playerIndex = doesPlayerExists(p_gameplayer);
         if (l_playerIndex != -1){
             System.out.println("Player name already exists!");
@@ -194,7 +193,6 @@ public class GameEngineController {
 
     private void executeRemoveGamePlayer(String p_gameplayer){
         int l_playerIndex = doesPlayerExists(p_gameplayer);
-//        Remove Game Player
         if(l_playerIndex != -1){
             d_players.remove(l_playerIndex);
         }
@@ -224,11 +222,14 @@ public class GameEngineController {
         System.out.println("executeAssignCountries");
         CommandValidationService.setD_hasGameStarted(true);
         Reinforcement.assignReinforcements(d_players);
-//        printCountryPlayerMapping(); // TODO : to be removed
+        executeDeploy();
     }
 
-    private void executeDeploy(String p_countryID, int num){
+    private void executeDeploy(){
 //        Deploy
+        for(Player l_player : d_players){
+            l_player.issue_order();
+        }
         System.out.println("executeDeploy");
     }
 }
