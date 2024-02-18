@@ -79,7 +79,7 @@ public class Player {
         d_orderArgs.add(p_orderArgs);
     }
 
-    private void issueOrder() {
+    public void issue_order() {
         while (!d_orderArgs.isEmpty()) {
             String orderCommand_ = d_orderArgs.poll();
             String[] orderCommand = orderCommand_.trim().split("\\s+");
