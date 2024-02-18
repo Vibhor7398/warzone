@@ -187,6 +187,20 @@ public class GameEngineController {
         return -1;
     }
 
+    private void executeRemoveGamePlayer(String p_gameplayer){
+        int l_playerIndex = doesPlayerExists(p_gameplayer);
+//        Remove Game Player
+        if(l_playerIndex != -1){
+            d_players.remove(l_playerIndex);
+        }
+        else{
+            System.out.println("Player does not exist!");
+        }
+        System.out.println("executeRemoveGamePlayer");
+    }
+
+
+
 
     private void executeDeploy(String p_countryID, int num){
 //        Deploy
