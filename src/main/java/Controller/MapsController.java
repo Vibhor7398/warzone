@@ -27,7 +27,9 @@ public class MapsController {
     public boolean isMapValid() {
         return this.maps.getMapValid();
     }
-
+    public LinkedHashMap<String,Continent> getContinents(){
+        return this.d_continents;
+    }
     public boolean continentAlreadyExists(String p_continentName) {
         for (Map.Entry<String, Continent> mapEntry : d_continents.entrySet()) {
             Continent continent = mapEntry.getValue();
