@@ -22,6 +22,7 @@ public class CommandValidationService {
         d_mapEditorCommands.add("loadmap");
         d_mapEditorCommands.add("showmap");
         d_mapEditorCommands.add("savemap");
+        d_mapEditorCommands.add("editmap");
         d_mapEditorCommands.add("editcontinent");
         d_mapEditorCommands.add("editcountry");
         d_mapEditorCommands.add("editneighbor");
@@ -55,11 +56,11 @@ public class CommandValidationService {
             case "loadmap":
                 return validateLoadMapCommand(l_cmdArr);
 
+            case "editmap", "savemap":
+                return validateSaveMapCommand(l_cmdArr);
+
             case "showmap":
                 return l_cmdArr.length==1;
-
-            case "savemap":
-                return validateSaveMapCommand(l_cmdArr);
 
             case "editcontinent":
                 return validateEditContinentCommand(l_cmdArr);

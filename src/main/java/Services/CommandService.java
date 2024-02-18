@@ -35,7 +35,11 @@ public class CommandService {
                 break;
 
             case "savemap":
-                executeSaveMap();
+                executeSaveMap(l_cmdArr[1]);
+                break;
+
+            case "editmap":
+                executeEditMap(l_cmdArr[1]);
                 break;
 
             case "editcontinent":
@@ -92,9 +96,13 @@ public class CommandService {
         System.out.println("executeShowMap");
     }
 
-    private void executeSaveMap(){
+    private void executeSaveMap(String p_filename){
 //        mapView.SaveMap();
         System.out.println("executeSaveMap");
+    }
+
+    private void executeEditMap(String p_filename){
+        System.out.println("executeEditMap");
     }
 
     private void executeAddContinent(String p_continentID, int p_continentvalue){
