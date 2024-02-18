@@ -99,12 +99,12 @@ public class GameEngineController {
     }
 
     private void executeSaveMap(String p_filename){
-        d_map.validateMap();
-        boolean l_isValid = d_map.isMapValid();
-        if(!l_isValid){
-            System.out.println("Map is invalid!");
-            return;
-        }
+//        d_map.validateMap();
+//        boolean l_isValid = d_map.isMapValid();
+//        if(!l_isValid){
+//            System.out.println("Map is invalid!");
+//            return;
+//        }
         File file = new File(AppConstants.MapsPath+p_filename);
         try {
             d_map.saveMap(file);

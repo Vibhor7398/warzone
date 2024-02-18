@@ -66,11 +66,14 @@ public class MapsController {
     }
 
     private void processCountryLine(String line) {
-        String[] parts = line.split(" ");
-        Country country = new Country(Integer.parseInt(parts[0]), parts[1], parts[2], parts[3], parts[4]);
-        d_countries.put(parts[1], country);
-        //TL:DR Add a validation before adding country to the continent; check if the continent exists or not
-        d_continents.get(parts[2].trim()).addCountry(country);
+        String[] l_parts = line.split(" ");
+        Country l_country = new Country(Integer.parseInt(l_parts[0]), l_parts[1], l_parts[2], l_parts[3], l_parts[4]);
+        d_countries.put(l_parts[1], l_country);
+        String l_continent=l_parts[2].trim();
+        if(!d_continents.containsKey(l_continent)){
+            return;
+        }
+        d_continents.get(l_parts[2].trim()).addCountry(l_country);
     }
 
     private void processBorderLine(String line) {
@@ -79,8 +82,7 @@ public class MapsController {
         String countryId = parts[0].trim();
         Country country = findCountryById(countryId);
         if (country == null) {
-            //TODO : Handle the case where the country isn't found if necessary
-            return;
+                return;
         }
         for (int i = 1; i < parts.length; i++) {
             String neighborId = parts[i].trim();
@@ -125,6 +127,9 @@ public class MapsController {
         boolean continentsExist = this.d_countries.values().stream()
                 .allMatch(country -> this.d_continents.containsKey(country.getContinentId()));
         if (!continentsExist) return false;
+        boolean allContinentsHaveCountries = this.d_continents.entrySet().stream()
+                .noneMatch(entry -> entry.getValue().getCountries().isEmpty());
+        if (!allContinentsHaveCountries) return false;
         return this.d_countries.values().stream()
                 .flatMap(country -> country.getNeighbors().values().stream())
                 .allMatch(neighbor -> this.d_countries.containsKey(neighbor.getName()));
@@ -233,10 +238,10 @@ public class MapsController {
     public void showMap() {
         d_continents.values().forEach(p_continent -> {
             System.out.println("ID: " + p_continent.getId() + " | Name: " + p_continent.getName() +
-                    " | Control Value: " + p_continent.getContinentValue() +
+                    " | Continent Value: " + p_continent.getContinentValue() +
                     " | Number of Countries: " + p_continent.getCountries().size());
             p_continent.getCountries().forEach((countryId, country) -> {
-                System.out.println("\tCountry ID: " + country.getId() + " | Name: " + country.getName());
+                System.out.println("\tCountry ID: " + country.getId() + " | Name: " + country.getName()+" | Armies: " + country.getArmies());
                 LinkedHashMap<String, Country> neighborsMap = country.getNeighbors();
                 if (!neighborsMap.isEmpty()) {
                     String neighbors = String.join(", ", neighborsMap.keySet());
@@ -268,7 +273,7 @@ public class MapsController {
         if (neighborOptional.isPresent()) {
             Country neighbor = neighborOptional.get();
             if ("add".equals(p_operation)) {
-                System.out.println("The neigbor already exists");
+                System.out.println("The neighbor already exists");
             }
             if ("remove".equals(p_operation)) {
                 country.removeNeighborById(neighbor.getId());
@@ -276,7 +281,8 @@ public class MapsController {
         } else {
             // Neighbor not found
             if ("add".equals(p_operation)) {
-                country.addNeighbor(neighborName);
+
+
             }
             if ("remove".equals(p_operation)) {
                 System.out.println("Neighbor not found.");
@@ -287,8 +293,6 @@ public class MapsController {
     }
 
     public void saveMap(File p_file) throws IOException {
-        //TODO 1 :  fix neighbor in savemap
-
         if (!p_file.exists()) {
             System.out.println("The file doesn't exist, creating a new file.");
             p_file.createNewFile();
@@ -323,6 +327,7 @@ public class MapsController {
                     return country.getId() + " " + neighbors + "\n";
                 })
                 .collect(Collectors.joining());
+        System.out.println(borders);
         contentBuilder.append("[borders]\n").append(borders);
         Files.write(Paths.get(p_file.getPath()), contentBuilder.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE);
     }
