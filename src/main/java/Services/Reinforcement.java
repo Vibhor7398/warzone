@@ -7,7 +7,9 @@ import Models.Country;
 import Models.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 
 public class Reinforcement {
@@ -21,7 +23,8 @@ public class Reinforcement {
 
             l_finalReinforceCount = Math.max(l_noOfCountriesOwned/3 , 5);
 
-            HashMap<String, Continent> map = new MapsController().getContinents();
+            LinkedHashMap<String,Continent> map = MapsController.getContinents();
+
 
             for(Continent l_continent : map.values()){
                 l_isAllCountriesOwned = true;

@@ -5,8 +5,8 @@ import java.util.*;
 
 
 public class Maps {
-    private LinkedHashMap<String, Continent> d_continents;
-    private LinkedHashMap<String, Country> d_countries;
+    private static LinkedHashMap<String, Continent> d_continents;
+    private static LinkedHashMap<String, Country> d_countries;
     private boolean d_isMapValid;
     private boolean d_mapFileLoaded;
 

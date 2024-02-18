@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Queue;
 
 public class Player {
+    private int d_id;
     private String d_name;
     private HashMap<Integer, Country> d_countryList;
     private ArrayList<Order> d_orderList;
@@ -20,6 +21,14 @@ public class Player {
         d_armiesCount=0;
         d_orderList = new ArrayList<Order>();
         d_countriesOwned = new ArrayList<Country>();
+    }
+
+    public void setId(int p_id){
+        d_id = p_id;
+    }
+
+    public int getId(){
+        return d_id;
     }
 
     public void setName(String p_name) {
