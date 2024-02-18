@@ -23,6 +23,9 @@ public class MapsController {
         this.d_countries = this.maps.getCountries();
     }
 
+    public LinkedHashMap<String, Country> getD_countries() {
+        return d_countries;
+    }
 
     public boolean isMapValid() {
         return this.maps.getMapValid();
