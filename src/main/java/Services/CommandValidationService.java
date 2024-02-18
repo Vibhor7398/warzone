@@ -96,7 +96,7 @@ public class CommandValidationService {
                 return false;
             }
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-add") && l_ms.isInteger(p_cmd[2]) && !p_cmd[3].trim().isEmpty();
+            return p_cmd[1].trim().equals("-add") && l_ms.isInteger(p_cmd[2]) && l_ms.isInteger(p_cmd[3]);
         }
         else {
             MathService l_ms = new MathService();
