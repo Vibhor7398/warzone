@@ -79,7 +79,7 @@ public class MapsController {
         String countryId = parts[0].trim();
         Country country = findCountryById(countryId);
         if (country == null) {
-            // Handle the case where the country isn't found if necessary
+            //TODO : Handle the case where the country isn't found if necessary
             return;
         }
         for (int i = 1; i < parts.length; i++) {
@@ -192,60 +192,6 @@ public class MapsController {
     }
 
 
-//    public void editCountry(String p_operation, String p_countryName, OptionalInt p_continentId) {
-//        int l_continentId = p_continentId.orElse(-1);
-//
-//        if (p_countryName == null) {
-//            System.out.println("Error: Country name cannot be null.");
-//            return;
-//        }
-//
-//        switch (p_operation) {
-//            case "add":
-//                addCountry(p_countryName, l_continentId);
-//                break;
-//
-//            case "remove":
-//                removeCountry(p_countryName);
-//                break;
-//
-//            default:
-//                System.out.println("Invalid operation: " + p_operation);
-//                break;
-//        }
-//    }
-    // public void editContinent(String p_operation, String p_continentName, int... p_continentValue) {
-    //     int continentValue;
-    //     if (p_continentValue.length > 0) {
-    //         continentValue = p_continentValue[0];
-    //     } else {
-    //         continentValue = 0;
-    //     }
-
-    //     if (p_continentName == null) {
-    //         System.out.println("Error: Continent name cannot be null.");
-    //         return;
-    //     }
-    //     if (p_operation == null) {
-    //         System.out.println("Error: Continent name cannot be null.");
-    //         return;
-    //     }
-
-    //     switch (p_operation) {
-    //         case "add":
-    //             addContinent(p_continentName, continentValue);
-    //             break;
-
-    //         case "remove":
-    //             removeContinent(p_continentName);
-    //             break;
-
-    //         default:
-    //             System.out.println("Invalid operation: " + p_operation);
-    //             break;
-    //     }
-    // }
-
     public void loadMap(String p_file) throws IOException {
         String content = Files.readString(Paths.get(p_file));
         String[] lines = content.split("\n");
@@ -341,6 +287,8 @@ public class MapsController {
     }
 
     public void saveMap(File p_file) throws IOException {
+        //TODO 1 :  fix neighbor in savemap
+
         if (!p_file.exists()) {
             System.out.println("The file doesn't exist, creating a new file.");
             p_file.createNewFile();
