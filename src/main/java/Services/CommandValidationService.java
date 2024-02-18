@@ -17,7 +17,7 @@ public class CommandValidationService {
                 return validateLoadMapCommand(l_cmdArr);
 
             case "showmap":
-                return true;
+                return l_cmdArr.length==1;
 
             case "savemap":
                 return validateSaveMapCommand(l_cmdArr);
@@ -32,13 +32,13 @@ public class CommandValidationService {
                 return validateEditNeighborCommand(l_cmdArr);
 
             case "validatemap":
-                return true;
+                return l_cmdArr.length==1;
 
             case "gameplayer":
                 return validateGamePlayerCommand(l_cmdArr);
 
             case "assigncountries":
-                return true;
+                return l_cmdArr.length==1;
 
             case "deploy":
                 return validateDeployCommand(l_cmdArr);
