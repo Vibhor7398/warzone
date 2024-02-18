@@ -220,4 +220,14 @@ public class GameEngineController {
 //        Deploy
         System.out.println("executeDeploy");
     }
+
+//    public void printCountryPlayerMapping(){
+//        for(Player l_player : d_players){
+//            System.out.println(l_player.getName() + " : ");
+//            ArrayList<Country> l_countryList = l_player.getCountriesOwned();
+//            for(Country l_country : l_countryList){
+//                System.out.print(l_country.getName() + " , ");
+//            }
+//        }
+//    }
 }
