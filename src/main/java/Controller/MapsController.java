@@ -214,6 +214,14 @@ public class MapsController {
         }
     }
 
+    public void editMap(File p_file) throws IOException{
+        if (!p_file.exists()) {
+            System.out.println("The file doesn't exist, creating a new file.");
+            p_file.createNewFile();
+        }
+        loadMap(p_file.getPath());
+    }
+
     public void loadMap(String p_file) throws IOException {
         String l_content = Files.readString(Paths.get(p_file));
         String[] l_lines = l_content.split("\n");
