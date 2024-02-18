@@ -199,8 +199,22 @@ public class GameEngineController {
         System.out.println("executeRemoveGamePlayer");
     }
 
+    private void executeAssignCountries(){
+        HashMap<String, Country> l_listOfCountries = d_map.getD_countries();
+        int l_NumPlayers = d_players.size();
+        int l_playerIndex = 0;
 
-
+        for(Country l_country : l_listOfCountries.values()){
+            System.out.println("Assigning " + l_country.getName() + " to " + d_players.get(l_playerIndex).getName());
+            d_players.get(l_playerIndex++).addCountryToCountriesOwned(l_country);
+            if(l_playerIndex == l_NumPlayers){
+                l_playerIndex = 0;
+            }
+        }
+        System.out.println("executeAssignCountries");
+        Reinforcement.assignReinforcements(d_players);
+//        printCountryPlayerMapping(); // TODO : to be removed
+    }
 
     private void executeDeploy(String p_countryID, int num){
 //        Deploy
