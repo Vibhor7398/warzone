@@ -1,9 +1,17 @@
 package Services;
 
+import Constants.AppConstants;
+import Controller.MapsController;
+import Models.Maps;
+import Views.MapView;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CommandService {
     CommandValidationService d_cvs = new CommandValidationService();
+        MapsController maps=new MapsController();
     public String getNextCommand(){
         System.out.println("Please enter your command");
         Scanner l_sc = new Scanner(System.in);
@@ -81,23 +89,30 @@ public class CommandService {
             case "deploy":
                 executeDeploy(l_cmdArr[1], Integer.parseInt(l_cmdArr[2]));
                 break;
-
-            case "exit":
         }
     }
 
     private void executeLoadMap(String p_filename){
-//         map.loadMap(p_filename);
+        try {
+            maps.loadMap(AppConstants.MapsPath+p_filename);
+        } catch (IOException e) {
+            System.out.print("Check input path! ");
+        }
         System.out.println("executeLoadMap");
     }
 
     private void executeShowMap(){
-//        mapView.showMap(map.getContinents(),map.getCountries());
+        maps.showMap();
         System.out.println("executeShowMap");
     }
 
     private void executeSaveMap(String p_filename){
-//        mapView.SaveMap();
+        File file = new File(AppConstants.MapsPath+p_filename);
+        try {
+            maps.saveMap(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("executeSaveMap");
     }
 
@@ -106,22 +121,22 @@ public class CommandService {
     }
 
     private void executeAddContinent(String p_continentID, int p_continentvalue){
-//        AddContinent
+        maps.addContinent(p_continentID,p_continentvalue);
         System.out.println("executeAddContinent");
     }
 
     private void executeRemoveContinent(String p_continentID){
-//        RemoveContinent
+        maps.removeContinent(p_continentID);
         System.out.println("executeRemoveContinent");
     }
 
     private void executeAddCountry(String p_countryID, String p_continentID){
-//        AddCountry
+        maps.addCountry(p_countryID,p_continentID);
         System.out.println("executeAddCountry");
     }
 
     private void executeRemoveCountry(String p_countryID){
-//        RemoveCountry
+        maps.removeCountry(p_countryID);
         System.out.println("executeRemoveCountry");
     }
 
@@ -136,8 +151,14 @@ public class CommandService {
     }
 
     private void executeValidateMap(){
-//        Validate Map
-        System.out.println("executeValidateMap");
+        maps.validateMap();
+        boolean l_isValid = maps.isMapValid();
+        if (l_isValid) {
+            System.out.print("Status of map: Valid");
+        }
+        else {
+            System.out.print("Status of map: Invalid");
+        }
     }
 
     private void executeAddGamePlayer(String p_gameplayer){

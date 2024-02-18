@@ -20,9 +20,9 @@ public class Reinforcement {
 
             l_finalReinforceCount = Math.max(l_noOfCountriesOwned/3 , 5);
 
-            HashMap<String, Continent> l_mapContinents = new MapsController().getContinents();
+            HashMap<String, Continent> map = new MapsController().getContinents();
 
-            for(Continent l_continent : l_mapContinents.values()){
+            for(Continent l_continent : map.values()){
                 l_isAllCountriesOwned = true;
                 for(Country l_country : l_continent.getCountries().values()){
                     if(!l_player.getCountriesOwned().contains(l_country)){

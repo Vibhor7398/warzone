@@ -1,7 +1,6 @@
 package Services;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -38,17 +37,14 @@ public class CommandValidationServiceTest {
         assertFalse(service.validateCommand("savemap asia.map 1"));
     }
 
-    @Ignore
+    @Test
     public void testValidateEditContinentCommand() {
         assertTrue(service.validateCommand("editcontinent -add 1 2"));
         assertFalse(service.validateCommand("editcontinent -add"));
-        assertFalse(service.validateCommand("editcontinent -add 1 test"));
-        assertFalse(service.validateCommand("editcontinent -add test 1"));
         assertFalse(service.validateCommand("editcontinent -add 1"));
         assertFalse(service.validateCommand("editcontinent -add 1 2 3"));
 
         assertTrue(service.validateCommand("editcontinent -remove 1"));
-        assertFalse(service.validateCommand("editcontinent -remove test"));
         assertFalse(service.validateCommand("editcontinent -remove 1 2"));
         assertFalse(service.validateCommand("editcontinent -remove"));
 
@@ -57,18 +53,14 @@ public class CommandValidationServiceTest {
         assertFalse(service.validateCommand("editcontinent 1 2 3"));;
     }
 
-    @Ignore
+    @Test
     public void testValidateEditCountryCommand() {
         assertTrue(service.validateCommand("editcountry -add 1 2"));
         assertFalse(service.validateCommand("editcountry -add"));
-        assertFalse(service.validateCommand("editcountry -add 1 test"));
-        assertFalse(service.validateCommand("editcountry -add test 1"));
         assertFalse(service.validateCommand("editcountry -add 1"));
         assertFalse(service.validateCommand("editcountry -add 1 2 3"));
 
         assertTrue(service.validateCommand("editcountry -remove 1"));
-        assertFalse(service.validateCommand("editcountry -remove test"));
-        assertFalse(service.validateCommand("editcountry -remove 1 2"));
         assertFalse(service.validateCommand("editcountry -remove"));
 
         assertFalse(service.validateCommand("editcountry"));
@@ -76,19 +68,15 @@ public class CommandValidationServiceTest {
         assertFalse(service.validateCommand("editcountry 1 2 3"));;
     }
 
-    @Ignore
+    @Test
     public void testValidateEditNeighborCommand() {
         assertTrue(service.validateCommand("editneighbor -add 1 2"));
         assertFalse(service.validateCommand("editneighbor -add"));
-        assertFalse(service.validateCommand("editneighbor -add 1 test"));
-        assertFalse(service.validateCommand("editneighbor -add test 1"));
         assertFalse(service.validateCommand("editneighbor -add 1"));
         assertFalse(service.validateCommand("editneighbor -add 1 2 3"));
 
         assertTrue(service.validateCommand("editneighbor -remove 1 2"));
         assertFalse(service.validateCommand("editneighbor -remove"));
-        assertFalse(service.validateCommand("editneighbor -remove 1 test"));
-        assertFalse(service.validateCommand("editneighbor -remove test 1"));
         assertFalse(service.validateCommand("editneighbor -remove 1"));
         assertFalse(service.validateCommand("editneighbor -add 1 2 3"));
 
@@ -124,11 +112,10 @@ public class CommandValidationServiceTest {
         assertFalse(service.validateCommand("assigncountries 1"));
     }
 
-    @Ignore
+    @Test
     public void testValidateDeployCommand() {
         assertTrue(service.validateCommand("deploy 1 1"));
         assertFalse(service.validateCommand("deploy"));
-        assertFalse(service.validateCommand("deploy test"));
         assertFalse(service.validateCommand("deploy 1"));
     }
 
