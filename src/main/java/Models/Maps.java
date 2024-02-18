@@ -3,6 +3,8 @@ package Models;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.nio.file.Files;
@@ -33,6 +35,14 @@ public class Maps {
     private Country findCountryById(String id) {
         for (Country country : d_countries.values()) {
             if (String.valueOf(country.getId()).equals(id)) {
+                return country;
+            }
+        }
+        return null;
+    }
+    private Country findCountryByName(String name) {
+        for (Country country : d_countries.values()) {
+            if (String.valueOf(country.getName()).equals(name)) {
                 return country;
             }
         }
@@ -107,6 +117,10 @@ public class Maps {
             }
 
             public void addContinent(String continentName, int continentValue) {
+                if(!d_continents.isEmpty() && continentAlreadyExists(continentName)) {
+                    System.out.println("The continent(" + continentName + ")you are trying to add already exist!");
+                    return;
+                }
                 String line  = continentName + " " + continentValue + " " + "#000";
                 processContinentLine(line);
             }
@@ -115,8 +129,8 @@ public class Maps {
                 boolean continentFound = false;
                 Iterator<Continent> iterator = d_continents.values().iterator();
                 while (iterator.hasNext()) {
-                    Continent l_continent = iterator.next();
-                    if (l_continent.getName().equals(p_continentName)) {
+                    Continent l_current_continent = iterator.next();
+                    if (l_current_continent.getName().equals(p_continentName)) {
                         continentFound = true;
                         iterator.remove();
                         System.out.println("Removed '" + p_continentName + "'.");
@@ -151,20 +165,27 @@ public class Maps {
             }
 
     
-            public void editContinent(String p_operation, String p_continentName, int p_continentValue) {
+            public void editContinent(String p_operation, String p_continentName, int... p_continentValue) {
+                int continentValue;
+                if (p_continentValue.length > 0) {
+                    continentValue = p_continentValue[0];
+                } else {
+                    continentValue = 0; 
+                }
+    
                 if (p_continentName == null) {
                     System.out.println("Error: Continent name cannot be null.");
                     return;
                 }
-            
-                if(!d_continents.isEmpty() && continentAlreadyExists(p_continentName)) {
-                    System.out.println("The continent which you are trying to add already exist!");
+
+                if (p_operation == null) {
+                    System.out.println("Error: Continent name cannot be null.");
                     return;
                 }
 
                 switch (p_operation) {
                     case "add":
-                        addContinent(p_continentName, p_continentValue);
+                        addContinent(p_continentName, continentValue);
                         break;
 
                     case "remove":
@@ -178,9 +199,14 @@ public class Maps {
         }
 
         public void addCountry(String p_countryName, int p_continentId) {
+            if(p_continentId != -1 && !d_continents.isEmpty() && !continentAlreadyExists(p_continentId)) {
+                System.out.println(p_continentId + "Continent does not exist!");
+                return;
+            }
             int id = d_countries.size() + 1;
             String line  = id + " " + p_countryName + " " + p_continentId + " " + 0 + " " + 0;
             processCountryLine(line);
+            System.out.println("Added successfully " + p_countryName);
         }
 
         public void removeCountry(String p_countryName) {
@@ -202,20 +228,17 @@ public class Maps {
         }
         
 
-        public void editCountry(String p_operation, String p_countryName, int p_continentId) {
+        public void editCountry(String p_operation, String p_countryName, OptionalInt p_continentId) {
+            int l_continentId = p_continentId.orElse(-1);
+            
             if (p_countryName == null) {
                 System.out.println("Error: Country name cannot be null.");
                 return;
             }
 
-            if(!d_continents.isEmpty() && !continentAlreadyExists(p_continentId)) {
-                System.out.println("Continent does not exist!");
-                return;
-            }
-
             switch (p_operation) {
                 case "add":
-                    addCountry(p_countryName, p_continentId);
+                    addCountry(p_countryName, l_continentId);
                     break;
 
                 case "remove":
@@ -227,4 +250,34 @@ public class Maps {
                     break;
             }   
         }
+        
+    public void editNeighbors(String p_operation, String countryName, String neighborName) {
+        Country country = findCountryByName(countryName);
+        // country does not exist
+        if(country == null) {
+            System.out.println("Country not found");
+            return;
+        }
+        Optional<Country> neighborOptional = country.getNeighborsByName(neighborName);
+        if (neighborOptional.isPresent()) {
+            Country neighbor = neighborOptional.get();
+            if("add".equals(p_operation)) {
+                System.out.println("The neigbor already exists");
+            } 
+            if("remove".equals(p_operation)){
+                country.removeNeighborById(neighbor.getId());
+            }
+        } else {
+            // Neighbor not found
+            if("add".equals(p_operation)) {
+                country.addNeighbor(neighborName);
+            } 
+            if("remove".equals(p_operation)){
+                System.out.println("Neighbor not found.");
+
+            }
+            return;
+        }
+        
     }
+}
