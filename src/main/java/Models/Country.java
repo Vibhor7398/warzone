@@ -1,6 +1,7 @@
 package Models;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
 
 public class Country {
     private int d_id;
@@ -71,5 +72,30 @@ public class Country {
 
     public LinkedHashMap<String, Country> getNeighbors() {
         return d_neighbors.get(this);
+    }
+
+    public Optional<Country> getNeighborsByName(String name) {
+        return d_neighbors.get(this).values().stream()
+            .filter(neighbor -> name.equals(neighbor.getName()))
+            .findFirst();
+    }
+
+    public LinkedHashMap<String, Country> getNeighborsOfCountry(String countryName) {
+        for (LinkedHashMap<String, Country> neighbors : d_neighbors.values()) {
+            if (neighbors.containsKey(countryName)) {
+                return neighbors;
+            }
+        }
+        return null;
+    }
+
+    public void removeNeighborById(int id) {
+        LinkedHashMap<String, Country> neighbors = d_neighbors.get(this);
+        neighbors.values().removeIf(neighbor -> id == neighbor.getId());
+    }
+
+    public void addNeighbor(String neighborName) {
+        LinkedHashMap<String, Country> neighbors = d_neighbors.get(this);
+        neighbors.put(neighborName, new Country(d_neighbors.size() + 1, neighborName));
     }
 }

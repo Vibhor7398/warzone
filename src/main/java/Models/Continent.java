@@ -47,4 +47,7 @@ public class Continent {
     public String getColor() {
         return d_color;
     }
+    public void removeCountry(String p_country) {
+        d_countries.remove(p_country);
+    }
 }
