@@ -121,6 +121,12 @@ public class GameEngineController {
     }
 
     private void executeEditMap(String p_filename){
+        File file = new File(AppConstants.MapsPath+p_filename);
+        try {
+            d_map.editMap(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("executeEditMap");
     }
 
