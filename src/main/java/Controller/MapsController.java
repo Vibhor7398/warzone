@@ -154,14 +154,21 @@ public class MapsController {
         });
     }
 
-    public void addCountry(String p_countryName, String p_continentId) {
-
-        if(!d_continents.isEmpty() && !continentAlreadyExists(p_continentId)) {
-            System.out.println(p_continentId + "Continent does not exist!");
+    public void addCountry(String p_countryName, String p_continentName) {
+        int continentId = -1;
+        for (Continent continent : d_continents.values()) {
+            if (continent.getName().equals(p_continentName)) {
+                continentId = continent.getId();
+                break;
+            }
+        }
+        
+        if(!d_continents.isEmpty() && !continentAlreadyExists(p_continentName)) {
+            System.out.println(p_continentName + "Continent does not exist!");
             return;
         }
         int id = d_countries.size() + 1;
-        String line  = id + " " + p_countryName + " " + p_continentId + " " + 0 + " " + 0;
+        String line  = id + " " + p_countryName + " " + continentId + " " + 0 + " " + 0;
         processCountryLine(line);
         System.out.println("Added successfully " + p_countryName);
     }
@@ -207,37 +214,37 @@ public class MapsController {
 //                break;
 //        }
 //    }
-    public void editContinent(String p_operation, String p_continentName, int... p_continentValue) {
-        int continentValue;
-        if (p_continentValue.length > 0) {
-            continentValue = p_continentValue[0];
-        } else {
-            continentValue = 0;
-        }
+    // public void editContinent(String p_operation, String p_continentName, int... p_continentValue) {
+    //     int continentValue;
+    //     if (p_continentValue.length > 0) {
+    //         continentValue = p_continentValue[0];
+    //     } else {
+    //         continentValue = 0;
+    //     }
 
-        if (p_continentName == null) {
-            System.out.println("Error: Continent name cannot be null.");
-            return;
-        }
-        if (p_operation == null) {
-            System.out.println("Error: Continent name cannot be null.");
-            return;
-        }
+    //     if (p_continentName == null) {
+    //         System.out.println("Error: Continent name cannot be null.");
+    //         return;
+    //     }
+    //     if (p_operation == null) {
+    //         System.out.println("Error: Continent name cannot be null.");
+    //         return;
+    //     }
 
-        switch (p_operation) {
-            case "add":
-                addContinent(p_continentName, continentValue);
-                break;
+    //     switch (p_operation) {
+    //         case "add":
+    //             addContinent(p_continentName, continentValue);
+    //             break;
 
-            case "remove":
-                removeContinent(p_continentName);
-                break;
+    //         case "remove":
+    //             removeContinent(p_continentName);
+    //             break;
 
-            default:
-                System.out.println("Invalid operation: " + p_operation);
-                break;
-        }
-    }
+    //         default:
+    //             System.out.println("Invalid operation: " + p_operation);
+    //             break;
+    //     }
+    // }
 
     public void loadMap(String p_file) throws IOException {
         String content = Files.readString(Paths.get(p_file));
