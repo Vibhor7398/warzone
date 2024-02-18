@@ -72,6 +72,7 @@ public class Country {
     }
 
     public LinkedHashMap<String, Country> getNeighbors() {
+        //TODO : handle null case
         return d_neighbors.get(this);
     }
 

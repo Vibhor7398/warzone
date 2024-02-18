@@ -1,9 +1,22 @@
 package Services;
 
+import Constants.AppConstants;
+import Controller.GameEngineController;
+import Controller.MapsController;
+import Models.Maps;
+import Views.MapView;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CommandService {
     CommandValidationService d_cvs = new CommandValidationService();
+    MapsController d_maps = new MapsController();
+    GameEngineController d_gc;
+    public CommandService(){
+        d_gc = new GameEngineController();
+    }
     public String getNextCommand(){
         System.out.println("Please enter your command");
         Scanner l_sc = new Scanner(System.in);
@@ -16,147 +29,14 @@ public class CommandService {
     }
 
     public void start(){
+//        d_gc = new GameEngineController();
         while (true){
             String l_command = getNextCommand();
             executeCommand(l_command);
         }
     }
 
-    public void executeCommand(String p_command){
-        String l_baseCmd = CommandValidationService.getBaseCommand(p_command);
-        String[] l_cmdArr = p_command.trim().split("\\ ");
-        switch (l_baseCmd){
-            case "loadmap":
-                executeLoadMap(l_cmdArr[1]);
-                break;
-
-            case "showmap":
-                executeShowMap();
-                break;
-
-            case "savemap":
-                executeSaveMap(l_cmdArr[1]);
-                break;
-
-            case "editmap":
-                executeEditMap(l_cmdArr[1]);
-                break;
-
-            case "editcontinent":
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddContinent(l_cmdArr[2], Integer.parseInt(l_cmdArr[3]));
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveContinent(l_cmdArr[2]);
-                break;
-
-            case "editcountry":
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddCountry(l_cmdArr[2], l_cmdArr[3]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveCountry(l_cmdArr[2]);
-                break;
-
-            case "editneighbor":
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddNeighbor(l_cmdArr[2], l_cmdArr[3]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveNeighbor(l_cmdArr[2], l_cmdArr[3]);
-                break;
-
-            case "validatemap":
-                executeValidateMap();
-                break;
-
-            case "gameplayer":
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddGamePlayer(l_cmdArr[2]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveGamePlayer(l_cmdArr[2]);
-                break;
-
-            case "assigncountries":
-                executeAssignCountries();
-                break;
-
-            case "deploy":
-                executeDeploy(l_cmdArr[1], Integer.parseInt(l_cmdArr[2]));
-                break;
-
-            case "exit":
-        }
-    }
-
-    private void executeLoadMap(String p_filename){
-//         map.loadMap(p_filename);
-        System.out.println("executeLoadMap");
-    }
-
-    private void executeShowMap(){
-//        mapView.showMap(map.getContinents(),map.getCountries());
-        System.out.println("executeShowMap");
-    }
-
-    private void executeSaveMap(String p_filename){
-//        mapView.SaveMap();
-        System.out.println("executeSaveMap");
-    }
-
-    private void executeEditMap(String p_filename){
-        System.out.println("executeEditMap");
-    }
-
-    private void executeAddContinent(String p_continentID, int p_continentvalue){
-//        AddContinent
-        System.out.println("executeAddContinent");
-    }
-
-    private void executeRemoveContinent(String p_continentID){
-//        RemoveContinent
-        System.out.println("executeRemoveContinent");
-    }
-
-    private void executeAddCountry(String p_countryID, String p_continentID){
-//        AddCountry
-        System.out.println("executeAddCountry");
-    }
-
-    private void executeRemoveCountry(String p_countryID){
-//        RemoveCountry
-        System.out.println("executeRemoveCountry");
-    }
-
-    private void executeAddNeighbor(String p_countryID, String p_neighborcountryID){
-//        AddNeighbor
-        System.out.println("executeAddNeighbor");
-    }
-
-    private void executeRemoveNeighbor(String p_countryID, String p_neighborcountryID){
-//        RemoveNeighbor
-        System.out.println("executeRemoveNeighbor");
-    }
-
-    private void executeValidateMap(){
-//        Validate Map
-        System.out.println("executeValidateMap");
-    }
-
-    private void executeAddGamePlayer(String p_gameplayer){
-//        Add Game Player
-        System.out.println("executeAddGamePlayer");
-    }
-
-    private void executeRemoveGamePlayer(String p_gameplayer){
-//        Remove Game Player
-        System.out.println("executeRemoveGamePlayer");
-    }
-
-    private void executeAssignCountries(){
-//        Assign Countries
-        System.out.println("executeAssignCountries");
-    }
-
-    private void executeDeploy(String p_countryID, int num){
-//        Deploy
-        System.out.println("executeDeploy");
+    public void executeCommand(String p_cmd){
+        d_gc.executeCommand(p_cmd);
     }
 }
