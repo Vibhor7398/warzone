@@ -1,10 +1,41 @@
 package Services;
 
 import Constants.AppConstants;
-
 import java.io.File;
+import java.util.ArrayList;
 
 public class CommandValidationService {
+    private ArrayList<String> d_mapEditorCommands;
+    private ArrayList<String> d_gameEditorCommands;
+
+    public static void setD_hasGameStarted(boolean d_hasGameStarted) {
+        CommandValidationService.d_hasGameStarted = d_hasGameStarted;
+    }
+
+    private static boolean d_hasGameStarted;
+
+    public CommandValidationService(){
+//        d_hasGameStarted = p_hasGameStarted;
+        d_mapEditorCommands = new ArrayList<>();
+        d_gameEditorCommands = new ArrayList<>();
+
+        d_mapEditorCommands.add("loadmap");
+        d_mapEditorCommands.add("showmap");
+        d_mapEditorCommands.add("savemap");
+        d_mapEditorCommands.add("editcontinent");
+        d_mapEditorCommands.add("editcountry");
+        d_mapEditorCommands.add("editneighbor");
+        d_mapEditorCommands.add("validatemap");
+        d_mapEditorCommands.add("gameplayer");
+        d_mapEditorCommands.add("assigncountries");
+
+        d_gameEditorCommands.add("showmap");
+        d_gameEditorCommands.add("deploy");
+        d_gameEditorCommands.add("validatemap");
+    }
+    public CommandValidationService(boolean p_hasGameStarted){
+
+    }
     public boolean validateCommand(String p_cmd){
         if(p_cmd == null){
             return false;
@@ -12,6 +43,14 @@ public class CommandValidationService {
         String[] l_cmdArr = p_cmd.trim().split(" ");
 
         String l_baseCmd = getBaseCommand(p_cmd);
+
+        if(!d_hasGameStarted && !d_mapEditorCommands.contains(l_baseCmd)){
+            return false;
+        }
+        else if(d_hasGameStarted && !d_gameEditorCommands.contains(l_baseCmd)){
+            return false;
+        }
+
         switch (l_baseCmd) {
             case "loadmap":
                 return validateLoadMapCommand(l_cmdArr);
@@ -38,7 +77,11 @@ public class CommandValidationService {
                 return validateGamePlayerCommand(l_cmdArr);
 
             case "assigncountries":
-                return l_cmdArr.length==1;
+                if(l_cmdArr.length==1){
+                    d_hasGameStarted = true;
+                    return true;
+                }
+                return false;
 
             case "deploy":
                 return validateDeployCommand(l_cmdArr);
@@ -49,7 +92,7 @@ public class CommandValidationService {
         }
     }
 
-    public String getBaseCommand(String p_cmd){
+    public static String getBaseCommand(String p_cmd){
         return p_cmd.trim().split(" ")[0];
     }
 
@@ -96,11 +139,13 @@ public class CommandValidationService {
                 return false;
             }
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-add") && !p_cmd[2].trim().isEmpty() && l_ms.isInteger(p_cmd[3]);
+            boolean l_isValid = p_cmd[1].trim().equals("-add") && l_ms.isInteger(p_cmd[3]) && !p_cmd[2].trim().isEmpty();
+            return validateCommand(l_isValid);
         }
         else {
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-remove") && !p_cmd[2].trim().isEmpty();
+            boolean l_isValid = p_cmd[1].trim().equals("-remove") && !p_cmd[2].trim().isEmpty();
+            return validateCommand(l_isValid);
         }
     }
 
@@ -120,16 +165,19 @@ public class CommandValidationService {
                 return false;
             }
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-add") && !p_cmd[2].trim().isEmpty() && !p_cmd[3].trim().isEmpty();
+            boolean l_isValid = p_cmd[1].trim().equals("-add") && !p_cmd[2].trim().isEmpty() && !p_cmd[3].trim().isEmpty();
+            return validateCommand(l_isValid);
         }
         else {
             MathService l_ms = new MathService();
-            return p_cmd[1].trim().equals("-remove") && !p_cmd[2].trim().isEmpty();
+            boolean l_isValid = p_cmd[1].trim().equals("-remove") && !p_cmd[2].trim().isEmpty();
+            return validateCommand(l_isValid);
         }
     }
 
     private boolean validateEditNeighborCommand(String[] p_cmd){
         if(p_cmd.length != 4){
+            System.out.println("Parameter mismatch. Try again.");
             return false;
         }
 
@@ -139,7 +187,8 @@ public class CommandValidationService {
         }
 
         MathService l_ms = new MathService();
-        return (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && !p_cmd[2].trim().isEmpty() && !p_cmd[3].trim().isEmpty();
+        boolean l_isValid = (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && !p_cmd[2].trim().isEmpty() && !p_cmd[3].trim().isEmpty();
+        return validateCommand(l_isValid);
     }
 
     private boolean validateGamePlayerCommand(String[] p_cmd){
@@ -152,7 +201,8 @@ public class CommandValidationService {
             return false;
         }
 
-        return (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && !p_cmd[2].trim().isEmpty();
+        boolean l_isValid = (p_cmd[1].trim().equals("-add") || p_cmd[1].trim().equals("-remove")) && !p_cmd[2].trim().isEmpty();
+        return validateCommand(l_isValid);
     }
 
     private boolean validateDeployCommand(String[] p_cmd){
@@ -166,6 +216,15 @@ public class CommandValidationService {
         }
 
         MathService l_ms = new MathService();
-        return l_ms.isInteger(p_cmd[1]) && !p_cmd[2].trim().isEmpty();
+        boolean l_isValid = !p_cmd[1].trim().isEmpty() && l_ms.isInteger(p_cmd[2]);
+        return validateCommand(l_isValid);
+    }
+
+    private boolean validateCommand(boolean p_isValid){
+        if(p_isValid){
+            return true;
+        }
+        System.out.println("Invalid command. Try again.");
+        return false;
     }
 }
