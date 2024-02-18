@@ -1,16 +1,29 @@
 import Controller.MapsController;
 import Models.Maps;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.OptionalInt;
 import java.util.Scanner;
 
 
 public class Main {
     public static void main(String[] args) {
-//        try {
-            System.out.println("Enter the command: ");
-            Scanner sc=new Scanner(System.in);
-            String sw=sc.next();
+        try {
+
             MapsController mapsController=new MapsController();
+            mapsController.loadMap("src/main/resources/Maps/canada.map");
+            mapsController.validateMap();
+            System.out.println(mapsController.isMapValid());
+            mapsController.editNeighbors("add","New_Brunswick","N&L-Newfoundland");
+            mapsController.editContinent("add","Africa");
+            mapsController.editCountry("add","Africa", OptionalInt.of(7));
+//            mapsController.showMap();
+            mapsController.showMap();
+            mapsController.validateMap();
+            mapsController.saveMap(new File("src/main/resources/Maps/canananan.map"));
+            System.out.println(mapsController.isMapValid());
+//            System.out.println(mapsController.isMapValid());
 
 //            GameEngineController engine = new GameEngineController();
 //            MapController mapController=new MapController();
@@ -20,9 +33,9 @@ public class Main {
 //            map.validateMap();
 //            map.saveMap(new File("src/main/resources/Maps/canada-copy.map"));
 //            System.out.println(map.isMapValid());
-//        } catch (IOException e) {
-//            System.out.println(e);
-//
-//        }
+        } catch (IOException e) {
+            System.out.println(e);
+
+        }
     }
 }
