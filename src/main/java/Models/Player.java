@@ -99,32 +99,34 @@ public class Player {
         for (Country country : this.getCountriesOwned()) {
             countriesOwned.add(country.getName());
         }
+        boolean valid = false;
 
-        if(this.getArmies()!= 0){
-            System.out.println(this.getName()+" please issue your orders: ");
-            System.out.println("Reinforcement(s) Available for deployment: "+this.getArmies());
-            String l_order = l_sc.nextLine();
+        while (!valid) {
+            valid=true;
+            if (this.getArmies() != 0) {
+                System.out.println(this.getName() + " please issue your orders: ");
+                System.out.println("Reinforcement(s) Available for deployment: " + this.getArmies());
+                String l_order = l_sc.nextLine();
 
-            if(!d_cvs.validateCommand(l_order)){
-                System.out.print("Invalid Command! ");
-                issue_order();
-            }
-            else {
-                String[] l_orderArgs = l_order.trim().split("\\s+");
-                String l_countryName = l_orderArgs[1];
-                if (!countriesOwned.contains(l_countryName)) {
-                    System.out.println("This country is not in the list ....... Please try with your country");
-                    issue_order();
-                }
-                if (Integer.parseInt(l_orderArgs[2]) > this.getArmies()) {
-                    System.out.println("Not having enough Armies");
-                    issue_order();
+                if (!d_cvs.validateCommand(l_order)) {
+                    System.out.print("Invalid Command! ");
+                    valid=false;
                 } else {
-                    this .setArmies(this.getArmies() - Integer.parseInt(l_orderArgs[2]));
-                    if(this.getArmies()==0){
-                        d_reinforcementsCompleted++;
+                    String[] l_orderArgs = l_order.trim().split("\\s+");
+                    String l_countryName = l_orderArgs[1];
+                    if (!countriesOwned.contains(l_countryName)) {
+                        System.out.println("This country is not in the list ....... Please try with your country");
+                        valid=false;
+                    }else if (Integer.parseInt(l_orderArgs[2]) > this.getArmies()) {
+                        System.out.println("Not having enough Armies");
+                        valid=false;
+                    } else {
+                        this.setArmies(this.getArmies() - Integer.parseInt(l_orderArgs[2]));
+                        if (this.getArmies() == 0) {
+                            d_reinforcementsCompleted++;
+                        }
+                        setOrder(l_order);
                     }
-                    setOrder(l_order);
                 }
             }
         }
