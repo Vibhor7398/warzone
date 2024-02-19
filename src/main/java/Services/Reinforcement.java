@@ -21,7 +21,7 @@ public class Reinforcement {
             boolean l_isAllCountriesOwned;
             String l_playerName = l_player.getName();
 
-            l_finalReinforceCount = Math.max(l_noOfCountriesOwned/3 , 5);
+            l_finalReinforceCount = Math.max(l_noOfCountriesOwned/3 , 3);
 
             LinkedHashMap<String,Continent> map = MapsController.getContinents();
 
