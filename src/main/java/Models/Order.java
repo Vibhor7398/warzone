@@ -31,7 +31,7 @@ public class Order{
 //        int remainingArmies = p_player.getArmies() - p_numberOfArmies;
 //        p_player.setArmies(remainingArmies);
 
-        Country country = new MapsController().getCountryByName(p_countryName);
+        Country country = MapsController.getCountryByName(p_countryName);
         int previousArmies = country.getArmies();
         int newArmies = p_numberOfArmies + previousArmies;
         country.setArmies(newArmies);
