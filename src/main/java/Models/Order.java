@@ -1,5 +1,6 @@
 package Models;
 
+import Controller.MapsController;
 import Models.Country;
 import Models.Player;
 
@@ -30,11 +31,12 @@ public class Order{
 //        int remainingArmies = p_player.getArmies() - p_numberOfArmies;
 //        p_player.setArmies(remainingArmies);
 
-        Country country = d_country.getCountryByName(p_countryName);
+        Country country = new MapsController().getCountryByName(p_countryName);
         int previousArmies = country.getArmies();
         int newArmies = p_numberOfArmies + previousArmies;
         country.setArmies(newArmies);
 
-        System.out.println("Army Deployment is successfull.\n");
+        System.out.println(p_numberOfArmies + " Army Deployment is successfull on "+p_countryName+" by "+p_player.getName());
+        System.out.println("Deployed armies on " + p_countryName + " is " + newArmies);
     }
 }
