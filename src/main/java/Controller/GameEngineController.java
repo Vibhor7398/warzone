@@ -19,9 +19,22 @@ public class GameEngineController {
         d_Players = new ArrayList<>();
     }
 
+    /**
+    * Executes a command based on the provided command string.
+    * The command string is parsed to identify the command and its parameters, then the corresponding action is executed.
+    *
+    * @param p_command The command string to be executed.
+    * @throws ArrayIndexOutOfBoundsException If the command string does not contain enough parameters.
+    * @throws NumberFormatException If parsing of numerical parameters fails.
+    */
     public void executeCommand(String p_command){
+        // Get the base command from the provided command string
         String l_baseCmd = CommandValidationService.getBaseCommand(p_command);
+
+        // Split the command string into an array of command components
         String[] l_cmdArr = p_command.trim().split("\\ ");
+
+        // Execute the corresponding action based on the base command
         switch (l_baseCmd){
             case "loadmap":
                 executeLoadMap(l_cmdArr[1]);
@@ -36,18 +49,21 @@ public class GameEngineController {
                 executeEditMap(l_cmdArr[1]);
                 break;
             case "editcontinent":
+                // Execute add or remove continent action based on the provided sub-command
                 if(l_cmdArr[1].trim().equals("-add"))
                     executeAddContinent(l_cmdArr[2], Integer.parseInt(l_cmdArr[3]));
                 else if(l_cmdArr[1].trim().equals("-remove"))
                     executeRemoveContinent(l_cmdArr[2]);
                 break;
             case "editcountry":
+                // Execute add or remove country action based on the provided sub-command
                 if(l_cmdArr[1].trim().equals("-add"))
                     executeAddCountry(l_cmdArr[2], l_cmdArr[3]);
                 else if(l_cmdArr[1].trim().equals("-remove"))
                     executeRemoveCountry(l_cmdArr[2]);
                 break;
             case "editneighbor":
+                // Execute add or remove neighbor action based on the provided sub-command
                 if(l_cmdArr[1].trim().equals("-add"))
                     executeAddNeighbor(l_cmdArr[2], l_cmdArr[3]);
                 else if(l_cmdArr[1].trim().equals("-remove"))
@@ -57,6 +73,7 @@ public class GameEngineController {
                 executeValidateMap();
                 break;
             case "gameplayer":
+                // Execute add or remove game player action based on the provided sub-command
                 if(l_cmdArr[1].trim().equals("-add"))
                     executeAddGamePlayer(l_cmdArr[2]);
                 else if(l_cmdArr[1].trim().equals("-remove"))
@@ -176,15 +193,29 @@ public class GameEngineController {
         }
     }
 
+    /**
+    * Assigns countries to players at the start of the game.
+    * Each country is assigned to a player in a round-robin fashion.
+    * If there are fewer than 2 players, the game cannot start, and the game flag is set accordingly.
+    * After assigning countries, the main game loop is initiated, and players are assigned initial reinforcements.
+    */
     private void executeAssignCountries(){
+        // Check if there are at least 2 players to start the game
         if(d_Players.size() < 2){
             System.out.println("Cannot play with less than 2 players");
             CommandValidationService.setD_hasGameStarted(false);
             return;
         }
+        // Get the list of countries from the map
         HashMap<String, Country> l_listOfCountries = d_Map.getD_countries();
+
+        // Get the total number of players
         int l_NumPlayers = d_Players.size();
+
+        // Initialize the player index for assigning countries
         int l_playerIndex = 0;
+
+        // Assign countries to players in a round-robin fashion
         for(Country l_country : l_listOfCountries.values()){
             System.out.println("Assigning " + l_country.getName() + " to " + d_Players.get(l_playerIndex).getName());
             d_Players.get(l_playerIndex++).addCountryToCountriesOwned(l_country);
@@ -194,8 +225,14 @@ public class GameEngineController {
         }
         System.out.println();
         System.out.println("-----------Main Game Loop---------");
+        
+        // Set the game flag to indicate that the game has started
         CommandValidationService.setD_hasGameStarted(true);
+
+        // Assign initial reinforcements to players
         Reinforcement.assignReinforcements(d_Players);
+        
+        // Execute the deploy phase
         executeDeploy();
     }
 
