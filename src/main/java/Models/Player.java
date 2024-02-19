@@ -64,15 +64,17 @@ public class Player {
                 if (!l_cvs.validateDeployCommand(l_orderArgs)) {
                     System.out.print("Invalid Command! ");
                     l_valid=false;
-                }
-                else {
+                } else {
                     String l_countryName = l_orderArgs[1];
                     if (!l_countriesOwned.contains(l_countryName)) {
-                        System.out.println("This country is not in the list ....... Please try with your country");
+                        System.out.println("This country does not belong to you");
                         l_valid=false;
                     }else if (Integer.parseInt(l_orderArgs[2]) > this.getArmies()) {
                         System.out.println("Not having enough armies");
                         l_valid=false;
+                    } else if (Integer.parseInt(l_orderArgs[2]) < 1) {
+                        System.out.println("Number of armies should be greater than 0:");
+                        l_valid = false;
                     } else {
                         this.setArmies(this.getArmies() - Integer.parseInt(l_orderArgs[2]));
                         if (this.getArmies() == 0) {
