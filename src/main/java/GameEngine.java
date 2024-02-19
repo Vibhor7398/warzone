@@ -1,10 +1,30 @@
+/**
+ *
+ *
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Girmire, Inderjeet Singh, Md. Zaid
+ * @version 1.0
+ */
 import Services.CommandService;
 import Services.CommandValidationService;
 
+/**
+ * This class represents the game engine for the application.
+ * It handles the main entry point of the game and initializes the game environment.
+ */
 public class GameEngine {
+
+    /**
+     * The main method that starts the game.
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         start();
     }
+
+    /**
+     * Starts the game engine.
+     * It sets up the initial game environment, prompts the user to load or edit a map, and starts the command service.
+     */
     private static void start(){
         CommandValidationService.setD_hasGameStarted(false);
         CommandService l_cs = new CommandService();
