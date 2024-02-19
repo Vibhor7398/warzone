@@ -1,3 +1,10 @@
+/**
+ *
+ * 
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Girmire, Inderjeet Singh, Md. Zaid
+ * @version 1.0
+ */
+
 package Controller;
 
 import Constants.AppConstants;
@@ -88,6 +95,13 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Loads a map from a file and validates it.
+     * This method attempts to load a map from the specified file, validates it, and checks if the map is valid.
+     * If the map is invalid, a message indicating the same is printed.
+     *
+     * @param p_filename The name of the file containing the map to be loaded.
+     */
     private void executeLoadMap(String p_filename){
         try {
             d_Map.loadMap(AppConstants.MapsPath + p_filename);
@@ -101,10 +115,22 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Displays the details of the current game map.
+     * This method invokes the `showMap` method of the game map object to display the details of the map,
+     * including continents, countries, and their respective neighbors.
+     */
     private void executeShowMap(){
         d_Map.showMap();
     }
 
+    /**
+     * Saves the current game map to a file.
+     * This method validates the map, checks if it is valid, and then saves it to the specified file.
+     * If the map is invalid, an error message is displayed.
+     *
+     * @param p_filename The name of the file to which the map will be saved.
+    */
     private void executeSaveMap(String p_filename){
         d_Map.validateMap();
         boolean l_isValid = d_Map.isMapValid();
@@ -120,6 +146,14 @@ public class GameEngineController {
         }
     }
 
+
+    /**
+     * Edits the current game map using data from the specified file.
+     * This method attempts to edit the map by reading data from the given file and updating the map accordingly.
+     * If the file cannot be read or the map editing fails, an error message is displayed.
+     *
+     * @param p_filename The name of the file containing the map data to be used for editing.
+    */
     private void executeEditMap(String p_filename){
         File l_file = new File(AppConstants.MapsPath + p_filename);
         try {
@@ -129,10 +163,23 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Adds a new continent to the game map.
+     *
+     * @param p_continentID     The unique identifier for the new continent.
+     * @param p_continentValue  The control value associated with the new continent.
+     */
     private void executeAddContinent(String p_continentID, int p_continentValue){
         d_Map.addContinent(p_continentID,p_continentValue);
     }
 
+
+    /**
+ * Removes a continent from the game map.
+ *
+ * @param p_continentID The unique identifier of the continent to be removed.
+ * 
+ */
     private void executeRemoveContinent(String p_continentID){
         d_Map.removeContinent(p_continentID);
     }
