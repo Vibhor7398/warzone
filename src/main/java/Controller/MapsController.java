@@ -113,18 +113,16 @@ public class MapsController {
     }
 
     public void removeContinent(String p_continentName) {
-        boolean l_continentFound = false;
         Iterator<Continent> l_iterator = d_continents.values().iterator();
         while (l_iterator.hasNext()) {
             Continent l_currentContinent = l_iterator.next();
             if (l_currentContinent.getName().equals(p_continentName)) {
-                l_continentFound = true;
                 l_iterator.remove();
                 System.out.println("Removed '" + p_continentName + "'.");
                 return;
             }
         }
-        System.out.println("Continent that you are trying to remove does not exit");
+        System.out.println("Continent that you are trying to remove does not exist!");
     }
 
     public void validateMap() {
