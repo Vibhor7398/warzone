@@ -1,19 +1,24 @@
 package Controller;
-
-import Services.CommandValidationService;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import static org.junit.Assert.*;
 public class MapsControllerTest {
     private MapsController d_mapsController;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
     @Before
     public void setUp()  {
         d_mapsController = new MapsController();
+        System.setOut(new PrintStream(outContent));
+
     }
+
     @Test
     public void validateMap_ValidMap() {
         try {
@@ -46,6 +51,35 @@ public class MapsControllerTest {
             fail("No map found" );
 
         }
+    }
+
+    @Test
+    public void addContinent_Success() {
+        d_mapsController.addContinent("Asia", 5);
+        assertTrue("Continent should be added",d_mapsController.continentAlreadyExists("Asia"));
+    }
+
+    @Test
+    public void addContinent_AlreadyExists() {
+        d_mapsController.addContinent("Asia", 5);
+        d_mapsController.addContinent("Asia", 5);
+        assertTrue("Continent should be added", d_mapsController.continentAlreadyExists("Asia"));
+        String expectedOutput = "The continent(Asia)you are trying to add already exist!";
+        assertTrue("Expected duplicate addition message", outContent.toString().trim().contains(expectedOutput));
+    }
+
+    @Test
+    public void removeContinent_Success() {
+        d_mapsController.addContinent("Asia", 5);
+        d_mapsController.removeContinent("Asia");
+        assertFalse("Continent should be removed", d_mapsController.continentAlreadyExists("Asia"));
+    }
+
+    @Test
+    public void removeContinent_Failed() {
+        d_mapsController.removeContinent("Asia");
+        String expectedOutput = "Continent that you are trying to remove does not exist!";
+        assertTrue("Continent exists!", outContent.toString().trim().contains(expectedOutput));
     }
 
     @Test

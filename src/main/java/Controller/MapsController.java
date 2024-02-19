@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 public class MapsController {
-    private Maps maps;
+    private final Maps maps;
     private static LinkedHashMap<String, Continent> d_continents;
     private static LinkedHashMap<String, Country> d_countries;
 
@@ -35,16 +35,6 @@ public class MapsController {
         for (Map.Entry<String, Continent> mapEntry : d_continents.entrySet()) {
             Continent continent = mapEntry.getValue();
             if (continent.getName().equals(p_continentName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean continentAlreadyExists(int p_continentId) {
-        for (Map.Entry<String, Continent> mapEntry : d_continents.entrySet()) {
-            Continent continent = mapEntry.getValue();
-            if (continent.getId() == p_continentId) {
                 return true;
             }
         }
@@ -113,18 +103,16 @@ public class MapsController {
     }
 
     public void removeContinent(String p_continentName) {
-        boolean l_continentFound = false;
         Iterator<Continent> l_iterator = d_continents.values().iterator();
         while (l_iterator.hasNext()) {
             Continent l_currentContinent = l_iterator.next();
             if (l_currentContinent.getName().equals(p_continentName)) {
-                l_continentFound = true;
                 l_iterator.remove();
                 System.out.println("Removed '" + p_continentName + "'.");
                 return;
             }
         }
-        System.out.println("Continent that you are trying to remove does not exit");
+        System.out.println("Continent that you are trying to remove does not exist!");
     }
 
     public void validateMap() {
@@ -202,28 +190,25 @@ public class MapsController {
     }
 
     public void removeCountry(String p_countryName) {
-        boolean l_countryRemoved = false;
         Iterator<Country> l_iterator = d_countries.values().iterator();
         while (l_iterator.hasNext()) {
             Country l_country = l_iterator.next();
             if (l_country.getName().equals(p_countryName)) {
-                l_countryRemoved = true;
                 l_iterator.remove();
                 d_continents.get(l_country.getContinentId()).removeCountry(p_countryName);
                 System.out.println("Removed '" + p_countryName + "'.");
                 return;
             }
         }
-        //TODO: deadcode here too
-        if(!l_countryRemoved) {
-            System.out.println("Country that you are trying to remove does not exit");
-        }
+        System.out.println("Country that you are trying to remove does not exit");
     }
 
     public void editMap(File p_file) throws IOException{
         if (!p_file.exists()) {
             System.out.println("The file doesn't exist, creating a new file.");
-            p_file.createNewFile();
+           if(!p_file.createNewFile()){
+               return;
+           }
         }
         loadMap(p_file.getPath());
     }
@@ -295,16 +280,17 @@ public class MapsController {
     }
 
     public void editNeighbors(String p_operation, String p_countryName, String p_neighborName) {
-        if(findCountryByName(p_countryName)==null){
+        Country country = findCountryByName(p_countryName);
+        Country neighbour=findCountryByName(p_neighborName);
+        if(country==null){
             System.out.println("Country doesn't exists!");
             return;
         }
-        if(findCountryByName(p_neighborName)==null){
+        if(neighbour==null){
             System.out.println("Neighbor country doesn't exists!");
             return;
         }
-        Country country = findCountryByName(p_countryName);
-        Country neighbour=findCountryByName(p_neighborName);
+
         if("add".equals(p_operation)) {
             if(country.findNeighborByName(p_neighborName)){
                 System.out.println("Neighbor already exists!");
@@ -325,7 +311,9 @@ public class MapsController {
     public void saveMap(File p_file) throws IOException {
         if (!p_file.exists()) {
             System.out.println("The file doesn't exist, creating a new file.");
-            p_file.createNewFile();
+            if(!p_file.createNewFile()){
+                return;
+            }
         }
         StringBuilder l_contentBuilder = new StringBuilder();
 
