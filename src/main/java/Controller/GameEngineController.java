@@ -226,10 +226,17 @@ public class GameEngineController {
     }
 
     private void executeDeploy(){
-//        Deploy
-        for(Player l_player : d_players){
-            l_player.issue_order();
-        }
         System.out.println("executeDeploy");
+        while(Player.getD_reinforcementsCompleted() != d_players.size()){
+            for(Player l_player : d_players){
+                l_player.issue_order();
+            }
+        }
+        Player.setD_reinforcementsCompleted(0);
+        while(Player.getD_reinforcementsCompleted() != d_players.size()){
+            for(Player l_player : d_players){
+                l_player.issue_order();
+            }
+        }
     }
 }
