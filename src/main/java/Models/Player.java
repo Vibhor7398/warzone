@@ -69,7 +69,7 @@ public class Player {
                     if (!l_countriesOwned.contains(l_countryName)) {
                         System.out.println("This country does not belong to you");
                         l_valid=false;
-                    }else if (Integer.parseInt(l_orderArgs[2]) > this.getArmies()) {
+                    }else if (checkArmyExceeded(Integer.parseInt(l_orderArgs[2]),this.getArmies())) { //Integer.parseInt(l_orderArgs[2]) > this.getArmies()
                         System.out.println("Not having enough armies");
                         l_valid=false;
                     } else if (Integer.parseInt(l_orderArgs[2]) < 1) {
@@ -85,6 +85,14 @@ public class Player {
                 }
             }
         }
+    }
+
+    public boolean checkArmyExceeded(int l_cmd, int armyCount){
+        if(l_cmd > armyCount ){
+            System.out.println("Not having enough armies");
+            return true;
+        }
+        return false;
     }
 
     private void handleDeployOrder(ArrayList<String> p_command) {
