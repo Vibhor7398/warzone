@@ -235,7 +235,7 @@ public class GameEngineController {
         Player.setD_reinforcementsCompleted(0);
         while(Player.getD_reinforcementsCompleted() != d_players.size()){
             for(Player l_player : d_players){
-                l_player.issue_order();
+                l_player.next_order();
             }
         }
     }

@@ -60,6 +60,15 @@ public class MapsController {
         return null;
     }
 
+    public Country getCountryByName(String p_countryName){
+        for (Country l_country : maps.getCountries().values()) {
+            if(l_country.getName().equals(p_countryName)){
+                return l_country;
+            }
+        }
+        return null;
+    }
+
     private void processContinentLine(String p_line) {
         String[] l_parts = p_line.split(" ");
         Continent l_continent = new Continent(d_continents.size() + 1, l_parts[0], Integer.parseInt(l_parts[1]), l_parts[2]);
@@ -115,10 +124,7 @@ public class MapsController {
                 return;
             }
         }
-        //TODO: remove this part;dead code
-        if (!l_continentFound) {
-            System.out.println("Continent that you are trying to remove does not exit");
-        }
+        System.out.println("Continent that you are trying to remove does not exit");
     }
 
     public void validateMap() {
