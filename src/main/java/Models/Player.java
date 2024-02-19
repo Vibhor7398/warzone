@@ -44,15 +44,23 @@ public class Player {
         Player.d_ReinforcementsCompleted = p_reinforcementsCompleted;
     }
 
+    /**
+     * Allows the player to issue orders for reinforcement deployment.
+     * The method prompts the player to issue orders for deploying reinforcements based on their available armies
+     * and the countries they own. It ensures that the issued orders are valid before processing them.
+    */
     public void issue_order() {
         Scanner l_sc =  new Scanner(System.in);
         CommandValidationService l_cvs = new CommandValidationService();
         ArrayList<String> l_countriesOwned = new ArrayList<>();
+        
+        // Populate the list of country names owned by the player
         for (Country l_country : this.getCountriesOwned()) {
             l_countriesOwned.add(l_country.getName());
         }
         boolean l_valid = false;
 
+        // Continue prompting for orders until a valid order is issued
         while (!l_valid) {
             l_valid=true;
             if (this.getArmies() != 0) {
@@ -76,6 +84,8 @@ public class Player {
                         System.out.println("Number of armies should be greater than 0:");
                         l_valid = false;
                     } else {
+                        
+                        // Process the valid order
                         this.setArmies(this.getArmies() - Integer.parseInt(l_orderArgs[2]));
                         if (this.getArmies() == 0) {
                             d_ReinforcementsCompleted++;
@@ -104,18 +114,31 @@ public class Player {
         System.out.println("Invalid Command! --- Command is \"deploy countryID num\"");
     }
 
+    /**
+     * Processes the next order in the order queue.
+     * This method dequeues the next order from the order queue, processes it, and updates the game state accordingly.
+     */
     public void next_order() {
+        // Check if there are orders to process
         if (!d_orderArgs.isEmpty()) {
+
+            // Dequeue the next order command
             String l_orderCommand = d_orderArgs.poll();
+
+            // If the order queue is empty after dequeuing, increment the count of completed reinforcements
             if(d_orderArgs.isEmpty()){
                 d_ReinforcementsCompleted++;
             }
+            // Split the order command into individual components
             String[] l_orderCommandList = l_orderCommand.trim().split("\\s+");
             ArrayList<String> l_commandList = new ArrayList<>(Arrays.asList(l_orderCommandList));
             String d_orderType = l_orderCommandList[0];
+            
+            // Remove the order type from the command list
             if (!l_commandList.isEmpty()) {
                 l_commandList.removeFirst();
             }
+            // Process the order based on its type
             switch (d_orderType) {
                 case "deploy":
                     handleDeployOrder(l_commandList);
