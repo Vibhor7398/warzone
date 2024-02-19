@@ -1,54 +1,29 @@
 package Models;
 
-
 import java.util.*;
-
-
 public class Maps {
-    private static LinkedHashMap<String, Continent> d_continents;
-    private static LinkedHashMap<String, Country> d_countries;
+    private static LinkedHashMap<String, Continent> d_Continents;
+    private static LinkedHashMap<String, Country> d_Countries;
     private boolean d_isMapValid;
-    private boolean d_mapFileLoaded;
 
     public Maps() {
-        d_continents = new LinkedHashMap<>();
-        d_countries = new LinkedHashMap<>();
+        d_Continents = new LinkedHashMap<>();
+        d_Countries = new LinkedHashMap<>();
     }
-
     public LinkedHashMap<String, Continent> getContinents() {
-        return d_continents;
+        return d_Continents;
     }
 
     public LinkedHashMap<String, Country> getCountries() {
-        return d_countries;
-    }
-
-    private Country findCountryById(String id) {
-        for (Country country : d_countries.values()) {
-            if (String.valueOf(country.getId()).equals(id)) {
-                return country;
-            }
-        }
-        return null;
-    }
-
-    private Country findCountryByName(String name) {
-        for (Country country : d_countries.values()) {
-            if (String.valueOf(country.getName()).equals(name)) {
-                return country;
-            }
-        }
-        return null;
+        return d_Countries;
     }
 
     public boolean getMapValid() {
         return this.d_isMapValid;
     }
-
     public void setMapValid(boolean p_isMapValid) {
         this.d_isMapValid = p_isMapValid;
     }
-
 }
 
 

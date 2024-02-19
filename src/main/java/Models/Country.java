@@ -1,7 +1,6 @@
 package Models;
 
 import java.util.LinkedHashMap;
-import java.util.Optional;
 
 public class Country {
     private int d_id;
@@ -10,15 +9,8 @@ public class Country {
     private int d_armies;
     private String d_xCoordinate;
     private String d_yCoordinate;
-    private String d_ownerName;
     private LinkedHashMap<Country, LinkedHashMap<String, Country>> d_neighbors;
 
-    public Country(int p_id, String p_name) {
-        this.d_id = p_id;
-        this.d_name = p_name;
-        this.d_neighbors = new LinkedHashMap<>();
-        this.d_neighbors.put(this, new LinkedHashMap<>());
-    }
     public Country(int p_id, String p_name, String p_continentId, String p_xCoordinate, String p_yCoordinate) {
         this.d_id = p_id;
         this.d_name = p_name;
@@ -30,23 +22,13 @@ public class Country {
         this.d_neighbors.put(this, new LinkedHashMap<>());
     }
 
-
     public int getId() {
         return d_id;
-    }
-
-    public void setId(int p_id) {
-        this.d_id = p_id;
     }
 
     public String getName() {
         return d_name;
     }
-
-    public void setName(String p_name) {
-        this.d_name = p_name;
-    }
-
 
     public int getArmies(){
         return this.d_armies;
@@ -72,34 +54,21 @@ public class Country {
         }
         this.d_neighbors.get(this).put(p_country.d_name, p_country);
     }
-
     public LinkedHashMap<String, Country> getNeighbors() {
         this.d_neighbors.computeIfAbsent(this, k -> new LinkedHashMap<>());
         return this.d_neighbors.get(this);
     }
-
-    public boolean findNeighborByName(String name) {
-        LinkedHashMap<String, Country> neighbors = d_neighbors.get(this);
-    
-        for (Country neighbor : neighbors.values()) {
-            if (name.equals(neighbor.getName())) {
+    public boolean findNeighborByName(String p_name) {
+        LinkedHashMap<String, Country> l_neighbors = d_neighbors.get(this);
+        for (Country l_neighbor : l_neighbors.values()) {
+            if (p_name.equals(l_neighbor.getName())) {
                 return true;
             }
         }
         return false; 
     }
-
-    public LinkedHashMap<String, Country> getNeighborsOfCountry(String countryName) {
-        for (LinkedHashMap<String, Country> neighbors : d_neighbors.values()) {
-            if (neighbors.containsKey(countryName)) {
-                return neighbors;
-            }
-        }
-        return null;
-    }
-
-    public void removeNeighborById(int id) {
-        LinkedHashMap<String, Country> neighbors = d_neighbors.get(this);
-        neighbors.values().removeIf(neighbor -> id == neighbor.getId());
+    public void removeNeighborById(int p_id) {
+        LinkedHashMap<String, Country> l_neighbors = d_neighbors.get(this);
+        l_neighbors.values().removeIf(neighbor -> p_id == neighbor.getId());
     }
 }

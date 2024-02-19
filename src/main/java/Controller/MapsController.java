@@ -1,4 +1,5 @@
 package Controller;
+
 import Models.Maps;
 import Models.Continent;
 import Models.Country;
@@ -11,47 +12,47 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 public class MapsController {
-    private final Maps maps;
-    private static LinkedHashMap<String, Continent> d_continents;
-    private static LinkedHashMap<String, Country> d_countries;
+    private final Maps d_maps;
+    private static LinkedHashMap<String, Continent> d_Continents;
+    private static LinkedHashMap<String, Country> d_Countries;
 
     public MapsController() {
-        this.maps = new Maps();
-        d_continents = this.maps.getContinents();
-        d_countries = this.maps.getCountries();
+        this.d_maps = new Maps();
+        d_Continents = this.d_maps.getContinents();
+        d_Countries = this.d_maps.getCountries();
     }
 
     public LinkedHashMap<String, Country> getD_countries() {
-        return d_countries;
+        return d_Countries;
     }
 
     public boolean isMapValid() {
-        return this.maps.getMapValid();
+        return this.d_maps.getMapValid();
     }
     public static LinkedHashMap<String,Continent> getContinents(){
-        return d_continents;
+        return d_Continents;
     }
     public boolean continentAlreadyExists(String p_continentName) {
-        for (Map.Entry<String, Continent> mapEntry : d_continents.entrySet()) {
-            Continent continent = mapEntry.getValue();
-            if (continent.getName().equals(p_continentName)) {
+        for (Map.Entry<String, Continent> l_mapEntry : d_Continents.entrySet()) {
+            Continent l_continent = l_mapEntry.getValue();
+            if (l_continent.getName().equals(p_continentName)) {
                 return true;
             }
         }
         return false;
     }
 
-    private Country findCountryById(String id) {
-        for (Country country : maps.getCountries().values()) {
-            if (String.valueOf(country.getId()).equals(id)) {
-                return country;
+    private Country findCountryById(String p_id) {
+        for (Country l_country : d_maps.getCountries().values()) {
+            if (String.valueOf(l_country.getId()).equals(p_id)) {
+                return l_country;
             }
         }
         return null;
     }
 
     public static Country getCountryByName(String p_countryName){
-        for (Country l_country : d_countries.values()) {
+        for (Country l_country : d_Countries.values()) {
             if(l_country.getName().equals(p_countryName)){
                 return l_country;
             }
@@ -61,19 +62,19 @@ public class MapsController {
 
     private void processContinentLine(String p_line) {
         String[] l_parts = p_line.split(" ");
-        Continent l_continent = new Continent(d_continents.size() + 1, l_parts[0], Integer.parseInt(l_parts[1]), l_parts[2]);
-        d_continents.put(String.valueOf(d_continents.size() + 1), l_continent);
+        Continent l_continent = new Continent(d_Continents.size() + 1, l_parts[0], Integer.parseInt(l_parts[1]), l_parts[2]);
+        d_Continents.put(String.valueOf(d_Continents.size() + 1), l_continent);
     }
 
     private void processCountryLine(String p_line) {
         String[] l_parts = p_line.split(" ");
         Country l_country = new Country(Integer.parseInt(l_parts[0]), l_parts[1], l_parts[2], l_parts[3], l_parts[4]);
-        d_countries.put(l_parts[1], l_country);
+        d_Countries.put(l_parts[1], l_country);
         String l_continent=l_parts[2].trim();
-        if(!d_continents.containsKey(l_continent)){
+        if(!d_Continents.containsKey(l_continent)){
             return;
         }
-        d_continents.get(l_parts[2].trim()).addCountry(l_country);
+        d_Continents.get(l_parts[2].trim()).addCountry(l_country);
     }
 
     private void processBorderLine(String p_line) {
@@ -94,16 +95,16 @@ public class MapsController {
     }
 
     public void addContinent(String p_continentName, int p_continentValue) {
-        if (!maps.getContinents().isEmpty() && continentAlreadyExists(p_continentName)) {
+        if (!d_maps.getContinents().isEmpty() && continentAlreadyExists(p_continentName)) {
             System.out.println("The continent(" + p_continentName + ")you are trying to add already exist!");
             return;
         }
-        String line = p_continentName + " " + p_continentValue + " " + "green";
-        processContinentLine(line);
+        String l_line = p_continentName + " " + p_continentValue + " " + "green";
+        processContinentLine(l_line);
     }
 
     public void removeContinent(String p_continentName) {
-        Iterator<Continent> l_iterator = d_continents.values().iterator();
+        Iterator<Continent> l_iterator = d_Continents.values().iterator();
         while (l_iterator.hasNext()) {
             Continent l_currentContinent = l_iterator.next();
             if (l_currentContinent.getName().equals(p_continentName)) {
@@ -116,19 +117,19 @@ public class MapsController {
     }
 
     public void validateMap() {
-        maps.setMapValid(validateExistence() && validateConnectivity());
+        d_maps.setMapValid(validateExistence() && validateConnectivity());
     }
 
     public boolean validateExistence() {
-        boolean l_continentsExist = d_countries.values().stream()
-                .allMatch(l_country -> d_continents.containsKey(l_country.getContinentId()));
+        boolean l_continentsExist = d_Countries.values().stream()
+                .allMatch(l_country -> d_Continents.containsKey(l_country.getContinentId()));
         if (!l_continentsExist) return false;
-        boolean l_allContinentsHaveCountries = d_continents.entrySet().stream()
+        boolean l_allContinentsHaveCountries = d_Continents.entrySet().stream()
                 .noneMatch(l_entry -> l_entry.getValue().getCountries().isEmpty());
         if (!l_allContinentsHaveCountries) return false;
-        return d_countries.values().stream()
+        return d_Countries.values().stream()
                 .flatMap(country -> country.getNeighbors().values().stream())
-                .allMatch(neighbor -> d_countries.containsKey(neighbor.getName()));
+                .allMatch(neighbor -> d_Countries.containsKey(neighbor.getName()));
     }
 
     public boolean validateFullConnectivity(Map<String, Country> p_countries) {
@@ -140,10 +141,10 @@ public class MapsController {
     }
 
     public boolean validateConnectivity() {
-        for (Continent l_continent : d_continents.values()) {
+        for (Continent l_continent : d_Continents.values()) {
             if (!validateFullConnectivity(l_continent.getCountries())) return false;
         }
-        return d_countries.isEmpty() || validateFullConnectivity(d_countries);
+        return d_Countries.isEmpty() || validateFullConnectivity(d_Countries);
     }
 
     public void traverseMap(Country p_country, Map<String, Boolean> p_visited) {
@@ -156,8 +157,8 @@ public class MapsController {
     }
 
     public boolean countryAlreadyExists(String p_country) {
-        for (Map.Entry<String, Country> mapEntry : d_countries.entrySet()) {
-            Country l_country = mapEntry.getValue();
+        for (Map.Entry<String, Country> l_mapEntry : d_Countries.entrySet()) {
+            Country l_country = l_mapEntry.getValue();
             if (l_country.getName().equals(p_country)) {
                 return true;
             }
@@ -167,35 +168,35 @@ public class MapsController {
 
     public void addCountry(String p_countryName, String p_continentName) {
         int l_continentId = -1;
-        for (Continent l_continent : d_continents.values()) {
+        for (Continent l_continent : d_Continents.values()) {
             if (l_continent.getName().equals(p_continentName)) {
                 l_continentId = l_continent.getId();
                 break;
             }
         }
         
-        if(!d_continents.isEmpty() && !continentAlreadyExists(p_continentName)) {
+        if(!d_Continents.isEmpty() && !continentAlreadyExists(p_continentName)) {
             System.out.println(p_continentName + "Continent does not exist!");
             return;
         }
 
-        if(!d_countries.isEmpty() && countryAlreadyExists(p_countryName)) {
+        if(!d_Countries.isEmpty() && countryAlreadyExists(p_countryName)) {
             System.out.println(p_countryName + "Country already exists!");
             return;
         }
-        int l_id = d_countries.size() + 1;
+        int l_id = d_Countries.size() + 1;
         String l_line  = l_id + " " + p_countryName + " " + l_continentId + " " + 0 + " " + 0;
         processCountryLine(l_line);
         System.out.println("Added successfully " + p_countryName);
     }
 
     public void removeCountry(String p_countryName) {
-        Iterator<Country> l_iterator = d_countries.values().iterator();
+        Iterator<Country> l_iterator = d_Countries.values().iterator();
         while (l_iterator.hasNext()) {
             Country l_country = l_iterator.next();
             if (l_country.getName().equals(p_countryName)) {
                 l_iterator.remove();
-                d_continents.get(l_country.getContinentId()).removeCountry(p_countryName);
+                d_Continents.get(l_country.getContinentId()).removeCountry(p_countryName);
                 System.out.println("Removed '" + p_countryName + "'.");
                 return;
             }
@@ -252,7 +253,7 @@ public class MapsController {
     }
 
     public void showMap() {
-        d_continents.values().forEach(p_continent -> {
+        d_Continents.values().forEach(p_continent -> {
             System.out.println("ID: " + p_continent.getId() + " | Name: " + p_continent.getName() +
                     " | Continent Value: " + p_continent.getContinentValue() +
                     " | Number of Countries: " + p_continent.getCountries().size());
@@ -271,7 +272,7 @@ public class MapsController {
     }
 
     private Country findCountryByName(String p_name) {
-        for (Country l_country : d_countries.values()) {
+        for (Country l_country : d_Countries.values()) {
             if (String.valueOf(l_country.getName()).equals(p_name)) {
                 return l_country;
             }
@@ -280,28 +281,28 @@ public class MapsController {
     }
 
     public void editNeighbors(String p_operation, String p_countryName, String p_neighborName) {
-        Country country = findCountryByName(p_countryName);
-        Country neighbour=findCountryByName(p_neighborName);
-        if(country==null){
+        Country l_country = findCountryByName(p_countryName);
+        Country l_neighbour=findCountryByName(p_neighborName);
+        if(l_country==null){
             System.out.println("Country doesn't exists!");
             return;
         }
-        if(neighbour==null){
+        if(l_neighbour==null){
             System.out.println("Neighbor country doesn't exists!");
             return;
         }
 
         if("add".equals(p_operation)) {
-            if(country.findNeighborByName(p_neighborName)){
+            if(l_country.findNeighborByName(p_neighborName)){
                 System.out.println("Neighbor already exists!");
                 return;
             }
-            country.addNeighbor(neighbour);
+            l_country.addNeighbor(l_neighbour);
         }
 
         if("remove".equals(p_operation)) {
-            if(country.findNeighborByName(p_neighborName)){
-                country.removeNeighborById(neighbour.getId());
+            if(l_country.findNeighborByName(p_neighborName)){
+                l_country.removeNeighborById(l_neighbour.getId());
                 return;
             }
             System.out.println("The neighbor you are trying to remove doesn't exist");
@@ -323,21 +324,21 @@ public class MapsController {
         l_contentBuilder.append("[files]\n").append(line);
 
         // Adding the continent
-        String l_continents = d_continents.values().stream()
+        String l_continents = d_Continents.values().stream()
                 .sorted(Comparator.comparingInt(Continent::getId))
                 .map(l_continent -> String.format("%s %d %s\n", l_continent.getName(), l_continent.getContinentValue(), l_continent.getColor()))
                 .collect(Collectors.joining());
         l_contentBuilder.append("[continents]\n").append(l_continents).append("\n");
 
         // Adding the country
-        String l_countries = d_countries.values().stream()
+        String l_countries = d_Countries.values().stream()
                 .sorted(Comparator.comparingInt(Country::getId))
                 .map(l_country -> String.format("%d %s %s %s %s\n", l_country.getId(), l_country.getName(), l_country.getContinentId(), l_country.getXCoordinate(), l_country.getYCoordinate()))
                 .collect(Collectors.joining());
         l_contentBuilder.append("[countries]\n").append(l_countries).append("\n");
 
         // Adding the neighbours
-        String l_borders = d_countries.values().stream()
+        String l_borders = d_Countries.values().stream()
                 .map(country -> {
                     String l_neighbors = country.getNeighbors().values().stream()
                             .map(neighbor -> String.valueOf(neighbor.getId()))

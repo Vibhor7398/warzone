@@ -1,12 +1,12 @@
 package Services;
 
 public class MathService {
-    public boolean isInteger( String input ) {
+    public boolean isInteger(String p_input) {
         try {
-            Integer.parseInt( input );
+            Integer.parseInt(p_input);
             return true;
         }
-        catch( Exception e ) {
+        catch(Exception l_e) {
             return false;
         }
     }

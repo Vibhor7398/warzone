@@ -1,13 +1,10 @@
 package Services;
 
 import Controller.GameEngineController;
-import Controller.MapsController;
-
 import java.util.Scanner;
 
 public class CommandService {
     CommandValidationService d_cvs = new CommandValidationService();
-    MapsController d_maps = new MapsController();
     GameEngineController d_gc;
     public CommandService(){
         d_gc = new GameEngineController();
@@ -22,15 +19,12 @@ public class CommandService {
         }
         return l_command;
     }
-
     public void start(){
-//        d_gc = new GameEngineController();
         while (true){
             String l_command = getNextCommand();
             executeCommand(l_command);
         }
     }
-
     public void executeCommand(String p_cmd){
         d_gc.executeCommand(p_cmd);
     }
