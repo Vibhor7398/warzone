@@ -205,7 +205,7 @@ public class CommandValidationService {
         return validateCommand(l_isValid);
     }
 
-    private boolean validateDeployCommand(String[] p_cmd){
+    public boolean validateDeployCommand(String[] p_cmd){
         if(p_cmd.length != 3){
             return false;
         }
