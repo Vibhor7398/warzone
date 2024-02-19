@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.Assert.*;
-public class MapsControllerTest {
+public class TestMapsController {
     private MapsController d_mapsController;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
@@ -16,7 +16,6 @@ public class MapsControllerTest {
     public void setUp()  {
         d_mapsController = new MapsController();
         System.setOut(new PrintStream(outContent));
-
     }
 
     @Test
@@ -33,7 +32,6 @@ public class MapsControllerTest {
             assertTrue("Map is valid",l_isValid);
         }catch (IOException e){
             fail("No map found" );
-
         }
     }
 
@@ -49,7 +47,6 @@ public class MapsControllerTest {
             assertFalse("Map has a disconnected subgraph",l_isValid);
         }catch (IOException e){
             fail("No map found" );
-
         }
     }
 

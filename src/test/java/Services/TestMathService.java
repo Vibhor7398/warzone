@@ -5,10 +5,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MathServiceTest {
-
+public class TestMathService {
     MathService service;
-
     @Before
     public void setUp() throws Exception {
         service = new MathService();
