@@ -60,8 +60,8 @@ public class MapsController {
         return null;
     }
 
-    public Country getCountryByName(String p_countryName){
-        for (Country l_country : maps.getCountries().values()) {
+    public static Country getCountryByName(String p_countryName){
+        for (Country l_country : d_countries.values()) {
             if(l_country.getName().equals(p_countryName)){
                 return l_country;
             }

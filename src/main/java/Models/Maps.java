@@ -11,8 +11,8 @@ public class Maps {
     private boolean d_mapFileLoaded;
 
     public Maps() {
-        this.d_continents = new LinkedHashMap<>();
-        this.d_countries = new LinkedHashMap<>();
+        d_continents = new LinkedHashMap<>();
+        d_countries = new LinkedHashMap<>();
     }
 
     public LinkedHashMap<String, Continent> getContinents() {
