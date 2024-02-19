@@ -130,8 +130,8 @@ public class Player {
                 }
             }
         }
-        System.out.println(d_reinforcementsCompleted);
-        System.out.println(this.getArmies()+"   "+this.getName());
+        //System.out.println(d_reinforcementsCompleted);
+        //System.out.println(this.getArmies()+"   "+this.getName());
     }
 
     private void handleDeployOrder(ArrayList<String> p_command) {
@@ -147,8 +147,11 @@ public class Player {
     }
 
     public void next_order() {
-        while (!d_orderArgs.isEmpty()) {
+        if (!d_orderArgs.isEmpty()) {
             String orderCommand_ = d_orderArgs.poll();
+            if(d_orderArgs.isEmpty()){
+                d_reinforcementsCompleted++;
+            }
             String[] orderCommand = orderCommand_.trim().split("\\s+");
             ArrayList<String> commandList = new ArrayList<>(Arrays.asList(orderCommand));
 
