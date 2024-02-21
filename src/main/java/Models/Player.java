@@ -1,8 +1,18 @@
+/**
+ *
+ * 
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @version 1.0
+ */
+
 package Models;
 
 import Services.CommandValidationService;
 import java.util.*;
 
+/**
+ * Represents a player in the game.
+ */
 public class Player {
     private String d_name;
     private static int d_ReinforcementsCompleted;
@@ -10,36 +20,95 @@ public class Player {
     private ArrayList<Country> d_countriesOwned;
     private Queue<String> d_orderArgs;
 
+    /**
+     * Constructs a player with the given name.
+     *
+     * @param p_name The name of the player.
+     */
     public Player(String p_name) {
         this.setName(p_name);
         d_armiesCount=0;
         d_countriesOwned = new ArrayList<>();
         d_orderArgs = new LinkedList<>();
     }
+
+    /**
+     * Sets the name of the player.
+     *
+     * @param p_name The name of the player.
+     */
     public void setName(String p_name) {
         this.d_name = p_name;
     }
+
+    /**
+     * Retrieves the name of the player.
+     *
+     * @return The name of the player.
+     */
     public String getName(){
         return d_name;
     }
+
+     /**
+     * Sets the number of armies owned by the player.
+     *
+     * @param p_armies The number of armies owned by the player.
+     */
     public void setArmies(int p_armies){
         d_armiesCount = p_armies;
     }
+
+    /**
+     * Retrieves the number of armies owned by the player.
+     *
+     * @return The number of armies owned by the player.
+     */
     public int getArmies(){
         return d_armiesCount;
     }
+
+    /**
+     * Retrieves the list of countries owned by the player.
+     *
+     * @return The list of countries owned by the player.
+     */
     public ArrayList<Country> getCountriesOwned() {
         return d_countriesOwned;
     }
+
+    /**
+     * Adds a country to the list of countries owned by the player.
+     *
+     * @param p_country The country to add to the list of countries owned.
+     */
     public void addCountryToCountriesOwned(Country p_country) {
         d_countriesOwned.add(p_country);
     }
+
+    /**
+     * Sets the order for the player.
+     *
+     * @param p_orderArgs The arguments of the order.
+     */
     public void setOrder(String p_orderArgs) {
         d_orderArgs.add(p_orderArgs);
     }
+
+    /**
+     * Retrieves the number of reinforcements completed by all players.
+     *
+     * @return The number of reinforcements completed.
+     */
     public static int getD_reinforcementsCompleted() {
         return d_ReinforcementsCompleted;
     }
+
+    /**
+     * Sets the number of reinforcements completed by all players.
+     *
+     * @param p_reinforcementsCompleted The number of reinforcements completed.
+     */
     public static void setD_reinforcementsCompleted(int p_reinforcementsCompleted) {
         Player.d_ReinforcementsCompleted = p_reinforcementsCompleted;
     }
@@ -97,6 +166,13 @@ public class Player {
         }
     }
 
+    /**
+     * Checks if the number of armies specified in a command exceeds the available army count.
+     *
+     * @param l_cmd      The number of armies specified in the command.
+     * @param armyCount  The available army count.
+     * @return True if the number of armies exceeds the available count, false otherwise.
+    */
     public boolean checkArmyExceeded(int l_cmd, int armyCount){
         if(l_cmd > armyCount ){
             System.out.println("Not having enough armies");
@@ -105,11 +181,19 @@ public class Player {
         return false;
     }
 
+    /**
+     * Handles the deployment of armies to a country based on the given command.
+     *
+     * @param p_command The command containing the country name and the number of armies to deploy.
+    */
     private void handleDeployOrder(ArrayList<String> p_command) {
         Order l_order = new Order();
         l_order.deployOrder(this, p_command.get(0), Integer.parseInt(p_command.get(1)));
     }
-
+    
+    /**
+     * Handles an invalid command by printing a message indicating that the command is invalid.
+     */
     private void handleInvalidCommand() {
         System.out.println("Invalid Command! --- Command is \"deploy countryID num\"");
     }

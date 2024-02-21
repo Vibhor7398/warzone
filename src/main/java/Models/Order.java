@@ -1,8 +1,25 @@
 package Models;
 
+/**
+ *
+ * 
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @version 1.0
+ */
+
 import Controller.MapsController;
 
+/**
+ * Represents an order for deploying armies to a country.
+ */
 public class Order{
+    /**
+     * Deploys a specified number of armies to a country owned by a player.
+     *
+     * @param p_player         The player who is deploying the armies.
+     * @param p_countryName    The name of the country where the armies will be deployed.
+     * @param p_numberOfArmies The number of armies to deploy.
+     */
     public void deployOrder(Player p_player, String p_countryName, int p_numberOfArmies){
         Country l_country = MapsController.getCountryByName(p_countryName);
         int l_previousArmies = 0;
