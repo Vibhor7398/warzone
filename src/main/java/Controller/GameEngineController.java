@@ -1,7 +1,5 @@
 /**
- *
- * 
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Girmire, Inderjeet Singh, Md. Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
  * @version 1.0
  */
 
@@ -17,10 +15,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Controls the game engine functionality.
+ * This class manages the game's core operations, including map loading, player actions, and game flow.
+ */
 public class GameEngineController {
     private static ArrayList<Player> d_Players;
     private static MapsController d_Map;
 
+    /**
+     * Constructs a new instance of GameEngineController.
+     * Initializes the game map and player list.
+     */
     public GameEngineController(){
         d_Map = new MapsController();
         d_Players = new ArrayList<>();
@@ -175,31 +181,61 @@ public class GameEngineController {
 
 
     /**
- * Removes a continent from the game map.
- *
- * @param p_continentID The unique identifier of the continent to be removed.
- * 
- */
+     * Removes a continent from the game map.
+     *
+     * @param p_continentID The unique identifier of the continent to be removed.
+     * 
+    */
     private void executeRemoveContinent(String p_continentID){
         d_Map.removeContinent(p_continentID);
     }
 
+    /**
+     * Adds a new country to the game map.
+     *
+     * @param p_countryID     The unique identifier for the new country.
+     * @param p_continentID   The unique identifier of the continent to which the new country belongs.
+    */
     private void executeAddCountry(String p_countryID, String p_continentID){
         d_Map.addCountry(p_countryID,p_continentID);
     }
 
+
+    /**
+     * Removes a country from the game map.
+     *
+     * @param p_countryID The unique identifier of the country to be removed.
+    */
     private void executeRemoveCountry(String p_countryID){
         d_Map.removeCountry(p_countryID);
     }
 
+    /**
+     * Adds a neighbor to a country on the game map.
+     *
+     * @param p_countryID The unique identifier of the country to which the neighbor will be added.
+     * @param p_neighborCountryID The unique identifier of the neighbor country to be added.
+    */
     private void executeAddNeighbor(String p_countryID, String p_neighborCountryID){
         d_Map.editNeighbors("add", p_countryID, p_neighborCountryID);
     }
 
+    /**
+     * Removes a neighbor from a country on the game map.
+     *
+     * @param p_countryID The unique identifier of the country from which the neighbor will be removed.
+     * @param p_neighborCountryID The unique identifier of the neighbor country to be removed.
+    */
     private void executeRemoveNeighbor(String p_countryID, String p_neighborCountryID){
         d_Map.editNeighbors("remove", p_countryID, p_neighborCountryID);
     }
 
+    /**
+     * Validates the current game map.
+     * This method validates the map by checking for various criteria such as continent connectivity,
+     * country connectivity, and other map integrity rules. It then prints the status of the map,
+     * indicating whether it is valid or invalid.
+    */
     private void executeValidateMap(){
         d_Map.validateMap();
         boolean l_isValid = d_Map.isMapValid();
@@ -211,6 +247,14 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Adds a new player to the game.
+     * This method checks if the provided player name already exists in the list of players.
+     * If the player name already exists, a message indicating the same is printed.
+     * Otherwise, a new player with the provided name is added to the list of players.
+     *
+     * @param p_gamePlayer The name of the player to be added.
+    */
     private void executeAddGamePlayer(String p_gamePlayer){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
         if (l_playerIndex != -1){
@@ -221,6 +265,12 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Checks if a player with the provided name already exists in the list of players.
+     *
+     * @param p_gamePlayer The name of the player to check for existence.
+     * @return The index of the player in the list if found, or -1 if the player does not exist.
+    */
     private int doesPlayerExists(String p_gamePlayer){
         for(int i = 0 ; i < d_Players.size() ; i++){
             if(d_Players.get(i).getName().equals(p_gamePlayer)){
@@ -230,6 +280,12 @@ public class GameEngineController {
         return -1;
     }
 
+    /**
+     * Removes a player from the list of players if the player exists.
+     * If the player does not exist, a message indicating the same is printed.
+     *
+     * @param p_gamePlayer The name of the player to be removed.
+    */
     private void executeRemoveGamePlayer(String p_gamePlayer){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
         if(l_playerIndex != -1){
@@ -283,14 +339,25 @@ public class GameEngineController {
         executeDeploy();
     }
 
+    /**
+     * Executes the deploy phase of the game.
+     * In this phase, players issue orders for deploying reinforcements and executing their next orders.
+     * The deploy phase continues until all players have completed their reinforcements.
+    */
     private void executeDeploy(){
+        // Continuously execute orders until all players have completed their reinforcements
         while(Player.getD_reinforcementsCompleted() != d_Players.size()){
+            // Issue orders for deploying reinforcements for each player
             for(Player l_player : d_Players){
                 l_player.issue_order();
             }
         }
+        // Reset the count of completed reinforcements
         Player.setD_reinforcementsCompleted(0);
+        
+        // Continue executing orders until all players have completed their reinforcements
         while(Player.getD_reinforcementsCompleted() != d_Players.size()){
+            // Execute the next orders for each player
             for(Player l_player : d_Players){
                 l_player.next_order();
             }
