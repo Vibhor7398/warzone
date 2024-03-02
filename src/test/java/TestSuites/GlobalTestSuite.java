@@ -9,9 +9,9 @@ import org.junit.runners.Suite;
 
 /**
  * This class represents the global test suite for running all test suites together.
- * It includes the ServicesTestSuite.
+ * It includes the ServicesTestSuite and ControllerTestSuit.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ServicesTestSuite.class})
+@Suite.SuiteClasses({ServicesTestSuite.class, ControllerTestSuit.class})
 public class GlobalTestSuite {
 }
