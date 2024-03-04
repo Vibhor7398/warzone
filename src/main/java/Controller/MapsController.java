@@ -1,7 +1,5 @@
 /**
- *
- * 
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Girmire, Inderjeet Singh, Md. Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
  * @version 1.0
  */
 
@@ -18,6 +16,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
+/**
+ * The MapsController class manages the game map, including continents, countries, and their relationships.
+ * It provides methods to add and remove continents and countries, validate the map, edit map data,
+ * load map data from a file, save map data to a file, and display information about the map.
+ * Additionally, it checks for the existence and validity of continents and countries, as well as their connectivity.
+ * The class also handles operations related to neighbors of countries, such as adding and removing neighbors.
+ */
 public class MapsController {
     private final Maps d_maps;
     private static LinkedHashMap<String, Continent> d_Continents;
@@ -29,16 +34,39 @@ public class MapsController {
         d_Countries = this.d_maps.getCountries();
     }
 
+    /**
+     * Retrieves a reference to the collection of countries in the game map.
+     *
+     * @return A {@code LinkedHashMap} containing the countries, where the keys are country names and the values are country objects.
+    */
     public LinkedHashMap<String, Country> getD_countries() {
         return d_Countries;
     }
 
+    /**
+     * Checks whether the current game map is valid.
+     *
+     * @return {@code true} if the map is valid, {@code false} otherwise.
+    */
     public boolean isMapValid() {
         return this.d_maps.getMapValid();
     }
+
+    /**
+     * Retrieves a reference to the collection of continents in the game map.
+     *
+     * @return A {@code LinkedHashMap} containing the continents, where the keys are continent names and the values are continent objects.
+    */
     public static LinkedHashMap<String,Continent> getContinents(){
         return d_Continents;
     }
+
+    /**
+     * Checks whether a continent with the specified name already exists in the map.
+     *
+     * @param p_continentName The name of the continent to check for existence.
+     * @return {@code true} if a continent with the specified name exists, {@code false} otherwise.
+    */
     public boolean continentAlreadyExists(String p_continentName) {
         for (Map.Entry<String, Continent> l_mapEntry : d_Continents.entrySet()) {
             Continent l_continent = l_mapEntry.getValue();
@@ -49,6 +77,12 @@ public class MapsController {
         return false;
     }
 
+    /**
+     * Finds and retrieves a country by its unique identifier.
+     *
+     * @param p_id The unique identifier of the country to find.
+     * @return The {@code Country} object with the specified identifier, or {@code null} if no such country exists.
+    */
     private Country findCountryById(String p_id) {
         for (Country l_country : d_maps.getCountries().values()) {
             if (String.valueOf(l_country.getId()).equals(p_id)) {
@@ -58,6 +92,12 @@ public class MapsController {
         return null;
     }
 
+    /**
+     * Retrieves a country by its name.
+     *
+     * @param p_countryName The name of the country to retrieve.
+     * @return The {@code Country} object with the specified name, or {@code null} if no such country exists.
+    */
     public static Country getCountryByName(String p_countryName){
         for (Country l_country : d_Countries.values()) {
             if(l_country.getName().equals(p_countryName)){
@@ -67,12 +107,27 @@ public class MapsController {
         return null;
     }
 
+    /**
+     * Processes a line of continent information from the map file.
+     * The line is expected to contain the name, value, and color of the continent separated by spaces.
+     * A new {@code Continent} object is created based on the information provided, and it is added to the list of continents.
+     *
+     * @param p_line The line of continent information to process.
+    */
     private void processContinentLine(String p_line) {
         String[] l_parts = p_line.split(" ");
         Continent l_continent = new Continent(d_Continents.size() + 1, l_parts[0], Integer.parseInt(l_parts[1]), l_parts[2]);
         d_Continents.put(String.valueOf(d_Continents.size() + 1), l_continent);
     }
 
+    /**
+     * Processes a line of country information from the map file.
+     * The line is expected to contain the ID, name, continent ID, x-coordinate, and y-coordinate of the country separated by spaces.
+     * A new {@code Country} object is created based on the information provided, and it is added to the list of countries.
+     * If the continent associated with the country exists, the country is also added to the list of countries in that continent.
+     *
+     * @param p_line The line of country information to process.
+    */
     private void processCountryLine(String p_line) {
         String[] l_parts = p_line.split(" ");
         Country l_country = new Country(Integer.parseInt(l_parts[0]), l_parts[1], l_parts[2], l_parts[3], l_parts[4]);
@@ -108,6 +163,15 @@ public class MapsController {
         }
     }
 
+    /**
+     * Adds a new continent to the map.
+     * If the continent already exists or the map already contains continents, the operation is aborted,
+     * and an appropriate message is printed.
+     * Otherwise, a new continent with the provided name and value is created, and it is added to the map.
+     *
+     * @param p_continentName  The name of the continent to add.
+     * @param p_continentValue The value associated with the continent.
+    */
     public void addContinent(String p_continentName, int p_continentValue) {
         if (!d_maps.getContinents().isEmpty() && continentAlreadyExists(p_continentName)) {
             System.out.println("The continent(" + p_continentName + ")you are trying to add already exist!");
@@ -117,6 +181,13 @@ public class MapsController {
         processContinentLine(l_line);
     }
 
+    /**
+     * Removes a continent from the map based on the provided continent name.
+     * If the continent is found, it is removed from the map.
+     * If the continent does not exist, a message is printed indicating its absence.
+     *
+     * @param p_continentName The name of the continent to remove.
+    */
     public void removeContinent(String p_continentName) {
         Iterator<Continent> l_iterator = d_Continents.values().iterator();
         while (l_iterator.hasNext()) {
@@ -130,10 +201,23 @@ public class MapsController {
         System.out.println("Continent that you are trying to remove does not exist!");
     }
 
+    /**
+     * Validates the map by checking both existence and connectivity.
+     * It sets the map validity based on the result of these checks.
+     * The map is considered valid if both existence and connectivity criteria are met.
+    */
     public void validateMap() {
         d_maps.setMapValid(validateExistence() && validateConnectivity());
     }
 
+
+    /**
+     * Validates the existence of countries and their associations with continents.
+     * Checks if all countries are associated with existing continents,
+     * if all continents have at least one country, and if all neighbors of countries exist.
+     *
+     * @return true if all existence criteria are met, false otherwise.
+    */
     public boolean validateExistence() {
         boolean l_continentsExist = d_Countries.values().stream()
                 .allMatch(l_country -> d_Continents.containsKey(l_country.getContinentId()));
@@ -146,6 +230,13 @@ public class MapsController {
                 .allMatch(neighbor -> d_Countries.containsKey(neighbor.getName()));
     }
 
+    /**
+     * Validates the full connectivity of a set of countries.
+     * Checks if every country in the set is reachable from every other country.
+     *
+     * @param p_countries The set of countries to validate connectivity for.
+     * @return true if the set of countries is fully connected, false otherwise.
+    */
     public boolean validateFullConnectivity(Map<String, Country> p_countries) {
         if (p_countries.isEmpty()) return true;
         LinkedHashMap<String, Boolean> l_visited = new LinkedHashMap<>();
@@ -154,6 +245,13 @@ public class MapsController {
         return l_visited.values().stream().allMatch(Boolean.TRUE::equals);
     }
 
+    /**
+     * Validates the connectivity of the entire map.
+     * Checks if all countries within each continent are fully connected and if all countries outside continents
+     * are fully connected to each other.
+     *
+     * @return true if the entire map is connected, false otherwise.
+    */
     public boolean validateConnectivity() {
         for (Continent l_continent : d_Continents.values()) {
             if (!validateFullConnectivity(l_continent.getCountries())) return false;
@@ -161,6 +259,13 @@ public class MapsController {
         return d_Countries.isEmpty() || validateFullConnectivity(d_Countries);
     }
 
+    /**
+     * Traverses the map starting from the specified country and marks visited countries in the provided map.
+     * This method recursively visits each neighbor of the current country and marks it as visited.
+     *
+     * @param p_country The country from which the traversal begins.
+     * @param p_visited A map containing the visited status of countries.
+    */
     public void traverseMap(Country p_country, Map<String, Boolean> p_visited) {
         p_visited.put(p_country.getName(), true);
         p_country.getNeighbors().forEach((name, neighbor) -> {
@@ -170,6 +275,12 @@ public class MapsController {
         });
     }
 
+    /**
+     * Checks if a country with the given name already exists in the map.
+     *
+     * @param p_country The name of the country to check for existence.
+     * @return {@code true} if a country with the given name exists, {@code false} otherwise.
+    */
     public boolean countryAlreadyExists(String p_country) {
         for (Map.Entry<String, Country> l_mapEntry : d_Countries.entrySet()) {
             Country l_country = l_mapEntry.getValue();
@@ -253,6 +364,14 @@ public class MapsController {
         System.out.println("Country that you are trying to remove does not exit");
     }
 
+    /**
+     * Edits the map data by loading a new map from the specified file.
+     * If the file does not exist, a new file is created. The method then loads the map data from the file,
+     * updating the existing map data structures.
+     *
+     * @param p_file The file containing the map data to be loaded.
+     * @throws IOException If an I/O error occurs while reading the file or creating a new file.
+    */
     public void editMap(File p_file) throws IOException{
         if (!p_file.exists()) {
             System.out.println("The file doesn't exist, creating a new file.");
@@ -346,6 +465,12 @@ public class MapsController {
         });
     }
 
+    /**
+     * Finds and returns a country object by its name.
+     *
+     * @param p_name The name of the country to find.
+     * @return The country object with the specified name, or null if not found.
+    */
     private Country findCountryByName(String p_name) {
         for (Country l_country : d_Countries.values()) {
             if (String.valueOf(l_country.getName()).equals(p_name)) {
