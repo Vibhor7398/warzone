@@ -108,6 +108,10 @@ public class Player {
         d_orderArgs.add(p_orderArgs);
     }
 
+    public void removeCountryFromCountriesOwned(Country p_country) {
+        d_countriesOwned.remove(p_country);
+    }
+
     /**
      * Retrieves the number of reinforcements completed by all players.
      *
