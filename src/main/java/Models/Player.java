@@ -5,6 +5,7 @@
 
 package Models;
 
+import Orders.Deploy;
 import Services.CommandValidationService;
 import java.util.*;
 
@@ -114,6 +115,10 @@ public class Player {
      */
     public static int getD_reinforcementsCompleted() {
         return d_ReinforcementsCompleted;
+    }
+
+    public static void setD_ReinforcementsCompleted(int d_ReinforcementsCompleted) {
+        Player.d_ReinforcementsCompleted = d_ReinforcementsCompleted;
     }
 
     /**
@@ -244,5 +249,25 @@ public class Player {
                     break;
             }
         }
+    }
+
+
+    public ArrayList<Orders.Order> d_orders;
+    public boolean createOrder(ArrayList<Player> l_players){
+        d_orders = new ArrayList<>();
+        for (Player l_player : l_players) {
+//            d_orders.add(new Deploy(l_player));
+        }
+        return true;
+    }
+
+    public Orders.Order getNextOrder(int p_index){
+        if (!this.d_orders.isEmpty()) {
+            Orders.Order to_return = this.d_orders.getFirst();
+            this.d_orders.removeFirst();
+            return to_return;
+        } else
+            return null;
+
     }
 }
