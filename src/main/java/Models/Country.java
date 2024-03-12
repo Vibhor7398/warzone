@@ -39,6 +39,10 @@ public class Country {
         this.d_neighbors.put(this, new LinkedHashMap<>());
     }
 
+    public Country(String p_name) {
+        d_name = p_name;
+    }
+
     /**
      * Gets the ID of the country.
      * @return The ID of the country.

@@ -1,23 +1,19 @@
 package Orders;
 
-import Controller.MapsController;
 import Models.Country;
 import Models.Player;
-
 import java.util.ArrayList;
 
 public class Deploy implements Order{
 
-    String d_countryName;
     Player d_player;
     int d_armyToBeDeployed;
     Country d_country;
 
-    public Deploy(Player p_player, String p_countryName, int p_armyToBeDeployed){
+    public Deploy(Player p_player, Country p_country, int p_armyToBeDeployed){
         this.d_armyToBeDeployed = p_armyToBeDeployed;
         this.d_player = p_player;
-        this.d_countryName = p_countryName;
-        d_country = MapsController.getCountryByName(p_countryName);
+        this.d_country = p_country;
     }
 
 
@@ -29,7 +25,7 @@ public class Deploy implements Order{
             for (Country l_country : d_player.getCountriesOwned()) {
                 l_countriesOwned.add(l_country.getName());
             }
-            if (!l_countriesOwned.contains(d_countryName)) {
+            if (!l_countriesOwned.contains(d_country.getName())) {
                 System.out.println(" This country does not belong to you ");
                 return false;
             }
@@ -56,7 +52,7 @@ public class Deploy implements Order{
 
     @Override
     public void print() {
-        System.out.println(d_armyToBeDeployed + " Army Deployment is successful on "+d_countryName+" by "+d_player.getName());
-        System.out.println("Deployed armies on " + d_countryName + " is " + d_country.getArmies());
+        System.out.println(d_armyToBeDeployed + " Army Deployment is successful on "+d_country.getName()+" by "+d_player.getName());
+        System.out.println("Deployed armies on " + d_country.getName() + " is " + d_country.getArmies());
     }
 }
