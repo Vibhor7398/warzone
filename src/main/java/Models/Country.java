@@ -5,6 +5,8 @@
 
 package Models;
 
+import Controller.GameEngineController;
+
 import java.util.LinkedHashMap;
 
 /**
@@ -140,5 +142,14 @@ public class Country {
     public void removeNeighborById(int p_id) {
         LinkedHashMap<String, Country> l_neighbors = d_neighbors.get(this);
         l_neighbors.values().removeIf(neighbor -> p_id == neighbor.getId());
+    }
+
+    public Player getOwner() {
+        for (Player l_player : GameEngineController.d_Players) {
+            if (l_player.getCountriesOwned().contains(this)) {
+                return l_player;
+            }
+        }
+        return null;
     }
 }
