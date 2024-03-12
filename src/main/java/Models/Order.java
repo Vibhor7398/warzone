@@ -2,6 +2,7 @@
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
  * @version 1.0
  */
+//TODO: Delete this file after refactoring
 package Models;
 
 import Controller.MapsController;
