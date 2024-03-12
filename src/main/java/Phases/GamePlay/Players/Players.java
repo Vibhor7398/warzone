@@ -83,4 +83,14 @@ public class Players extends Phases {
     public void negotiate() {
         printInvalidMessage();
     }
+
+    @Override
+    public void endGame() {
+
+    }
+
+    @Override
+    public void next() {
+
+    }
 }

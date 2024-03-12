@@ -82,4 +82,14 @@ public class MainPlay extends Phases {
     public void negotiate() {
 
     }
+
+    @Override
+    public void endGame() {
+
+    }
+
+    @Override
+    public void next() {
+
+    }
 }

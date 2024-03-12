@@ -17,6 +17,8 @@ public abstract class Phases {
     abstract public void blockade();
     abstract public void airlift();
     abstract public void negotiate();
+    abstract public void endGame();
+    abstract public void next();
     public void printInvalidMessage(){
         System.out.println("Invalid Command in the state "+this.getClass().getSimpleName());
     }

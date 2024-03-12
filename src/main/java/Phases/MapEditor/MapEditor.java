@@ -83,4 +83,14 @@ public class MapEditor extends Phases {
     public void negotiate() {
         printInvalidMessage();
     }
+
+    @Override
+    public void endGame() {
+
+    }
+
+    @Override
+    public void next() {
+
+    }
 }
