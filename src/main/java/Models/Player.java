@@ -17,6 +17,7 @@ public class Player {
     private int d_armiesCount;
     private ArrayList<Country> d_countriesOwned;
     private Queue<String> d_orderArgs;
+    private ArrayList<String> d_cardList;
 
     /**
      * Constructs a player with the given name.
@@ -28,6 +29,7 @@ public class Player {
         d_armiesCount=0;
         d_countriesOwned = new ArrayList<>();
         d_orderArgs = new LinkedList<>();
+        d_cardList = new ArrayList<>();
     }
 
     /**
@@ -84,6 +86,18 @@ public class Player {
         d_countriesOwned.add(p_country);
     }
 
+
+    public void addCard(String p_card){
+        d_cardList.add(p_card);
+    }
+
+    public void removeCard(String p_card) {
+        d_cardList.remove(p_card);
+    }
+
+    public ArrayList<String> getCardList(){
+        return d_cardList;
+    }
     /**
      * Sets the order for the player.
      *
