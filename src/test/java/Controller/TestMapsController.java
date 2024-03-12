@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 public class TestMapsController {
     private MapsController d_mapsController;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
     /**
      * Sets up the test environment by creating a new MapsController instance and redirecting System.out to outContent.
      */

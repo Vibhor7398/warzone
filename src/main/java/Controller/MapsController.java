@@ -392,6 +392,8 @@ public class MapsController {
     * @throws IOException If an I/O error occurs while reading the file.
     */
     public void loadMap(String p_file) throws IOException {
+        d_Continents.clear();
+        d_Countries.clear();
         // Read the entire content of the file into a string
         String l_content = Files.readString(Paths.get(p_file));
         
