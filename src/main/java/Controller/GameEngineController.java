@@ -20,7 +20,7 @@ import java.util.HashMap;
  * This class manages the game's core operations, including map loading, player actions, and game flow.
  */
 public class GameEngineController {
-    private static ArrayList<Player> d_Players;
+    public static ArrayList<Player> d_Players;
     private static MapsController d_Map;
 
     /**
