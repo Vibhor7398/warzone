@@ -82,6 +82,14 @@ public class Advance implements Order{
 
     @Override
     public void print() {
-
+        if(d_attack_successful) {
+            System.out.println("Attack successful! " + d_target_country.getName() + " captured by " + d_player.getName());
+        } else {
+            System.out.println("Attack unsuccessful! " + d_target_country.getName() + " defended successfully.");
+        }
+        if (d_player.getCountriesOwned().contains(d_target_country)) {
+            System.out.println(d_advance_armies + " armies moved from " + d_source_country.getName() + " to " + d_target_country.getName());
+        }
+    }
     }
 }
