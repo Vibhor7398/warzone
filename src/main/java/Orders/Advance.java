@@ -17,7 +17,26 @@ public class Advance implements Order{
     }
     @Override
     public boolean isValid() {
-        return false;
+        if (!d_player.getCountriesOwned().contains(d_source_country)) {
+            System.out.println("Source country does not belong to the current player.");
+            return false;
+        }
+        // todo - check this
+        if (!d_source_country.getNeighbors().containsValue(d_target_country)) {
+            System.out.println("Target country is not adjacent to the source country.");
+            return false;
+        }
+
+        if (d_advance_armies <= 0 || d_advance_armies >= d_source_country.getArmies()) {
+            System.out.println("Invalid number of armies to advance.");
+            return false;
+        }
+
+        if (d_source_country.equals(d_target_country)) {
+            System.out.println("Cannot advance armies to the same country.");
+            return false;
+        }
+        return true;
     }
 
     @Override
