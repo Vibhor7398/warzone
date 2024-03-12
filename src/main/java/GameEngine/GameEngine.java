@@ -1,4 +1,4 @@
-/**
+package GameEngine; /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
  * @version 1.0
  */
@@ -8,6 +8,7 @@ import Controller.GameEngineController;
 import Phases.Phases;
 import Phases.MapEditor.MapEditor;
 import Services.CommandService;
+import Services.CommandValidationService;
 
 /**
  * This class represents the game engine for the application.
@@ -16,11 +17,11 @@ import Services.CommandService;
 public class GameEngine {
     private static Phases d_phase;
 
-    public static void setD_phase(Phases p_phase){
+    public void setD_phase(Phases p_phase){
         d_phase = p_phase;
     }
 
-    public static Phases getD_phase(){
+    public Phases getD_phase(){
         return d_phase;
     }
 
@@ -43,14 +44,17 @@ public class GameEngine {
 //        l_cs.start();
 //    }
     public void start(){
-        setD_phase(new MapEditor());
+        setD_phase(new MapEditor(this));
         MapsController l_mapsController = new MapsController();
         GameEngineController l_gc = new GameEngineController(l_mapsController);
         while(true){
-            Phases l_phase = getD_phase();
-            CommandService l_cs = new CommandService();
-            String l_command =  l_cs.getNextCommand(); //TODO: return command object
-
+//            Phases l_phase = getD_phase();
+//            CommandValidationService l_cs = new CommandValidationService();
+//            String l_command =  l_cs.validateCommand(); //TODO: return command object
+            getD_phase().editMap();
+            getD_phase().next();
+            getD_phase().assignPlayers();
+            break;
         }
     }
 

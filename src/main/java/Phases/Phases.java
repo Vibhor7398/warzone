@@ -1,6 +1,9 @@
 package Phases;
 
+import GameEngine.GameEngine;
+
 public abstract class Phases {
+    GameEngine d_ge;
     abstract public void showMap();
     abstract public void editMap();
     abstract public void saveMap();
@@ -21,6 +24,9 @@ public abstract class Phases {
     abstract public void next();
     public void printInvalidMessage(){
         System.out.println("Invalid Command in the state "+this.getClass().getSimpleName());
+    }
+    public Phases(GameEngine p_ge){
+        d_ge = p_ge;
     }
 
 }
