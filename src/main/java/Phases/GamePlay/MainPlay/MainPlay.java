@@ -1,6 +1,33 @@
 package Phases.GamePlay.MainPlay;
 
-import Phases.Phase;
+public class MainPlay implements MainPlayPhase {
+    @Override
+    public void deploy() {
 
-public class MainPlay implements Phase {
+    }
+
+    @Override
+    public void advance() {
+
+    }
+
+    @Override
+    public void bomb() {
+
+    }
+
+    @Override
+    public void blockade() {
+
+    }
+
+    @Override
+    public void airlift() {
+
+    }
+
+    @Override
+    public void negotiate() {
+
+    }
 }

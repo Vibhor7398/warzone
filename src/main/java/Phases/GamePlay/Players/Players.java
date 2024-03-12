@@ -1,7 +1,19 @@
 package Phases.GamePlay.Players;
 
-import Phases.Phase;
+public class Players implements PlayersPhase {
+    @Override
+    public void loadMap() {
 
-public class Players implements Phase {
+    }
+
+    @Override
+    public void assignPlayers() {
+
+    }
+
+    @Override
+    public void assignCountries() {
+
+    }
     //1st func would be loadmap
 }
