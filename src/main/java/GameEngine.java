@@ -2,12 +2,12 @@
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
  * @version 1.0
  */
-import Constants.PhasesEnum;
 import Controller.MapsController;
 import Controller.GameEngineController;
 import Phases.Phases;
 import Phases.MapEditor.MapEditor;
 import Services.CommandService;
+import Services.CommandValidator;
 
 /**
  * This class represents the game engine for the application.
@@ -43,15 +43,17 @@ public class GameEngine {
 //        l_cs.start();
 //    }
     public void start(){
-        setD_phase(new MapEditor());
-        MapsController l_mapsController = new MapsController();
-        GameEngineController l_gc = new GameEngineController(l_mapsController);
-        while(true){
-            Phases l_phase = getD_phase();
-            CommandService l_cs = new CommandService();
-            String l_command =  l_cs.getNextCommand(); //TODO: return command object
-
-        }
+        CommandValidator l_cv = new CommandValidator();
+        l_cv.nextUserInput();
+//        setD_phase(new MapEditor());
+//        MapsController l_mapsController = new MapsController();
+//        GameEngineController l_gc = new GameEngineController(l_mapsController);
+//        while(true){
+//            Phases l_phase = getD_phase();
+//            CommandService l_cs = new CommandService();
+//            String l_command =  l_cs.getNextCommand(); //TODO: return command object
+//
+//        }
     }
 
 }
