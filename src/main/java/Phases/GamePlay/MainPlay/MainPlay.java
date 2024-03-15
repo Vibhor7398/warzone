@@ -1,7 +1,12 @@
 package Phases.GamePlay.MainPlay;
+import GameEngine.GameEngine;
 import Phases.Phases;
 
 public class MainPlay extends Phases {
+
+    public MainPlay(GameEngine p_ge) {
+        super(p_ge);
+    }
 
     @Override
     public void showMap() {
@@ -80,6 +85,16 @@ public class MainPlay extends Phases {
 
     @Override
     public void negotiate() {
+
+    }
+
+    @Override
+    public void endGame() {
+
+    }
+
+    @Override
+    public void next() {
 
     }
 }

@@ -1,8 +1,13 @@
 package Phases.GamePlay.Players;
 
+import GameEngine.GameEngine;
 import Phases.Phases;
 
 public class Players extends Phases {
+
+    public Players(GameEngine p_ge) {
+        super(p_ge);
+    }
 
     @Override
     public void showMap() {
@@ -46,7 +51,7 @@ public class Players extends Phases {
 
     @Override
     public void assignPlayers() {
-
+        System.out.println("assignPlayers");
     }
 
     @Override
@@ -82,5 +87,15 @@ public class Players extends Phases {
     @Override
     public void negotiate() {
         printInvalidMessage();
+    }
+
+    @Override
+    public void endGame() {
+
+    }
+
+    @Override
+    public void next() {
+
     }
 }

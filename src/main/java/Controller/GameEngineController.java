@@ -19,6 +19,7 @@ import java.util.HashMap;
  * Controls the game engine functionality.
  * This class manages the game's core operations, including map loading, player actions, and game flow.
  */
+
 public class GameEngineController {
     public static ArrayList<Player> d_Players;
     private static MapsController d_Map;
@@ -30,6 +31,10 @@ public class GameEngineController {
     public GameEngineController(){
         d_Map = new MapsController();
         d_Players = new ArrayList<>();
+    }
+
+    public GameEngineController(MapsController p_mc){
+        d_Map = p_mc;
     }
 
     /**

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * Additionally, it checks for the existence and validity of continents and countries, as well as their connectivity.
  * The class also handles operations related to neighbors of countries, such as adding and removing neighbors.
  */
-public class MapsController {
+public class MapsController{
     private final Maps d_maps;
     private static LinkedHashMap<String, Continent> d_Continents;
     private static LinkedHashMap<String, Country> d_Countries;
