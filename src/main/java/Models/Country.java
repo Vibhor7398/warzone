@@ -20,7 +20,7 @@ public class Country {
     private int d_armies;
     private String d_xCoordinate;
     private String d_yCoordinate;
-    private LinkedHashMap<Country, LinkedHashMap<String, Country>> d_neighbors;
+    private LinkedHashMap<Country, LinkedHashMap<String, Country>> d_neighbors = new LinkedHashMap<>();;
 
     /**
      * Constructs a Country object with the specified ID, name, continent ID, x-coordinate, and y-coordinate.
@@ -37,7 +37,6 @@ public class Country {
         this.d_xCoordinate = p_xCoordinate;
         this.d_yCoordinate = p_yCoordinate;
         this.d_armies = 0;
-        this.d_neighbors = new LinkedHashMap<>();
         this.d_neighbors.put(this, new LinkedHashMap<>());
     }
 
