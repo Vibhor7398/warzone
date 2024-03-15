@@ -44,10 +44,10 @@ public class Deploy implements Order{
             int l_previousArmies = d_country.getArmies();
             int l_newArmies = d_armyToBeDeployed + l_previousArmies;
             d_country.setArmies(l_newArmies);
+            print();
         } else {
             System.out.println("Invalid Order! ");
         }
-        print();
     }
 
     @Override
