@@ -5,6 +5,7 @@
 
 package Models;
 
+import Orders.Deploy;
 import Services.CommandValidationService;
 import java.util.*;
 
@@ -17,6 +18,7 @@ public class Player {
     private int d_armiesCount;
     private ArrayList<Country> d_countriesOwned;
     private Queue<String> d_orderArgs;
+    private ArrayList<String> d_cardList;
 
     /**
      * Constructs a player with the given name.
@@ -28,6 +30,7 @@ public class Player {
         d_armiesCount=0;
         d_countriesOwned = new ArrayList<>();
         d_orderArgs = new LinkedList<>();
+        d_cardList = new ArrayList<>();
     }
 
     /**
@@ -84,6 +87,18 @@ public class Player {
         d_countriesOwned.add(p_country);
     }
 
+
+    public void addCard(String p_card){
+        d_cardList.add(p_card);
+    }
+
+    public void removeCard(String p_card) {
+        d_cardList.remove(p_card);
+    }
+
+    public ArrayList<String> getCardList(){
+        return d_cardList;
+    }
     /**
      * Sets the order for the player.
      *
@@ -93,6 +108,10 @@ public class Player {
         d_orderArgs.add(p_orderArgs);
     }
 
+    public void removeCountryFromCountriesOwned(Country p_country) {
+        d_countriesOwned.remove(p_country);
+    }
+
     /**
      * Retrieves the number of reinforcements completed by all players.
      *
@@ -100,6 +119,10 @@ public class Player {
      */
     public static int getD_reinforcementsCompleted() {
         return d_ReinforcementsCompleted;
+    }
+
+    public static void setD_ReinforcementsCompleted(int d_ReinforcementsCompleted) {
+        Player.d_ReinforcementsCompleted = d_ReinforcementsCompleted;
     }
 
     /**
@@ -230,5 +253,25 @@ public class Player {
                     break;
             }
         }
+    }
+
+
+    public ArrayList<Orders.Order> d_orders;
+    public boolean createOrder(ArrayList<Player> l_players){
+        d_orders = new ArrayList<>();
+        for (Player l_player : l_players) {
+//            d_orders.add(new Deploy(l_player));
+        }
+        return true;
+    }
+
+    public Orders.Order getNextOrder(int p_index){
+        if (!this.d_orders.isEmpty()) {
+            Orders.Order to_return = this.d_orders.getFirst();
+            this.d_orders.removeFirst();
+            return to_return;
+        } else
+            return null;
+
     }
 }
