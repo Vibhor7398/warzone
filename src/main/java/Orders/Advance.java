@@ -2,6 +2,8 @@ package Orders;
 
 import Models.Country;
 import Models.Player;
+import Services.CardAssignment;
+
 /**
  * Represents an Advance order in a strategy game. This order can either move armies
  * from one territory to another owned by the same player, or it can initiate an attack
@@ -110,6 +112,7 @@ public class Advance implements Order{
                     l_target_player.removeCountryFromCountriesOwned(d_target_country);
                }
                d_attack_successful = true;
+               d_player.addCard(CardAssignment.getCard());
            } else {
                // Defender wins, update armies in source territory
                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);

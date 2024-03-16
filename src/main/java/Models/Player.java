@@ -26,6 +26,7 @@ public class Player {
     private String[] d_orderArgsValues;
     private ArrayList<Order> d_orderList;
     private Order d_currentOrder;
+    private Command d_command;
 
 
 
@@ -145,9 +146,9 @@ public class Player {
         Player.d_ReinforcementsCompleted = p_reinforcementsCompleted;
     }
 
-    public void setOrder(String p_orderType, String[] p_orderArgsValues) {
-        d_orderType = p_orderType;
-        d_orderArgsValues = p_orderArgsValues;
+    public void setOrder() {
+        d_orderType = d_command.getD_cmd();
+        d_orderArgsValues = d_command.getArgs();
     }
 
     public String[] getD_orderArgsValues() {
@@ -225,11 +226,20 @@ public class Player {
                 d_orderList.add(getD_currentOrder());
                 break;
 
+            case "end":
+                return;
+
             default:
                 System.out.println("Please enter correct order! ");
                 break;
         }
-
+    }
+    public void nextOrder(){
+        if(!d_orderList.isEmpty()){
+            Order l_orderToExecute = d_orderList.getFirst();
+            d_orderList.removeFirst();
+            l_orderToExecute.execute();
+        }
     }
 
 }
