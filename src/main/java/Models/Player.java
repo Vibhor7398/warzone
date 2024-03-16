@@ -5,6 +5,7 @@
 
 package Models;
 
+import Controller.GameEngineController;
 import Controller.MapsController;
 import Orders.*;
 import java.util.*;
@@ -169,6 +170,15 @@ public class Player {
         this.d_currentOrder = p_currentOrder;
     }
 
+    public Player getPlayerByName(String p_name){
+        for (Player l_player : GameEngineController.d_Players){
+            if (l_player.getName().equals(p_name)){
+                return l_player;
+            }
+        }
+        return null;
+    }
+
     /**
      * Allows the player to issue orders for reinforcement deployment.
      * The method prompts the player to issue orders for deploying reinforcements based on their available armies
@@ -211,7 +221,7 @@ public class Player {
 
             case "negotiate":
                 System.out.println("Negotiate Order");
-                //setD_currentOrder(new Negotiate(this,MapsController.getCountryByName(d_orderArgsValues[0])));
+                setD_currentOrder(new Diplomacy(this, getPlayerByName(d_orderArgsValues[0])));
                 d_orderList.add(getD_currentOrder());
                 break;
 
