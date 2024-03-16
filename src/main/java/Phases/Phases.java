@@ -40,6 +40,8 @@ public abstract class Phases {
 
     abstract public void endGame(Command p_command);
 
+    abstract public void endTurn(Command p_command);
+
     abstract public void next();
 
     public void execute(Command[] p_command) {
@@ -109,6 +111,10 @@ public abstract class Phases {
                     d_ge.getD_phase().negotiate(l_command);
                     break;
 
+                case "endturn":
+                    d_ge.getD_phase().loadMap(l_command);
+                    break;
+
                 case "endgame":
                     d_ge.getD_phase().endGame(l_command);
                     break;
@@ -122,7 +128,7 @@ public abstract class Phases {
                     break;
             }
         }
-        d_ge.nextUserInput();
+        d_ge.getD_gc().nextUserInput();
     }
 
     public void printInvalidMessage() {

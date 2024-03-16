@@ -1,6 +1,7 @@
 package Phases.GamePlay.MainPlay;
 import GameEngine.GameEngine;
 import Models.Command;
+import Phases.Exit.Exit;
 import Phases.Phases;
 
 public class MainPlay extends Phases {
@@ -62,42 +63,47 @@ public class MainPlay extends Phases {
 
     @Override
     public void deploy(Command p_command) {
-        d_ge.getD_gc().executeDeploy();
+        d_ge.getD_gc().setOrders(p_command);
     }
 
     @Override
     public void advance(Command p_command) {
-
+        d_ge.getD_gc().setOrders(p_command);
     }
 
     @Override
     public void bomb(Command p_command) {
-
+        d_ge.getD_gc().setOrders(p_command);
     }
 
     @Override
     public void blockade(Command p_command) {
-
+        d_ge.getD_gc().setOrders(p_command);
     }
 
     @Override
     public void airlift(Command p_command) {
-
+        d_ge.getD_gc().setOrders(p_command);
     }
 
     @Override
     public void negotiate(Command p_command) {
-
+        d_ge.getD_gc().setOrders(p_command);
     }
 
     @Override
     public void endGame(Command p_command) {
+        d_ge.getD_gc().setOrders(p_command);
+    }
 
+    @Override
+    public void endTurn(Command p_command) {
+        d_ge.getD_gc().setOrders(p_command);
     }
 
     @Override
     public void next() {
-
+        d_ge.setD_phase(new Exit(d_ge));
     }
 
 }

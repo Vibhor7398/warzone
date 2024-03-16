@@ -1,15 +1,15 @@
-package Phases.GamePlay.Players;
+package Phases.Exit;
 
 import GameEngine.GameEngine;
 import Models.Command;
-import Phases.GamePlay.MainPlay.MainPlay;
 import Phases.Phases;
 
-public class Players extends Phases {
+public class Exit extends Phases {
     private final GameEngine d_ge;
-    public Players(GameEngine p_ge) {
+    public Exit(GameEngine p_ge) {
         super(p_ge);
         d_ge = p_ge;
+        next();
     }
 
     @Override
@@ -49,23 +49,17 @@ public class Players extends Phases {
 
     @Override
     public void loadMap(Command p_command) {
-        d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0]);
+
     }
 
     @Override
     public void assignPlayers(Command p_command) {
-        if(p_command.getD_subCmd().equals("-add")){
-            d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0]);
-        }
-        else{
-            d_ge.getD_gc().executeRemoveGamePlayer(p_command.getArgs()[0]);
-        }
+        printInvalidMessage();
     }
 
     @Override
     public void assignCountries(Command p_command) {
-        d_ge.getD_gc().executeAssignCountries();
-        next();
+        printInvalidMessage();
     }
 
     @Override
@@ -110,6 +104,6 @@ public class Players extends Phases {
 
     @Override
     public void next() {
-        d_ge.setD_phase(new MainPlay(d_ge));
+        System.exit(0);
     }
 }

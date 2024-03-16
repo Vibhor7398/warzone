@@ -108,7 +108,12 @@ public class CommandValidator {
                     "",
                     1,
                     new String[]{"playerName"},
-                    new String[]{"String"})
+                    new String[]{"String"}),
+            new ValidCommands("endturn",
+                    "",
+                    0,
+                    new String[]{""},
+                    new String[]{""})
     };
 
 

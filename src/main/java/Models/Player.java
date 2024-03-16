@@ -16,7 +16,7 @@ import java.util.*;
 public class Player {
     private String d_name;
     private static int d_ReinforcementsCompleted;
-
+    private boolean d_isTurnCompleted = false;
     private int d_armiesCount = 0;
     private ArrayList<Country> d_countriesOwned = new ArrayList<>();
     private Queue<String> d_orderArgs = new LinkedList<>();
@@ -46,6 +46,19 @@ public class Player {
      */
     public void setName(String p_name) {
         this.d_name = p_name;
+    }
+
+    public boolean getD_isTurnCompleted() {
+        return d_isTurnCompleted;
+    }
+
+    /**
+     * Sets the name of the player.
+     *
+     * @param p_isTurnCompleted Has the turn of the player been completed.
+     */
+    public void setD_isTurnCompleted(boolean p_isTurnCompleted) {
+        this.d_isTurnCompleted = p_isTurnCompleted;
     }
 
     /**
@@ -114,6 +127,7 @@ public class Player {
     public void removeNegotiatePlayer(Player p_player){
         d_NegotiatePlayers.remove(p_player);
     }
+
     /**
      * Sets the order for the player.
      *
@@ -136,7 +150,6 @@ public class Player {
         return d_ReinforcementsCompleted;
     }
 
-
     /**
      * Sets the number of reinforcements completed by all players.
      *
@@ -146,9 +159,9 @@ public class Player {
         Player.d_ReinforcementsCompleted = p_reinforcementsCompleted;
     }
 
-    public void setOrder() {
-        d_orderType = d_command.getD_cmd();
-        d_orderArgsValues = d_command.getArgs();
+    public void setOrder(Command p_cmd) {
+        d_orderType = p_cmd.getD_cmd();
+        d_orderArgsValues = p_cmd.getArgs();
     }
 
     public String[] getD_orderArgsValues() {
@@ -185,10 +198,7 @@ public class Player {
      * The method prompts the player to issue orders for deploying reinforcements based on their available armies
      * and the countries they own. It ensures that the issued orders are valid before processing them.
     */
-
-
     public void issueOrder() {
-
         switch (d_orderType) {
             case "deploy":
                 System.out.println("Deploy Order");
@@ -227,19 +237,27 @@ public class Player {
                 break;
 
             case "end":
+                setD_isTurnCompleted(true);
                 return;
 
             default:
-                System.out.println("Please enter correct order! ");
+                System.out.println("Please enter correct order!");
                 break;
         }
     }
+
     public void nextOrder(){
         if(!d_orderList.isEmpty()){
             Order l_orderToExecute = d_orderList.getFirst();
             d_orderList.removeFirst();
             l_orderToExecute.execute();
         }
+    }
+
+    public Order getNextOrder(){
+        Order l_orderToExecute = d_orderList.getFirst();
+        d_orderList.removeFirst();
+        return l_orderToExecute;
     }
 
 }
