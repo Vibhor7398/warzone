@@ -6,14 +6,20 @@
 package Controller;
 
 import Constants.AppConstants;
+import GameEngine.GameEngine;
+import Models.Command;
 import Models.Country;
 import Models.Player;
+import Orders.Order;
 import Services.CommandValidationService;
+import Services.CommandValidator;
+import Services.InvalidCommandException;
 import Services.Reinforcement;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Controls the game engine functionality.
@@ -23,6 +29,8 @@ import java.util.HashMap;
 public class GameEngineController {
     public static ArrayList<Player> d_Players;
     private static MapsController d_Map;
+    private static int d_currentPlayer;
+    private static int d_completedTurns;
 
     /**
      * Constructs a new instance of GameEngineController.
@@ -37,6 +45,20 @@ public class GameEngineController {
         d_Map = p_mc;
     }
 
+    public void nextUserInput() {
+        CommandValidator l_cs = new CommandValidator();
+        try{
+            Scanner l_sc = new Scanner(System.in);
+            System.out.println("Enter your command");
+            String l_command = l_sc.nextLine();
+            Command[] l_val= l_cs.validateCommand(l_command);
+            GameEngine.getPhase().execute(l_val);
+        } catch (InvalidCommandException e) {
+            System.out.println(e.getMessage());
+            nextUserInput();
+        }
+    }
+
     /**
     * Executes a command based on the provided command string.
     * The command string is parsed to identify the command and its parameters, then the corresponding action is executed.
@@ -45,66 +67,66 @@ public class GameEngineController {
     * @throws ArrayIndexOutOfBoundsException If the command string does not contain enough parameters.
     * @throws NumberFormatException If parsing of numerical parameters fails.
     */
-    public void executeCommand(String p_command){
-        // Get the base command from the provided command string
-        String l_baseCmd = CommandValidationService.getBaseCommand(p_command);
-
-        // Split the command string into an array of command components
-        String[] l_cmdArr = p_command.trim().split("\\ ");
-
-        // Execute the corresponding action based on the base command
-        switch (l_baseCmd){
-            case "loadmap":
-                executeLoadMap(l_cmdArr[1]);
-                break;
-            case "showmap":
-                executeShowMap();
-                break;
-            case "savemap":
-                executeSaveMap(l_cmdArr[1]);
-                break;
-            case "editmap":
-                executeEditMap(l_cmdArr[1]);
-                break;
-            case "editcontinent":
-                // Execute add or remove continent action based on the provided sub-command
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddContinent(l_cmdArr[2], Integer.parseInt(l_cmdArr[3]));
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveContinent(l_cmdArr[2]);
-                break;
-            case "editcountry":
-                // Execute add or remove country action based on the provided sub-command
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddCountry(l_cmdArr[2], l_cmdArr[3]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveCountry(l_cmdArr[2]);
-                break;
-            case "editneighbor":
-                // Execute add or remove neighbor action based on the provided sub-command
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddNeighbor(l_cmdArr[2], l_cmdArr[3]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveNeighbor(l_cmdArr[2], l_cmdArr[3]);
-                break;
-            case "validatemap":
-                executeValidateMap();
-                break;
-            case "gameplayer":
-                // Execute add or remove game player action based on the provided sub-command
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddGamePlayer(l_cmdArr[2]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveGamePlayer(l_cmdArr[2]);
-                break;
-            case "assigncountries":
-                executeAssignCountries();
-                break;
-            case "deploy":
-                executeDeploy();
-                break;
-        }
-    }
+//    public void executeCommand(String p_command){
+//        // Get the base command from the provided command string
+//        String l_baseCmd = CommandValidationService.getBaseCommand(p_command);
+//
+//        // Split the command string into an array of command components
+//        String[] l_cmdArr = p_command.trim().split("\\ ");
+//
+//        // Execute the corresponding action based on the base command
+//        switch (l_baseCmd){
+//            case "loadmap":
+//                executeLoadMap(l_cmdArr[1]);
+//                break;
+//            case "showmap":
+//                executeShowMap();
+//                break;
+//            case "savemap":
+//                executeSaveMap(l_cmdArr[1]);
+//                break;
+//            case "editmap":
+//                executeEditMap(l_cmdArr[1]);
+//                break;
+//            case "editcontinent":
+//                // Execute add or remove continent action based on the provided sub-command
+//                if(l_cmdArr[1].trim().equals("-add"))
+//                    executeAddContinent(l_cmdArr[2], Integer.parseInt(l_cmdArr[3]));
+//                else if(l_cmdArr[1].trim().equals("-remove"))
+//                    executeRemoveContinent(l_cmdArr[2]);
+//                break;
+//            case "editcountry":
+//                // Execute add or remove country action based on the provided sub-command
+//                if(l_cmdArr[1].trim().equals("-add"))
+//                    executeAddCountry(l_cmdArr[2], l_cmdArr[3]);
+//                else if(l_cmdArr[1].trim().equals("-remove"))
+//                    executeRemoveCountry(l_cmdArr[2]);
+//                break;
+//            case "editneighbor":
+//                // Execute add or remove neighbor action based on the provided sub-command
+//                if(l_cmdArr[1].trim().equals("-add"))
+//                    executeAddNeighbor(l_cmdArr[2], l_cmdArr[3]);
+//                else if(l_cmdArr[1].trim().equals("-remove"))
+//                    executeRemoveNeighbor(l_cmdArr[2], l_cmdArr[3]);
+//                break;
+//            case "validatemap":
+//                executeValidateMap();
+//                break;
+//            case "gameplayer":
+//                // Execute add or remove game player action based on the provided sub-command
+//                if(l_cmdArr[1].trim().equals("-add"))
+//                    executeAddGamePlayer(l_cmdArr[2]);
+//                else if(l_cmdArr[1].trim().equals("-remove"))
+//                    executeRemoveGamePlayer(l_cmdArr[2]);
+//                break;
+//            case "assigncountries":
+//                executeAssignCountries();
+//                break;
+//            case "deploy":
+//                executeDeploy();
+//                break;
+//        }
+//    }
 
     /**
      * Loads a map from a file and validates it.
@@ -354,7 +376,7 @@ public class GameEngineController {
         while(Player.getD_reinforcementsCompleted() != d_Players.size()){
             // Issue orders for deploying reinforcements for each player
             for(Player l_player : d_Players){
-                //l_player.issue_order();
+//                l_player.issue_order();
             }
         }
         // Reset the count of completed reinforcements
@@ -368,4 +390,48 @@ public class GameEngineController {
             }
         }
     }
+
+    public void setOrders(Command p_cmd) {
+        if(d_completedTurns != d_Players.size()){
+            setNextPlayer();
+            d_Players.get(d_currentPlayer).setOrder(p_cmd);
+            d_Players.get(d_currentPlayer).issueOrder();
+        }
+        else{
+            executeAllOrders();
+        }
+    }
+
+    private void setNextPlayer(){
+        while(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
+            d_completedTurns++;
+            d_currentPlayer++;
+            if(d_currentPlayer == d_Players.size()){
+                d_currentPlayer = 0;
+            }
+        }
+    }
+
+    public void executeAllOrders() {
+        Order l_order;
+        boolean still_more_orders;
+        int l_playersCompleted = 0;
+        do {
+            still_more_orders = false;
+            for (Player p : d_Players) {
+                l_order = p.getNextOrder();
+                if(l_order!=null){
+                    still_more_orders = true;
+                    l_order.execute();
+                }
+                else{
+                    l_playersCompleted++;
+                }
+            }
+            if(l_playersCompleted < d_Players.size()){
+                still_more_orders = true;
+            }
+        } while (still_more_orders);
+    }
+
 }

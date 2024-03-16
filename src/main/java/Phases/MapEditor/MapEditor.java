@@ -115,6 +115,11 @@ public class MapEditor extends Phases {
     }
 
     @Override
+    public void endTurn(Command p_command) {
+        printInvalidMessage();
+    }
+
+    @Override
     public void next() {
         d_ge.setD_phase(new Players(d_ge));
     }

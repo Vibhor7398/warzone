@@ -100,7 +100,12 @@ public class Players extends Phases {
 
     @Override
     public void endGame(Command p_command) {
+        printInvalidMessage();
+    }
 
+    @Override
+    public void endTurn(Command p_command) {
+        printInvalidMessage();
     }
 
     @Override
