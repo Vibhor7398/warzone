@@ -7,7 +7,6 @@ package Models;
 
 import Controller.MapsController;
 import Orders.*;
-
 import java.util.*;
 
 /**
@@ -16,14 +15,19 @@ import java.util.*;
 public class Player {
     private String d_name;
     private static int d_ReinforcementsCompleted;
-    private int d_armiesCount;
-    private ArrayList<Country> d_countriesOwned;
-    private Queue<String> d_orderArgs;
-    private ArrayList<String> d_cardList;
+
+    private int d_armiesCount = 0;
+    private ArrayList<Country> d_countriesOwned = new ArrayList<>();
+    private Queue<String> d_orderArgs = new LinkedList<>();
+    private ArrayList<String> d_cardList = new ArrayList<>();
+    private final List<Player> d_NegotiatePlayers = new ArrayList<>();
+    //private ArrayList<String> d_cardList;
     private String d_orderType;
     private String[] d_orderArgsValues;
     private ArrayList<Order> d_orderList;
     private Order d_currentOrder;
+
+
 
     /**
      * Constructs a player with the given name.
@@ -32,10 +36,6 @@ public class Player {
      */
     public Player(String p_name) {
         this.setName(p_name);
-        d_armiesCount=0;
-        d_countriesOwned = new ArrayList<>();
-        d_orderArgs = new LinkedList<>();
-        d_cardList = new ArrayList<>();
     }
 
     /**
@@ -103,6 +103,23 @@ public class Player {
 
     public ArrayList<String> getCardList(){
         return d_cardList;
+    }
+
+    public void addNegotiatePlayer(Player p_player){
+        if (!d_NegotiatePlayers.contains(p_player))
+            d_NegotiatePlayers.add(p_player);
+    }
+
+    public void removeNegotiatePlayer(Player p_player){
+        d_NegotiatePlayers.remove(p_player);
+    }
+    /**
+     * Sets the order for the player.
+     *
+     * @param p_orderArgs The arguments of the order.
+     */
+    public void setOrder(String p_orderArgs) {
+        d_orderArgs.add(p_orderArgs);
     }
 
     public void removeCountryFromCountriesOwned(Country p_country) {

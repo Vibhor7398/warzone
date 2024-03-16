@@ -13,7 +13,10 @@ public class Blockade implements Order{
 
     @Override
     public boolean isValid() {
-        if (d_player.getCountriesOwned().contains(d_country)) {
+        if(!d_player.getCardList().contains("Blockade")){
+            System.out.println("player "+d_player.getName()+"doesn't have the blockade card! ");
+            return false;
+        } else if (d_player.getCountriesOwned().contains(d_country)) {
             return true;
         } else {
             System.out.println("This country does not belong to you");
@@ -27,10 +30,11 @@ public class Blockade implements Order{
             d_country.setArmies(d_country.getArmies() * 3);
             Player l_player = d_country.getOwner();
             l_player.removeCountryFromCountriesOwned(d_country);
+            d_player.removeCard("Blockade");
+            print();
         } else {
             System.out.println("Invalid Order! ");
         }
-        print();
     }
 
     @Override
