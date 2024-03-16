@@ -29,6 +29,7 @@ public class CommandService {
      * @return The validated command entered by the user.
      */
     public String getNextCommand(){
+
         System.out.println("Please enter your command");
         Scanner l_sc = new Scanner(System.in);
         String l_command = l_sc.nextLine();
