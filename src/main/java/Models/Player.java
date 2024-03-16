@@ -21,7 +21,6 @@ public class Player {
     private Queue<String> d_orderArgs = new LinkedList<>();
     private ArrayList<String> d_cardList = new ArrayList<>();
     private final List<Player> d_NegotiatePlayers = new ArrayList<>();
-    //private ArrayList<String> d_cardList;
     private String d_orderType;
     private String[] d_orderArgsValues;
     private ArrayList<Order> d_orderList;
@@ -215,9 +214,6 @@ public class Player {
                 //setD_currentOrder(new Negotiate(this,MapsController.getCountryByName(d_orderArgsValues[0])));
                 d_orderList.add(getD_currentOrder());
                 break;
-
-            case "end":
-                return;
 
             default:
                 System.out.println("Please enter correct order! ");
