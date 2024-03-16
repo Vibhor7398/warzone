@@ -233,7 +233,13 @@ public class Player {
                 System.out.println("Please enter correct order! ");
                 break;
         }
-
+    }
+    public void nextOrder(){
+        if(!d_orderList.isEmpty()){
+            Order l_orderToExecute = d_orderList.getFirst();
+            d_orderList.removeFirst();
+            l_orderToExecute.execute();
+        }
     }
 
 }
