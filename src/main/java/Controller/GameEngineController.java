@@ -354,7 +354,7 @@ public class GameEngineController {
         while(Player.getD_reinforcementsCompleted() != d_Players.size()){
             // Issue orders for deploying reinforcements for each player
             for(Player l_player : d_Players){
-                l_player.issue_order();
+                //l_player.issue_order();
             }
         }
         // Reset the count of completed reinforcements
@@ -364,7 +364,7 @@ public class GameEngineController {
         while(Player.getD_reinforcementsCompleted() != d_Players.size()){
             // Execute the next orders for each player
             for(Player l_player : d_Players){
-                l_player.next_order();
+                //l_player.next_order();
             }
         }
     }
