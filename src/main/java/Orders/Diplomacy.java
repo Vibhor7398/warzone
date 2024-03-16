@@ -5,7 +5,7 @@ import Models.Player;
 public class Diplomacy implements Order{
     Player d_player;
     Player d_negotiatePlayer;
-    Diplomacy(Player p_player, Player p_negotiatePlayer){
+    public Diplomacy(Player p_player, Player p_negotiatePlayer){
         this.d_player = p_player;
         this.d_negotiatePlayer = p_negotiatePlayer;
     }

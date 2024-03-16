@@ -5,7 +5,9 @@
 
 package Models;
 
-import Services.CommandValidationService;
+import Controller.GameEngineController;
+import Controller.MapsController;
+import Orders.*;
 import java.util.*;
 
 /**
@@ -14,11 +16,18 @@ import java.util.*;
 public class Player {
     private String d_name;
     private static int d_ReinforcementsCompleted;
+
     private int d_armiesCount = 0;
     private ArrayList<Country> d_countriesOwned = new ArrayList<>();
     private Queue<String> d_orderArgs = new LinkedList<>();
     private ArrayList<String> d_cardList = new ArrayList<>();
     private final List<Player> d_NegotiatePlayers = new ArrayList<>();
+    private String d_orderType;
+    private String[] d_orderArgsValues;
+    private ArrayList<Order> d_orderList;
+    private Order d_currentOrder;
+
+
 
     /**
      * Constructs a player with the given name.
@@ -126,9 +135,6 @@ public class Player {
         return d_ReinforcementsCompleted;
     }
 
-    public static void setD_ReinforcementsCompleted(int d_ReinforcementsCompleted) {
-        Player.d_ReinforcementsCompleted = d_ReinforcementsCompleted;
-    }
 
     /**
      * Sets the number of reinforcements completed by all players.
@@ -139,144 +145,91 @@ public class Player {
         Player.d_ReinforcementsCompleted = p_reinforcementsCompleted;
     }
 
+    public void setOrder(String p_orderType, String[] p_orderArgsValues) {
+        d_orderType = p_orderType;
+        d_orderArgsValues = p_orderArgsValues;
+    }
+
+    public String[] getD_orderArgsValues() {
+        return d_orderArgsValues;
+    }
+
+    public void setD_orderArgsValues(String[] p_orderArgsValues) {
+        this.d_orderArgsValues = p_orderArgsValues;
+    }
+
+    public void setD_orderList(ArrayList<Order> p_orderList) {
+        this.d_orderList = p_orderList;
+    }
+
+    public Order getD_currentOrder() {
+        return d_currentOrder;
+    }
+
+    public void setD_currentOrder(Order p_currentOrder) {
+        this.d_currentOrder = p_currentOrder;
+    }
+
+    public Player getPlayerByName(String p_name){
+        for (Player l_player : GameEngineController.d_Players){
+            if (l_player.getName().equals(p_name)){
+                return l_player;
+            }
+        }
+        return null;
+    }
+
     /**
      * Allows the player to issue orders for reinforcement deployment.
      * The method prompts the player to issue orders for deploying reinforcements based on their available armies
      * and the countries they own. It ensures that the issued orders are valid before processing them.
     */
-    public void issue_order() {
-        Scanner l_sc =  new Scanner(System.in);
-        CommandValidationService l_cvs = new CommandValidationService();
-        ArrayList<String> l_countriesOwned = new ArrayList<>();
-        
-        // Populate the list of country names owned by the player
-        for (Country l_country : this.getCountriesOwned()) {
-            l_countriesOwned.add(l_country.getName());
+
+
+    public void issueOrder() {
+
+        switch (d_orderType) {
+            case "deploy":
+                System.out.println("Deploy Order");
+                setD_currentOrder(new Deploy(this, MapsController.getCountryByName(d_orderArgsValues[0]), Integer.parseInt(d_orderArgsValues[1])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "advance":
+                System.out.println("Advance Order");
+                setD_currentOrder(new Advance(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "airlift":
+                System.out.println("Airlift Order");
+                setD_currentOrder(new Airlift(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "bomb":
+                System.out.println("Bomb Order");
+                setD_currentOrder(new Bomb(this, MapsController.getCountryByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "blockade":
+                System.out.println("Blockade Order");
+                setD_currentOrder(new Blockade(this, MapsController.getCountryByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "negotiate":
+                System.out.println("Negotiate Order");
+                setD_currentOrder(new Diplomacy(this, getPlayerByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            default:
+                System.out.println("Please enter correct order! ");
+                break;
         }
-        boolean l_valid = false;
-
-        // Continue prompting for orders until a valid order is issued
-        while (!l_valid) {
-            l_valid=true;
-            if (this.getArmies() != 0) {
-                System.out.println(this.getName() + " please issue your orders: ");
-                System.out.println("Reinforcement(s) available for deployment: " + this.getArmies());
-                String l_order = l_sc.nextLine();
-                String[] l_orderArgs = l_order.trim().split("\\s+");
-
-                if (!l_cvs.validateDeployCommand(l_orderArgs)) {
-                    System.out.print("Invalid Command! ");
-                    l_valid=false;
-                } else {
-                    String l_countryName = l_orderArgs[1];
-                    if (!l_countriesOwned.contains(l_countryName)) {
-                        System.out.println("This country does not belong to you");
-                        l_valid=false;
-                    }else if (checkArmyExceeded(Integer.parseInt(l_orderArgs[2]),this.getArmies())) { //Integer.parseInt(l_orderArgs[2]) > this.getArmies()
-                        System.out.println("Not having enough armies");
-                        l_valid=false;
-                    } else if (Integer.parseInt(l_orderArgs[2]) < 1) {
-                        System.out.println("Number of armies should be greater than 0:");
-                        l_valid = false;
-                    } else {
-                        
-                        // Process the valid order
-                        this.setArmies(this.getArmies() - Integer.parseInt(l_orderArgs[2]));
-                        if (this.getArmies() == 0) {
-                            d_ReinforcementsCompleted++;
-                        }
-                        setOrder(l_order);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks if the number of armies specified in a command exceeds the available army count.
-     *
-     * @param l_cmd      The number of armies specified in the command.
-     * @param armyCount  The available army count.
-     * @return True if the number of armies exceeds the available count, false otherwise.
-    */
-    public boolean checkArmyExceeded(int l_cmd, int armyCount){
-        if(l_cmd > armyCount ){
-            System.out.println("Not having enough armies");
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Handles the deployment of armies to a country based on the given command.
-     *
-     * @param p_command The command containing the country name and the number of armies to deploy.
-    */
-    private void handleDeployOrder(ArrayList<String> p_command) {
-        Order l_order = new Order();
-        l_order.deployOrder(this, p_command.get(0), Integer.parseInt(p_command.get(1)));
-    }
-    
-    /**
-     * Handles an invalid command by printing a message indicating that the command is invalid.
-     */
-    private void handleInvalidCommand() {
-        System.out.println("Invalid Command! --- Command is \"deploy countryID num\"");
-    }
-
-    /**
-     * Processes the next order in the order queue.
-     * This method dequeues the next order from the order queue, processes it, and updates the game state accordingly.
-     */
-    public void next_order() {
-        // Check if there are orders to process
-        if (!d_orderArgs.isEmpty()) {
-
-            // Dequeue the next order command
-            String l_orderCommand = d_orderArgs.poll();
-
-            // If the order queue is empty after dequeuing, increment the count of completed reinforcements
-            if(d_orderArgs.isEmpty()){
-                d_ReinforcementsCompleted++;
-            }
-            // Split the order command into individual components
-            String[] l_orderCommandList = l_orderCommand.trim().split("\\s+");
-            ArrayList<String> l_commandList = new ArrayList<>(Arrays.asList(l_orderCommandList));
-            String d_orderType = l_orderCommandList[0];
-            
-            // Remove the order type from the command list
-            if (!l_commandList.isEmpty()) {
-                l_commandList.removeFirst();
-            }
-            // Process the order based on its type
-            switch (d_orderType) {
-                case "deploy":
-                    handleDeployOrder(l_commandList);
-                    break;
-                default:
-                    handleInvalidCommand();
-                    break;
-            }
-        }
-    }
-
-
-    public ArrayList<Orders.Order> d_orders;
-    public boolean createOrder(ArrayList<Player> l_players){
-        d_orders = new ArrayList<>();
-        for (Player l_player : l_players) {
-//            d_orders.add(new Deploy(l_player));
-        }
-        return true;
-    }
-
-    public Orders.Order getNextOrder(int p_index){
-        if (!this.d_orders.isEmpty()) {
-            Orders.Order to_return = this.d_orders.getFirst();
-            this.d_orders.removeFirst();
-            return to_return;
-        } else
-            return null;
 
     }
+
 }

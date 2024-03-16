@@ -2,7 +2,6 @@ package Orders;
 
 import Models.Country;
 import Models.Player;
-
 /**
  * Represents an Advance order in a strategy game. This order can either move armies
  * from one territory to another owned by the same player, or it can initiate an attack
@@ -52,6 +51,7 @@ public class Advance implements Order{
      *
      * @return true if the order is valid, false otherwise.
      */
+
     @Override
     public boolean isValid() {
         if (!d_player.getCountriesOwned().contains(d_source_country)) {
@@ -97,7 +97,6 @@ public class Advance implements Order{
             // target country belongs to another player, initiate an attack
             int l_defenderArmies = d_target_country.getArmies();
             int l_attackerArmies = d_advance_armies;
-
             double l_prob_attacker = (l_attackerArmies * 0.6) % 1 > 0.5 ? Math.ceil(l_attackerArmies * 0.6) : Math.floor(l_attackerArmies * 0.6);
             double l_prob_defender = (l_defenderArmies * 0.7) % 1 > 0.5 ? Math.ceil(l_defenderArmies * 0.7) : Math.floor(l_defenderArmies * 0.7);
 
