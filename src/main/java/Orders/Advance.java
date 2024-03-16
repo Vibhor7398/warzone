@@ -98,7 +98,10 @@ public class Advance implements Order{
             int l_defenderArmies = d_target_country.getArmies();
             int l_attackerArmies = d_advance_armies;
 
-           if (l_attackerArmies > l_defenderArmies) {
+            double l_prob_attacker = (l_attackerArmies * 0.6) % 1 > 0.5 ? Math.ceil(l_attackerArmies * 0.6) : Math.floor(l_attackerArmies * 0.6);
+            double l_prob_defender = (l_defenderArmies * 0.7) % 1 > 0.5 ? Math.ceil(l_defenderArmies * 0.7) : Math.floor(l_defenderArmies * 0.7);
+
+           if (l_prob_attacker > l_prob_defender) {
                // Attacker wins, move armies to the target territory
                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
                d_target_country.setArmies(l_attackerArmies - l_defenderArmies);
@@ -106,11 +109,12 @@ public class Advance implements Order{
                Player l_target_player = d_target_country.getOwner();
                if(l_target_player != null) {                   
                     l_target_player.removeCountryFromCountriesOwned(d_target_country);
-                    d_attack_successful = true;
                }
+               d_attack_successful = true;
            } else {
                // Defender wins, update armies in source territory
                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
+               d_target_country.setArmies(d_target_country.getArmies() - d_advance_armies);
                d_attack_successful = false;
            }
        }
