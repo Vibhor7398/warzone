@@ -49,19 +49,23 @@ public class Players extends Phases {
 
     @Override
     public void loadMap(Command p_command) {
-        System.out.println("Loadmap"+p_command.toString());
-
+        d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0]);
     }
 
     @Override
     public void assignPlayers(Command p_command) {
-        System.out.println("Assign Players"+p_command.toString());
-        d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0]);
+        if(p_command.getD_subCmd().equals("-add")){
+            d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0]);
+        }
+        else{
+            d_ge.getD_gc().executeRemoveGamePlayer(p_command.getArgs()[0]);
+        }
     }
 
     @Override
     public void assignCountries(Command p_command) {
-        System.out.println("Assign Countries"+p_command.toString());
+        d_ge.getD_gc().executeAssignCountries();
+        next();
     }
 
     @Override
@@ -102,6 +106,5 @@ public class Players extends Phases {
     @Override
     public void next() {
         d_ge.setD_phase(new MainPlay(d_ge));
-
     }
 }
