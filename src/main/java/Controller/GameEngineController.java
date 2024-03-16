@@ -113,7 +113,7 @@ public class GameEngineController {
      *
      * @param p_filename The name of the file containing the map to be loaded.
      */
-    private void executeLoadMap(String p_filename){
+    public void executeLoadMap(String p_filename){
         try {
             d_Map.loadMap(AppConstants.MapsPath + p_filename);
             d_Map.validateMap();
@@ -131,7 +131,7 @@ public class GameEngineController {
      * This method invokes the `showMap` method of the game map object to display the details of the map,
      * including continents, countries, and their respective neighbors.
      */
-    private void executeShowMap(){
+    public void executeShowMap(){
         d_Map.showMap();
     }
 
@@ -142,7 +142,7 @@ public class GameEngineController {
      *
      * @param p_filename The name of the file to which the map will be saved.
     */
-    private void executeSaveMap(String p_filename){
+    public void executeSaveMap(String p_filename){
         d_Map.validateMap();
         boolean l_isValid = d_Map.isMapValid();
         if(!l_isValid){
@@ -165,7 +165,7 @@ public class GameEngineController {
      *
      * @param p_filename The name of the file containing the map data to be used for editing.
     */
-    private void executeEditMap(String p_filename){
+    public void executeEditMap(String p_filename){
         File l_file = new File(AppConstants.MapsPath + p_filename);
         try {
             d_Map.editMap(l_file);
@@ -180,7 +180,7 @@ public class GameEngineController {
      * @param p_continentID     The unique identifier for the new continent.
      * @param p_continentValue  The control value associated with the new continent.
      */
-    private void executeAddContinent(String p_continentID, int p_continentValue){
+    public void executeAddContinent(String p_continentID, int p_continentValue){
         d_Map.addContinent(p_continentID,p_continentValue);
     }
 
@@ -191,7 +191,7 @@ public class GameEngineController {
      * @param p_continentID The unique identifier of the continent to be removed.
      * 
     */
-    private void executeRemoveContinent(String p_continentID){
+    public void executeRemoveContinent(String p_continentID){
         d_Map.removeContinent(p_continentID);
     }
 
@@ -201,7 +201,7 @@ public class GameEngineController {
      * @param p_countryID     The unique identifier for the new country.
      * @param p_continentID   The unique identifier of the continent to which the new country belongs.
     */
-    private void executeAddCountry(String p_countryID, String p_continentID){
+    public void executeAddCountry(String p_countryID, String p_continentID){
         d_Map.addCountry(p_countryID,p_continentID);
     }
 
@@ -211,7 +211,7 @@ public class GameEngineController {
      *
      * @param p_countryID The unique identifier of the country to be removed.
     */
-    private void executeRemoveCountry(String p_countryID){
+    public void executeRemoveCountry(String p_countryID){
         d_Map.removeCountry(p_countryID);
     }
 
@@ -221,7 +221,7 @@ public class GameEngineController {
      * @param p_countryID The unique identifier of the country to which the neighbor will be added.
      * @param p_neighborCountryID The unique identifier of the neighbor country to be added.
     */
-    private void executeAddNeighbor(String p_countryID, String p_neighborCountryID){
+    public void executeAddNeighbor(String p_countryID, String p_neighborCountryID){
         d_Map.editNeighbors("add", p_countryID, p_neighborCountryID);
     }
 
@@ -231,7 +231,7 @@ public class GameEngineController {
      * @param p_countryID The unique identifier of the country from which the neighbor will be removed.
      * @param p_neighborCountryID The unique identifier of the neighbor country to be removed.
     */
-    private void executeRemoveNeighbor(String p_countryID, String p_neighborCountryID){
+    public void executeRemoveNeighbor(String p_countryID, String p_neighborCountryID){
         d_Map.editNeighbors("remove", p_countryID, p_neighborCountryID);
     }
 
@@ -241,7 +241,7 @@ public class GameEngineController {
      * country connectivity, and other map integrity rules. It then prints the status of the map,
      * indicating whether it is valid or invalid.
     */
-    private void executeValidateMap(){
+    public void executeValidateMap(){
         d_Map.validateMap();
         boolean l_isValid = d_Map.isMapValid();
         if (l_isValid) {
@@ -276,7 +276,7 @@ public class GameEngineController {
      * @param p_gamePlayer The name of the player to check for existence.
      * @return The index of the player in the list if found, or -1 if the player does not exist.
     */
-    private int doesPlayerExists(String p_gamePlayer){
+    public int doesPlayerExists(String p_gamePlayer){
         for(int i = 0 ; i < d_Players.size() ; i++){
             if(d_Players.get(i).getName().equals(p_gamePlayer)){
                 return i;
@@ -291,7 +291,7 @@ public class GameEngineController {
      *
      * @param p_gamePlayer The name of the player to be removed.
     */
-    private void executeRemoveGamePlayer(String p_gamePlayer){
+    public void executeRemoveGamePlayer(String p_gamePlayer){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
         if(l_playerIndex != -1){
             d_Players.remove(l_playerIndex);
@@ -307,7 +307,7 @@ public class GameEngineController {
     * If there are fewer than 2 players, the game cannot start, and the game flag is set accordingly.
     * After assigning countries, the main game loop is initiated, and players are assigned initial reinforcements.
     */
-    private void executeAssignCountries(){
+    public void executeAssignCountries(){
         // Check if there are at least 2 players to start the game
         if(d_Players.size() < 2){
             System.out.println("Cannot play with less than 2 players");
@@ -349,7 +349,7 @@ public class GameEngineController {
      * In this phase, players issue orders for deploying reinforcements and executing their next orders.
      * The deploy phase continues until all players have completed their reinforcements.
     */
-    private void executeDeploy(){
+    public void executeDeploy(){
         // Continuously execute orders until all players have completed their reinforcements
         while(Player.getD_reinforcementsCompleted() != d_Players.size()){
             // Issue orders for deploying reinforcements for each player

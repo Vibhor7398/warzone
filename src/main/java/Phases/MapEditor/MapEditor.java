@@ -14,48 +14,59 @@ public class MapEditor extends Phases {
 
     @Override
     public void showMap(Command p_command) {
-        System.out.println("Showmap"+p_command.toString());
+        d_ge.getD_gc().executeShowMap();
     }
 
     @Override
     public void editMap(Command p_command) {
-        System.out.println("EditMap"+p_command.toString());
-
+        d_ge.getD_gc().executeEditMap(p_command.getArgs()[0]);
     }
 
     @Override
     public void saveMap(Command p_command) {
-        System.out.println("Savemap"+p_command.toString());
-
+        d_ge.getD_gc().executeSaveMap(p_command.getArgs()[0]);
     }
 
     @Override
     public void validateMap(Command p_command) {
-        System.out.println("ValidateMap"+p_command.toString());
+        d_ge.getD_gc().executeValidateMap();
     }
 
     @Override
     public void editContinent(Command p_command) {
-        System.out.println("EditContinet"+p_command.toString());
-
+        if(p_command.getD_subCmd().equals("-add")){
+            d_ge.getD_gc().executeAddContinent(p_command.getArgs()[0], Integer.parseInt(p_command.getArgs()[1]));
+        }
+        else{
+            d_ge.getD_gc().executeRemoveContinent(p_command.getArgs()[0]);
+        }
     }
 
     @Override
     public void editCountry(Command p_command) {
         System.out.println("EditCountry"+p_command.toString());
-
+        if(p_command.getD_subCmd().equals("-add")){
+            d_ge.getD_gc().executeAddCountry(p_command.getArgs()[0], p_command.getArgs()[1]);
+        }
+        else{
+            d_ge.getD_gc().executeRemoveCountry(p_command.getArgs()[0]);
+        }
     }
 
     @Override
     public void editNeighbor(Command p_command) {
-        System.out.println("EditNeighbor"+p_command.toString());
-
-
+        if(p_command.getD_subCmd().equals("-add")){
+            d_ge.getD_gc().executeAddNeighbor(p_command.getArgs()[0], p_command.getArgs()[1]);
+        }
+        else{
+            d_ge.getD_gc().executeRemoveNeighbor(p_command.getArgs()[0], p_command.getArgs()[1]);
+        }
     }
 
     @Override
     public void loadMap(Command p_command) {
-      next();
+        d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0]);
+        next();
     }
 
     @Override
@@ -100,7 +111,7 @@ public class MapEditor extends Phases {
 
     @Override
     public void endGame(Command p_command) {
-
+        printInvalidMessage();
     }
 
     @Override

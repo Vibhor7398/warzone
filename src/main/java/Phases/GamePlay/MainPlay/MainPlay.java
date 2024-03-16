@@ -10,8 +10,6 @@ public class MainPlay extends Phases {
         d_ge = p_ge;
     }
 
-
-
     @Override
     public void showMap(Command p_command) {
         printInvalidMessage();
@@ -64,7 +62,7 @@ public class MainPlay extends Phases {
 
     @Override
     public void deploy(Command p_command) {
-
+        d_ge.getD_gc().executeDeploy();
     }
 
     @Override

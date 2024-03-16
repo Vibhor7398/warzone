@@ -48,63 +48,78 @@ public abstract class Phases {
                 case "showmap":
                     d_ge.getD_phase().showMap(l_command);
                     break;
+
                 case "editmap":
                     d_ge.getD_phase().editMap(l_command);
                     break;
+
                 case "savemap":
                     d_ge.getD_phase().saveMap(l_command);
                     break;
+
                 case "validatemap":
                     d_ge.getD_phase().validateMap(l_command);
                     break;
+
                 case "editcontinent":
                     d_ge.getD_phase().editContinent(l_command);
                     break;
+
                 case "editcountry":
                     d_ge.getD_phase().editCountry(l_command);
                     break;
+
                 case "editneighbor":
                     d_ge.getD_phase().editNeighbor(l_command);
                     break;
+
                 case "loadmap":
                     d_ge.getD_phase().loadMap(l_command);
-
                     break;
+
                 case "assigncountries":
                     d_ge.getD_phase().assignCountries(l_command);
                     break;
+
                 case "gameplayer":
                     d_ge.getD_phase().assignPlayers(l_command);
                     break;
+
                 case "deploy":
                     d_ge.getD_phase().deploy(l_command);
                     break;
+
                 case "advance":
                     d_ge.getD_phase().advance(l_command);
                     break;
+
                 case "bomb":
                     d_ge.getD_phase().bomb(l_command);
                     break;
+
                 case "blockade":
                     d_ge.getD_phase().blockade(l_command);
                     break;
+
                 case "airlift":
                     d_ge.getD_phase().airlift(l_command);
                     break;
+
                 case "negotiate":
                     d_ge.getD_phase().negotiate(l_command);
                     break;
+
                 case "endgame":
                     d_ge.getD_phase().endGame(l_command);
                     break;
+
                 case "next":
                     d_ge.getD_phase().next();
                     break;
+
                 default:
                     printInvalidMessage();
                     break;
-
-
             }
         }
         d_ge.nextUserInput();
