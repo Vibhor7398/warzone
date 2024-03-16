@@ -210,10 +210,10 @@ public class CommandValidator {
             }
         }
 
-        return "Hint: " + l_args;
+        return "Oops! You've missed the command. Did you mean to use -> " + l_args;
     }
 
-    public Command validateCommand(String p_command) throws InvalidCommandException {
+    public Command[] validateCommand(String p_command) throws InvalidCommandException {
             String[] l_cmd = p_command.trim().split(" ");
             String l_baseCommand = l_cmd[0];
             if (!validateBaseCommand(l_baseCommand)) {
@@ -221,7 +221,7 @@ public class CommandValidator {
             }
             int commandPointer = 1;
             if (!hasSubCommand(l_baseCommand) && !hasArguments(l_baseCommand)) {
-                return new Command(l_baseCommand, "", new String[]{});
+                return new Command[]{new Command(l_baseCommand, "", new String[]{})};
             }
             if (l_cmd.length == 1) {
                 throw new InvalidCommandException(getValidCommand(l_baseCommand));
@@ -258,7 +258,22 @@ public class CommandValidator {
                     throw new InvalidCommandException(getValidCommand(l_baseCommand));
                 }
             }
-            return new Command(l_baseCommand, l_cmd[1], l_argsArray.toArray(new String[0]));
+            int size=l_argsArray.size() / l_validCommand.getNumArgs();
+            Command[] l_commands = new Command[size];
+            for (int i = 0; i < size; i++) {
+                if(hasSubCommand(l_baseCommand)){
+                    l_commands[i] = new Command(l_baseCommand, l_cmd[1], l_argsArray.subList(i * l_validCommand.getNumArgs(), (i + 1) * l_validCommand.getNumArgs()).toArray(new String[0]));
+//                    continue;
+                }
+                else{
+                    l_commands[i] = new Command(l_baseCommand, "", l_argsArray.subList(i * l_validCommand.getNumArgs(), (i + 1) * l_validCommand.getNumArgs()).toArray(new String[0]));
+                }
+                //l_commands[i] = new Command(l_baseCommand, l_cmd[1], l_argsArray.subList(i * l_validCommand.getNumArgs(), (i + 1) * l_validCommand.getNumArgs()).toArray(new String[0]));
+            }
+            for(Command c:l_commands){
+                System.out.println(c.toString());
+            }
+            return l_commands;
     }
 
 

@@ -1,95 +1,99 @@
 package Phases.GamePlay.MainPlay;
 import GameEngine.GameEngine;
+import Models.Command;
 import Phases.Phases;
 
 public class MainPlay extends Phases {
-
+    private final GameEngine d_ge;
     public MainPlay(GameEngine p_ge) {
         super(p_ge);
+        d_ge = p_ge;
     }
 
+
+
     @Override
-    public void showMap() {
+    public void showMap(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void editMap() {
+    public void editMap(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void saveMap() {
+    public void saveMap(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void validateMap() {
+    public void validateMap(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void editContinent() {
+    public void editContinent(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void editCountry() {
+    public void editCountry(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void editNeighbor() {
+    public void editNeighbor(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void loadMap() {
+    public void loadMap(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void assignPlayers() {
+    public void assignPlayers(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void assignCountries() {
+    public void assignCountries(Command p_command) {
         printInvalidMessage();
     }
 
     @Override
-    public void deploy() {
+    public void deploy(Command p_command) {
 
     }
 
     @Override
-    public void advance() {
+    public void advance(Command p_command) {
 
     }
 
     @Override
-    public void bomb() {
+    public void bomb(Command p_command) {
 
     }
 
     @Override
-    public void blockade() {
+    public void blockade(Command p_command) {
 
     }
 
     @Override
-    public void airlift() {
+    public void airlift(Command p_command) {
 
     }
 
     @Override
-    public void negotiate() {
+    public void negotiate(Command p_command) {
 
     }
 
     @Override
-    public void endGame() {
+    public void endGame(Command p_command) {
 
     }
 
@@ -97,4 +101,5 @@ public class MainPlay extends Phases {
     public void next() {
 
     }
+
 }

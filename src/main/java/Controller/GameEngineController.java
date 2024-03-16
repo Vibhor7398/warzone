@@ -260,7 +260,7 @@ public class GameEngineController {
      *
      * @param p_gamePlayer The name of the player to be added.
     */
-    private void executeAddGamePlayer(String p_gamePlayer){
+    public void executeAddGamePlayer(String p_gamePlayer){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
         if (l_playerIndex != -1){
             System.out.println("Player name already exists!");
