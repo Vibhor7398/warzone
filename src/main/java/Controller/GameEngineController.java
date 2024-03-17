@@ -32,6 +32,8 @@ public class GameEngineController {
     private static int d_currentPlayer;
     private static int d_completedTurns;
 
+    public static ArrayList<Player> d_cardsOwnedByPlayer = new ArrayList<>();
+
     /**
      * Constructs a new instance of GameEngineController.
      * Initializes the game map and player list.
@@ -238,6 +240,14 @@ public class GameEngineController {
         return -1;
     }
 
+    static public void setD_cardsOwnedByPlayer(Player p_cardsOwnedByPlayer) {
+        d_cardsOwnedByPlayer.add(p_cardsOwnedByPlayer);
+    }
+
+    static public ArrayList<Player> getD_cardsOwnedByPlayer() {
+        return d_cardsOwnedByPlayer;
+    }
+
     /**
      * Removes a player from the list of players if the player exists.
      * If the player does not exist, a message indicating the same is printed.
@@ -309,6 +319,7 @@ public class GameEngineController {
                 if(!ifTurnsCompleted()){
                     incrementNextPlayer();
                 }
+                getD_cardsOwnedByPlayer().clear();
             }
             else{
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);

@@ -1,8 +1,11 @@
 package Orders;
 
+import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
 import Services.CardAssignment;
+
+import java.util.ArrayList;
 
 /**
  * Represents an Advance order in a strategy game. This order can either move armies
@@ -60,6 +63,11 @@ public class Advance implements Order{
             return false;
         }
 
+        if(d_player.getCountriesOwned().contains(d_target_country)) {
+            System.out.println("Cannot attack on your own country");
+            return false;
+        }
+
         if(d_player.getNegotiatePlayers().contains(d_target_country.getOwner())) {
             System.out.println("Cannot attack! " + d_target_country.getOwner().getName() + " has used Diplomacy card.");
             return false;
@@ -75,7 +83,7 @@ public class Advance implements Order{
             return false;
         }
 
-        if (d_advance_armies <= 0 || d_advance_armies >= d_source_country.getArmies()) {
+        if (d_advance_armies <= 0) {
             System.out.println("Invalid number of armies to advance.");
             return false;
         }
@@ -99,12 +107,12 @@ public class Advance implements Order{
             return;
         }
         // target country belongs to current player, move the armies to the target country
-        if (d_player.getCountriesOwned().contains(d_target_country)) {
-            // Removed army from source country
-            d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
-            // Added army to target country
-            d_target_country.setArmies(d_advance_armies + d_target_country.getArmies());
-        } else {
+//        if (d_player.getCountriesOwned().contains(d_target_country)) {
+//            // Removed army from source country
+//            d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
+//            // Added army to target country
+//            d_target_country.setArmies(d_advance_armies + d_target_country.getArmies());
+//        } else {
             // target country belongs to another player, initiate an attack
             int l_defenderArmies = d_target_country.getArmies();
             int l_attackerArmies = d_advance_armies;
@@ -121,16 +129,19 @@ public class Advance implements Order{
                     l_target_player.removeCountryFromCountriesOwned(d_target_country);
                }
                d_attack_successful = true;
-               String l_card = CardAssignment.getCard();
-               d_player.addCard(l_card);
-               System.out.println(d_player.getName() + " got " + l_card + " card.");
+               if(!GameEngineController.getD_cardsOwnedByPlayer().contains(d_player)) {
+                   String l_card = CardAssignment.getCard();
+                   d_player.addCard(l_card);
+                   GameEngineController.setD_cardsOwnedByPlayer(d_player);
+                   System.out.println(d_player.getName() + " got " + l_card + " card.");
+               }
            } else {
                // Defender wins, update armies in source territory
                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
                d_target_country.setArmies(d_target_country.getArmies() - d_advance_armies);
                d_attack_successful = false;
            }
-       }
+//       }
         print();
     }
 
