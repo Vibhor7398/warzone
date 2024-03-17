@@ -59,6 +59,12 @@ public class Advance implements Order{
         if(d_source_country==null || d_player == null || d_target_country==null){
             return false;
         }
+
+        if(d_player.getNegotiatePlayers().contains(d_target_country.getOwner())) {
+            System.out.println("Cannot attack! " + d_target_country.getOwner().getName() + " has used Diplomacy card.");
+            return false;
+        }
+
         if (!d_player.getCountriesOwned().contains(d_source_country)) {
             System.out.println("Source country does not belong to the current player.");
             return false;
@@ -115,7 +121,9 @@ public class Advance implements Order{
                     l_target_player.removeCountryFromCountriesOwned(d_target_country);
                }
                d_attack_successful = true;
-               d_player.addCard(CardAssignment.getCard());
+               String l_card = CardAssignment.getCard();
+               d_player.addCard(l_card);
+               System.out.println(d_player.getName() + " got " + l_card + " card.");
            } else {
                // Defender wins, update armies in source territory
                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
