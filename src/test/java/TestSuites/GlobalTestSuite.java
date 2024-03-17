@@ -12,6 +12,6 @@ import org.junit.runners.Suite;
  * It includes the ServicesTestSuite and ControllerTestSuit.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ServicesTestSuite.class, ControllerTestSuit.class})
+@Suite.SuiteClasses({ServicesTestSuite.class, ControllerTestSuit.class, OrderTestSuite.class})
 public class GlobalTestSuite {
 }
