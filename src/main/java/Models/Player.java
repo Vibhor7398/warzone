@@ -125,6 +125,10 @@ public class Player {
     public void removeNegotiatePlayer(Player p_player){
         d_NegotiatePlayers.remove(p_player);
     }
+    
+    public List<Player> getNegotiatePlayers(){
+        return d_NegotiatePlayers;
+    }
 
     /**
      * Sets the order for the player.

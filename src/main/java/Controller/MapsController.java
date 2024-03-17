@@ -455,7 +455,8 @@ public class MapsController{
                     " | Continent Value: " + p_continent.getContinentValue() +
                     " | Number of Countries: " + p_continent.getCountries().size());
             p_continent.getCountries().forEach((countryId, country) -> {
-                System.out.println("\tCountry ID: " + country.getId() + " | Name: " + country.getName()+" | Armies: " + country.getArmies());
+                System.out.println("\tCountry ID: " + country.getId() + " | Name: " + country.getName());
+                System.out.println("\t\tArmies: " + country.getArmies() + " | Owner: " + (country.getOwner() == null ? "Neutral" : country.getOwner().getName()));
                 LinkedHashMap<String, Country> l_neighborsMap = country.getNeighbors();
                 if (!l_neighborsMap.isEmpty()) {
                     String l_neighbors = String.join(", ", l_neighborsMap.keySet());
