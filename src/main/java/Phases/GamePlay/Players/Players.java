@@ -13,11 +13,6 @@ public class Players extends Phases {
     }
 
     @Override
-    public void showMap(Command p_command) {
-        printInvalidMessage();
-    }
-
-    @Override
     public void editMap(Command p_command) {
         printInvalidMessage();
     }
@@ -64,8 +59,10 @@ public class Players extends Phases {
 
     @Override
     public void assignCountries(Command p_command) {
-        d_ge.getD_gc().executeAssignCountries();
-        next();
+        boolean l_res = d_ge.getD_gc().executeAssignCountries();
+        if(l_res){
+            next();
+        }
     }
 
     @Override

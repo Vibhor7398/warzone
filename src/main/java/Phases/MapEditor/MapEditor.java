@@ -13,11 +13,6 @@ public class MapEditor extends Phases {
     }
 
     @Override
-    public void showMap(Command p_command) {
-        d_ge.getD_gc().executeShowMap();
-    }
-
-    @Override
     public void editMap(Command p_command) {
         d_ge.getD_gc().executeEditMap(p_command.getArgs()[0]);
     }

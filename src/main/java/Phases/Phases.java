@@ -6,7 +6,9 @@ import Models.Command;
 public abstract class Phases {
     GameEngine d_ge;
 
-    abstract public void showMap(Command p_command);
+    public void showMap(Command p_command) {
+        d_ge.getD_gc().executeShowMap();
+    }
 
     abstract public void editMap(Command p_command);
 
@@ -112,7 +114,7 @@ public abstract class Phases {
                     break;
 
                 case "endturn":
-                    d_ge.getD_phase().loadMap(l_command);
+                    d_ge.getD_phase().endTurn(l_command);
                     break;
 
                 case "endgame":
