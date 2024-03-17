@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @version 2.0
  */
 
 package Models;
@@ -143,6 +143,11 @@ public class Country {
         l_neighbors.values().removeIf(neighbor -> p_id == neighbor.getId());
     }
 
+    /**
+     * Retrieves the owner of the country.
+     *
+     * @return The player who owns the country, or null if the country is not owned by any player.
+     */
     public Player getOwner() {
         for (Player l_player : GameEngineController.d_Players) {
             if (l_player.getCountriesOwned().contains(this)) {
