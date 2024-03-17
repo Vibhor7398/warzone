@@ -6,6 +6,7 @@ package TestSuites;
 
 import Services.TestCommandValidationService;
 import Services.TestMathService;
+import Services.TestReinforcement;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -14,6 +15,6 @@ import org.junit.runners.Suite;
  * It includes test cases for CommandValidationService and MathService.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TestCommandValidationService.class, TestMathService.class})
+@Suite.SuiteClasses({TestCommandValidationService.class, TestMathService.class, TestReinforcement.class})
 public class ServicesTestSuite {
 }

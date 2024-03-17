@@ -7,6 +7,8 @@ package Controller;
 
 import Constants.AppConstants;
 import GameEngine.GameEngine;
+import Logger.LogEntryBuffer;
+import Logger.LogHandler;
 import Models.Command;
 import Models.Country;
 import Models.Player;
@@ -33,6 +35,9 @@ public class GameEngineController {
     private static int d_completedTurns;
 
     public static ArrayList<Player> d_cardsOwnedByPlayer = new ArrayList<>();
+
+    public static LogEntryBuffer d_Log = new LogEntryBuffer();
+    public static LogHandler d_logHandler = new LogHandler(d_Log);
 
     /**
      * Constructs a new instance of GameEngineController.
@@ -320,6 +325,7 @@ public class GameEngineController {
                     incrementNextPlayer();
                 }
                 getD_cardsOwnedByPlayer().clear();
+                d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
             }
             else{
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);

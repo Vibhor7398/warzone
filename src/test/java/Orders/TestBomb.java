@@ -33,39 +33,39 @@ public class TestBomb {
 
     @Test
     public void testIsValidWhenCountryBelongsToPlayer() {
-        Bomb bomb = new Bomb(d_player, d_playerCountry);
+        Bomb l_bomb = new Bomb(d_player, d_playerCountry);
 
-        assertFalse(bomb.isValid());
+        assertFalse(l_bomb.isValid());
     }
 
     @Test
     public void testIsValidWhenCountryIsNeighborOfOwnedCountry() {
-        Bomb bomb = new Bomb(d_player, d_neighboringCountry);
+        Bomb l_bomb = new Bomb(d_player, d_neighboringCountry);
 
-        assertTrue(bomb.isValid());
+        assertTrue(l_bomb.isValid());
     }
 
     @Test
     public void testIsValidWhenCountryIsNotNeighborOfOwnedCountry() {
-        Bomb bomb = new Bomb(d_player, d_nonNeighboringCountry);
+        Bomb l_bomb = new Bomb(d_player, d_nonNeighboringCountry);
 
-        assertFalse(bomb.isValid());
+        assertFalse(l_bomb.isValid());
     }
 
     @Test
     public void testExecuteWhenValid() {
-        Bomb bomb = new Bomb(d_player, d_neighboringCountry);
+        Bomb l_bomb = new Bomb(d_player, d_neighboringCountry);
         d_neighboringCountry.setArmies(10);
 
-        bomb.execute();
+        l_bomb.execute();
 
         assertEquals(5, d_neighboringCountry.getArmies());
     }
 
     @Test
     public void testExecuteWhenInvalid() {
-        Bomb bomb = new Bomb(d_player, d_nonNeighboringCountry);
+        Bomb l_bomb = new Bomb(d_player, d_nonNeighboringCountry);
         d_nonNeighboringCountry.setArmies(10);
-        bomb.execute();
+        l_bomb.execute();
     }
 }

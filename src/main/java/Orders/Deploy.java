@@ -7,6 +7,7 @@ package Orders;
 import Models.Country;
 import Models.Player;
 import java.util.ArrayList;
+import Controller.GameEngineController;
 
 /**
  * The Deploy class represents a deployment order in a game.
@@ -57,13 +58,16 @@ public class Deploy implements Order {
             // Check if the chosen country belongs to the player
             if (!l_countriesOwned.contains(d_country.getName())) {
                 System.out.println("This country does not belong to you");
+                GameEngineController.d_Log.notify("This country does not belong to "+d_player.getName(), "Game Play Phase");
                 return false;
             }
             return true;
 
         } else {
             System.out.println("Not having enough armies");
+            GameEngineController.d_Log.notify("Not having enough armies "+d_player.getName(), "Game Play Phase");
             System.out.println("Player "+d_player.getName()+" is having armies left = "+d_player.getArmies());
+            GameEngineController.d_Log.notify("Player "+d_player.getName()+" is having armies left = "+d_player.getArmies()+" in ", "Game Play Phase");
             return false;
         }
     }
@@ -80,6 +84,7 @@ public class Deploy implements Order {
             print();
         } else {
             System.out.println("Invalid Order!");
+            GameEngineController.d_Log.notify("Invalid Deploy Order! by "+d_player.getName()+" in ", "Game Play Phase");
         }
     }
 
@@ -89,7 +94,11 @@ public class Deploy implements Order {
     @Override
     public void print() {
         System.out.println(d_armyToBeDeployed + " Army Deployment is successful on "+d_country.getName()+" by "+d_player.getName());
+        GameEngineController.d_Log.notify(d_armyToBeDeployed + " Army Deployment is successful on "+d_country.getName()+" by "+d_player.getName(), "Game Play Phase");
+
         System.out.println("Deployed armies on " + d_country.getName() + " is " + d_country.getArmies());
+        GameEngineController.d_Log.notify("Deployed armies on " + d_country.getName() + " is " + d_country.getArmies(), "Game Play Phase");
+
     }
 }
 

@@ -1,36 +1,38 @@
 package Logger;
 
 import Constants.AppConstants;
-
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class LogHandler implements Observer{
+/**
+ * The LogHandler class implements the Observer interface and represents a component
+ * responsible for handling log entries.
+ */
+public class LogHandler implements Observer {
 
-    private FileWriter d_logHandler;
+    private FileWriter d_logHandler; // FileWriter object for handling log files
 
-    public FileWriter getInstance() throws IOException {
-        if(d_logHandler == null){
-            d_logHandler = new FileWriter(AppConstants.LogFilePath, false);
-            return d_logHandler;
-        }
-        else{
-            return d_logHandler;
-        }
-    }
-
-    public LogHandler(LogEntryBuffer p_logCollector){
+    /**
+     * Constructs a LogHandler object.
+     *
+     * @param p_logCollector The LogEntryBuffer to observe for log updates.
+     */
+    public LogHandler(LogEntryBuffer p_logCollector) {
         p_logCollector.addObserver(this);
     }
 
-    @Override
+    /**
+     * Updates the log handler with the latest log entry from the observed LogEntryBuffer.
+     *
+     * @param p_logState The observed LogEntryBuffer object.
+     */
     public void update(Observable p_logState) {
         LogEntryBuffer l_logCollector = (LogEntryBuffer) p_logState;
         try {
-//            d_logHandler = new FileWriter("src/main/resources/Logs/Log.log", false);
-            getInstance().write(l_logCollector.toString());
-            getInstance().close();
-        } catch (IOException p_ioException){
+            d_logHandler = new FileWriter(AppConstants.LogFilePath, false);
+            d_logHandler.write(l_logCollector.toString());
+            d_logHandler.close();
+        } catch (IOException p_ioException) {
             p_ioException.getMessage();
         }
     }
