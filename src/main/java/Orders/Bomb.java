@@ -16,6 +16,9 @@ public class Bomb implements Order {
 
     @Override
     public boolean isValid() {
+        if(d_country==null || d_player == null){
+            return false;
+        }
         // Check if the player has the bomb card
         if(!d_player.getCardList().contains("Bomb")){
             System.out.println("player "+d_player.getName()+"doesn't have the bomb card! ");

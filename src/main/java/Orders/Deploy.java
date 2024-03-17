@@ -43,6 +43,9 @@ public class Deploy implements Order {
      */
     @Override
     public boolean isValid() {
+        if(d_country==null || d_player == null){
+            return false;
+        }
         if (d_player.getArmies() >= d_armyToBeDeployed) {
 
             // Gather names of countries owned by the player

@@ -13,6 +13,9 @@ public class Blockade implements Order{
 
     @Override
     public boolean isValid() {
+        if(d_country==null || d_player == null){
+            return false;
+        }
         if(!d_player.getCardList().contains("Blockade")){
             System.out.println("player "+d_player.getName()+"doesn't have the blockade card! ");
             return false;
