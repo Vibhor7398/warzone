@@ -19,7 +19,6 @@ public class Player {
 
     private int d_armiesCount = 0;
     private ArrayList<Country> d_countriesOwned = new ArrayList<>();
-    private Queue<String> d_orderArgs = new LinkedList<>();
     private ArrayList<String> d_cardList = new ArrayList<>();
     private final List<Player> d_NegotiatePlayers = new ArrayList<>();
     private String d_orderType;
@@ -113,14 +112,6 @@ public class Player {
 
     public void removeNegotiatePlayer(Player p_player){
         d_NegotiatePlayers.remove(p_player);
-    }
-    /**
-     * Sets the order for the player.
-     *
-     * @param p_orderArgs The arguments of the order.
-     */
-    public void setOrder(String p_orderArgs) {
-        d_orderArgs.add(p_orderArgs);
     }
 
     public void removeCountryFromCountriesOwned(Country p_country) {
