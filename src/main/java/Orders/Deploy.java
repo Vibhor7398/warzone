@@ -67,6 +67,7 @@ public class Deploy implements Order {
             System.out.println("Not having enough armies");
             GameEngineController.d_Log.notify("Not having enough armies "+d_player.getName(), "Game Play Phase");
             System.out.println("Player "+d_player.getName()+" is having armies left = "+d_player.getArmies());
+            GameEngineController.d_Log.notify("Player "+d_player.getName()+" is having armies left = "+d_player.getArmies()+" in ", "Game Play Phase");
             return false;
         }
     }
@@ -83,6 +84,7 @@ public class Deploy implements Order {
             print();
         } else {
             System.out.println("Invalid Order!");
+            GameEngineController.d_Log.notify("Invalid Deploy Order! by "+d_player.getName()+" in ", "Game Play Phase");
         }
     }
 
