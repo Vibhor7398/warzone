@@ -246,15 +246,7 @@ public class Player {
         }
     }
 
-    public void nextOrder(){
-        if(!d_orderList.isEmpty()){
-            Order l_orderToExecute = d_orderList.getFirst();
-            d_orderList.removeFirst();
-            l_orderToExecute.execute();
-        }
-    }
-
-    public Order getNextOrder(){
+    public Order nextOrder(){
         Order l_orderToExecute = d_orderList.getFirst();
         d_orderList.removeFirst();
         return l_orderToExecute;
