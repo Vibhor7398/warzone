@@ -1,5 +1,6 @@
 package Orders;
 
+import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
 
@@ -22,12 +23,14 @@ public class Bomb implements Order {
         // Check if the player has the bomb card
         if(!d_player.getCardList().contains("Bomb")){
             System.out.println("player "+d_player.getName()+"doesn't have the bomb card! ");
+            GameEngineController.d_Log.notify("player "+d_player.getName()+"doesn't have the bomb card! ");
             return false;
         }
 
         // Check if the country belongs to the player
         if (d_player.getCountriesOwned().contains(d_country)) {
             System.out.println("This country belongs to you");
+            GameEngineController.d_Log.notify("This country belongs to you");
             return false;
         }
 
@@ -51,12 +54,15 @@ public class Bomb implements Order {
             print();
         } else {
             System.out.println("Invalid Order! ");
+            GameEngineController.d_Log.notify("Invalid Bomb Order! by "+d_player.getName());
         }
     }
 
     @Override
     public void print() {
         System.out.println("Bombing is successful on " + d_country.getName() + " by " + d_player.getName());
+        GameEngineController.d_Log.notify("Bombing is successful on " + d_country.getName() + " by " + d_player.getName());
         System.out.println("Armies on " + d_country.getName() + " after bombing is " + d_country.getArmies());
+        GameEngineController.d_Log.notify("Armies on " + d_country.getName() + " after bombing is " + d_country.getArmies());
     }
 }
