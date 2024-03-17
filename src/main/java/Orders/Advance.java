@@ -56,6 +56,9 @@ public class Advance implements Order{
 
     @Override
     public boolean isValid() {
+        if(d_source_country==null || d_player == null || d_target_country==null){
+            return false;
+        }
         if (!d_player.getCountriesOwned().contains(d_source_country)) {
             System.out.println("Source country does not belong to the current player.");
             return false;

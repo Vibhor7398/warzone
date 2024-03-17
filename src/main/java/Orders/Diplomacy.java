@@ -11,6 +11,9 @@ public class Diplomacy implements Order{
     }
     @Override
     public boolean isValid() {
+        if(d_negotiatePlayer==null || d_player == null){
+            return false;
+        }
         if(!d_player.getCardList().contains("Diplomacy")){
             System.out.println("player " + d_player.getName() + "doesn't have the diplomacy card! ");
             return false;
