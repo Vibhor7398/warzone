@@ -121,10 +121,10 @@ public class Advance implements Order{
 
            if (l_prob_attacker > l_prob_defender) {
                // Attacker wins, move armies to the target territory
+               Player l_target_player = d_target_country.getOwner();
                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
                d_target_country.setArmies(l_attackerArmies - l_defenderArmies);
                d_player.addCountryToCountriesOwned(d_target_country);
-               Player l_target_player = d_target_country.getOwner();
                if(l_target_player != null) {                   
                     l_target_player.removeCountryFromCountriesOwned(d_target_country);
                }
