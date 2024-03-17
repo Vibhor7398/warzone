@@ -320,6 +320,8 @@ public class GameEngineController {
         }
     }
 
+
+
     private void ifTurnsCompleted(){
         if(d_completedTurns == d_Players.size()){
             executeAllOrders();
@@ -366,6 +368,16 @@ public class GameEngineController {
                 still_more_orders = true;
             }
         } while (still_more_orders);
+        reset();
+    }
+
+    private void reset(){
+        d_completedTurns = 0;
+        d_currentPlayer = 0;
+        for (Player p : d_Players){
+            p.setD_hasCommunicatedCompletedOrders(false);
+            p.setD_isTurnCompleted(false);
+        }
     }
 
 }
