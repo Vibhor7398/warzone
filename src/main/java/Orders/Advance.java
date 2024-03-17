@@ -66,31 +66,31 @@ public class Advance implements Order{
 
         if(d_player.getNegotiatePlayers().contains(d_target_country.getOwner())) {
             System.out.println("Cannot attack! " + d_target_country.getOwner().getName() + " has used Negotiate card.");
-            GameEngineController.d_Log.notify("Cannot attack! " + d_target_country.getOwner().getName() + " has used Negotiate card. ", GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify("Cannot attack! " + d_target_country.getOwner().getName() + " has used Negotiate card. ");
             return false;
         }
 
         if (!d_player.getCountriesOwned().contains(d_source_country)) {
             System.out.println("Source country does not belong to the current player.");
-            GameEngineController.d_Log.notify("Source country does not belong to the current player.", GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify("Source country does not belong to the current player.");
             return false;
         }
         // todo - check this
         if (!d_source_country.getNeighbors().containsValue(d_target_country)) {
             System.out.println("Target country is not adjacent to the source country.");
-            GameEngineController.d_Log.notify("Target country is not adjacent to the source country.", GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify("Target country is not adjacent to the source country.");
             return false;
         }
 
         if (d_advance_armies <= 0) {
             System.out.println("Invalid number of armies to advance.");
-            GameEngineController.d_Log.notify("Invalid number of armies to advance.", GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify("Invalid number of armies to advance.");
             return false;
         }
 
         if (d_source_country.equals(d_target_country)) {
             System.out.println("Cannot advance armies to the same country.");
-            GameEngineController.d_Log.notify("Cannot advance armies to the same country.", GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify("Cannot advance armies to the same country.");
             return false;
         }
         return true;
@@ -105,7 +105,7 @@ public class Advance implements Order{
     public void execute() {
         if (!isValid()) {
             System.out.println("Army cannot be advanced.");
-            GameEngineController.d_Log.notify(d_player.getName()+" Army cannot be advanced.", GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify(d_player.getName()+" Army cannot be advanced.");
             return;
         }
 
@@ -137,7 +137,7 @@ public class Advance implements Order{
                     d_player.addCard(l_card);
                     GameEngineController.setD_cardsOwnedByPlayer(d_player);
                     System.out.println(d_player.getName() + " got " + l_card + " card.");
-                    GameEngineController.d_Log.notify(d_player.getName() + " got " + l_card + " card.", GameEngine.getPhase().getClass().getSimpleName());
+                    GameEngineController.d_Log.notify(d_player.getName() + " got " + l_card + " card.");
                 }
             } else {
                 // Defender wins, update armies in source territory
@@ -157,16 +157,16 @@ public class Advance implements Order{
     public void print() {
         if (d_player.getCountriesOwned().contains(d_target_country)) {
             System.out.println(d_advance_armies + " armies moved from " + d_source_country.getName() + " to " + d_target_country.getName());
-            GameEngineController.d_Log.notify(d_advance_armies + " armies moved from " + d_source_country.getName() + " to " + d_target_country.getName(), GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify(d_advance_armies + " armies moved from " + d_source_country.getName() + " to " + d_target_country.getName());
             return;
         }
         if(d_attack_successful) {
             System.out.println("Attack successful! " + d_target_country.getName() + " captured by " + d_player.getName());
-            GameEngineController.d_Log.notify("Attack successful! " + d_target_country.getName() + " captured by " + d_player.getName(), GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify("Attack successful! " + d_target_country.getName() + " captured by " + d_player.getName());
 
         } else {
             System.out.println("Attack unsuccessful! " + d_target_country.getName() + " defended successfully.");
-            GameEngineController.d_Log.notify("Attack unsuccessful! " + d_target_country.getName() + " defended successfully.", GameEngine.getPhase().getClass().getSimpleName());
+            GameEngineController.d_Log.notify("Attack unsuccessful! " + d_target_country.getName() + " defended successfully.");
         }
     }
 }
