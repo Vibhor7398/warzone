@@ -14,7 +14,7 @@ public class Diplomacy implements Order{
         if(d_negotiatePlayer==null || d_player == null){
             return false;
         }
-        if(!d_player.getCardList().contains("Diplomacy")){
+        if(!d_player.getCardList().contains("Negotiate")){
             System.out.println("player " + d_player.getName() + "doesn't have the diplomacy card! ");
             return false;
         } else if (d_player.getName().equals(d_negotiatePlayer.getName())) {
@@ -29,7 +29,7 @@ public class Diplomacy implements Order{
         if (isValid()) {
             d_player.addNegotiatePlayer(d_negotiatePlayer);
             d_negotiatePlayer.addNegotiatePlayer(d_player);
-            d_player.removeCard("Diplomacy");
+            d_player.removeCard("Negotiate");
             print();
         } else {
             System.out.println("Invalid Order! ");
@@ -38,6 +38,6 @@ public class Diplomacy implements Order{
 
     @Override
     public void print() {
-
+        System.out.println("Diplomacy applied by "+d_player.getName()+" on the player "+d_negotiatePlayer.getName());
     }
 }

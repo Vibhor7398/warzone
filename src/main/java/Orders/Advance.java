@@ -63,6 +63,11 @@ public class Advance implements Order{
             return false;
         }
 
+        if(d_player.getNegotiatePlayers().contains(d_target_country.getOwner())){
+            System.out.println("Attack not possible on "+d_target_country.getOwner().getName());
+            return false;
+        }
+
         if(d_player.getCountriesOwned().contains(d_target_country)) {
             System.out.println("Cannot attack on your own country");
             return false;

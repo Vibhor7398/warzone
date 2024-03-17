@@ -325,6 +325,7 @@ public class GameEngineController {
                     incrementNextPlayer();
                 }
                 getD_cardsOwnedByPlayer().clear();
+                d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
             }
             else{
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);
