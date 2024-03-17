@@ -306,13 +306,16 @@ public class GameEngineController {
             if(p_cmd.getD_cmd().equals("endturn")){
                 d_Players.get(d_currentPlayer).setD_isTurnCompleted(true);
                 d_completedTurns++;
-                ifTurnsCompleted();
+                if(!ifTurnsCompleted()){
+                    incrementNextPlayer();
+                }
             }
             else{
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);
                 d_Players.get(d_currentPlayer).issueOrder();
+                incrementNextPlayer();
             }
-            incrementNextPlayer();
+//            incrementNextPlayer();
         }
         else{
             executeAllOrders();
@@ -322,11 +325,13 @@ public class GameEngineController {
 
 
 
-    private void ifTurnsCompleted(){
+    private boolean ifTurnsCompleted(){
         if(d_completedTurns == d_Players.size()){
             executeAllOrders();
             Reinforcement.assignReinforcements(d_Players);
+            return true;
         }
+        return false;
     }
 
     private void setNextPlayer(){
