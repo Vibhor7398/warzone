@@ -419,7 +419,7 @@ public class GameEngineController {
         do {
             still_more_orders = false;
             for (Player p : d_Players) {
-                l_order = p.getNextOrder();
+                l_order = p.nextOrder();
                 if(l_order!=null){
                     still_more_orders = true;
                     l_order.execute();
