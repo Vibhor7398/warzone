@@ -1,5 +1,6 @@
 package Orders;
 
+import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
 import org.junit.Before;
@@ -21,6 +22,10 @@ public class TestAdvance {
     public void testAdvanceMove() {
         // Setup - create actual objects rather than mocks
         Player player1 = new Player("Player1");
+        GameEngineController gameC = new GameEngineController();
+        gameC.executeLoadMap("brasil.map");
+        gameC.executeAddGamePlayer("player2");
+
         Country sourceCountry = new Country(1, "Source", "Continent1", "0", "0");
         Country targetCountry = new Country(2, "Target", "Continent1", "1", "1");
 
@@ -31,6 +36,7 @@ public class TestAdvance {
         // Manually adding countries to player's control for the sake of the test
         player1.addCountryToCountriesOwned(sourceCountry);
         player1.addCountryToCountriesOwned(targetCountry);
+
 
         // Initialize the Advance order
         Advance advanceOrder = new Advance(player1, sourceCountry, targetCountry, 5);
@@ -45,9 +51,12 @@ public class TestAdvance {
 
     @Test
     public void testIsValid_SourceTerritoryNotOwnedByPlayer() {
+        GameEngineController gameC = new GameEngineController();
+        gameC.executeLoadMap("brasil.map");
+        gameC.executeAddGamePlayer("player2");
         // Create a player
         Player player = new Player("Player1");
-
+        Player player2 = new Player("Player2");
         // Create source and target territories
         Country sourceTerritory = new Country(1, "Source", "Continent1", "0", "0");
         Country targetTerritory = new Country(2, "Target", "Continent1", "1", "1");
@@ -66,7 +75,7 @@ public class TestAdvance {
     public void testPrint_UnsuccessfulAttack() {
         // Create a player
         Player player = new Player("Player1");
-
+        //Player player2 = new Player("Player2");
         // Create source and target territories
         Country sourceTerritory = new Country(1, "Source", "Continent1", "0", "0");
         Country targetTerritory = new Country(2, "Target", "Continent1", "1", "1");
