@@ -355,6 +355,7 @@ public class GameEngineController {
             still_more_orders = false;
             for (Player p : d_Players) {
                 l_order = p.next_order();
+
                 if(l_order!=null){
                     still_more_orders = true;
                     l_order.execute();
