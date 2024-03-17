@@ -60,75 +60,6 @@ public class GameEngineController {
     }
 
     /**
-    * Executes a command based on the provided command string.
-    * The command string is parsed to identify the command and its parameters, then the corresponding action is executed.
-    *
-    * @param p_command The command string to be executed.
-    * @throws ArrayIndexOutOfBoundsException If the command string does not contain enough parameters.
-    * @throws NumberFormatException If parsing of numerical parameters fails.
-    */
-//    public void executeCommand(String p_command){
-//        // Get the base command from the provided command string
-//        String l_baseCmd = CommandValidationService.getBaseCommand(p_command);
-//
-//        // Split the command string into an array of command components
-//        String[] l_cmdArr = p_command.trim().split("\\ ");
-//
-//        // Execute the corresponding action based on the base command
-//        switch (l_baseCmd){
-//            case "loadmap":
-//                executeLoadMap(l_cmdArr[1]);
-//                break;
-//            case "showmap":
-//                executeShowMap();
-//                break;
-//            case "savemap":
-//                executeSaveMap(l_cmdArr[1]);
-//                break;
-//            case "editmap":
-//                executeEditMap(l_cmdArr[1]);
-//                break;
-//            case "editcontinent":
-//                // Execute add or remove continent action based on the provided sub-command
-//                if(l_cmdArr[1].trim().equals("-add"))
-//                    executeAddContinent(l_cmdArr[2], Integer.parseInt(l_cmdArr[3]));
-//                else if(l_cmdArr[1].trim().equals("-remove"))
-//                    executeRemoveContinent(l_cmdArr[2]);
-//                break;
-//            case "editcountry":
-//                // Execute add or remove country action based on the provided sub-command
-//                if(l_cmdArr[1].trim().equals("-add"))
-//                    executeAddCountry(l_cmdArr[2], l_cmdArr[3]);
-//                else if(l_cmdArr[1].trim().equals("-remove"))
-//                    executeRemoveCountry(l_cmdArr[2]);
-//                break;
-//            case "editneighbor":
-//                // Execute add or remove neighbor action based on the provided sub-command
-//                if(l_cmdArr[1].trim().equals("-add"))
-//                    executeAddNeighbor(l_cmdArr[2], l_cmdArr[3]);
-//                else if(l_cmdArr[1].trim().equals("-remove"))
-//                    executeRemoveNeighbor(l_cmdArr[2], l_cmdArr[3]);
-//                break;
-//            case "validatemap":
-//                executeValidateMap();
-//                break;
-//            case "gameplayer":
-//                // Execute add or remove game player action based on the provided sub-command
-//                if(l_cmdArr[1].trim().equals("-add"))
-//                    executeAddGamePlayer(l_cmdArr[2]);
-//                else if(l_cmdArr[1].trim().equals("-remove"))
-//                    executeRemoveGamePlayer(l_cmdArr[2]);
-//                break;
-//            case "assigncountries":
-//                executeAssignCountries();
-//                break;
-//            case "deploy":
-//                executeDeploy();
-//                break;
-//        }
-//    }
-
-    /**
      * Loads a map from a file and validates it.
      * This method attempts to load a map from the specified file, validates it, and checks if the map is valid.
      * If the map is invalid, a message indicating the same is printed.
@@ -329,12 +260,13 @@ public class GameEngineController {
     * If there are fewer than 2 players, the game cannot start, and the game flag is set accordingly.
     * After assigning countries, the main game loop is initiated, and players are assigned initial reinforcements.
     */
-    public void executeAssignCountries(){
+    public boolean executeAssignCountries(){
         // Check if there are at least 2 players to start the game
         if(d_Players.size() < 2){
             System.out.println("Cannot play with less than 2 players");
-            CommandValidationService.setD_hasGameStarted(false);
-            return;
+
+//            CommandValidationService.setD_hasGameStarted(false);
+            return false;
         }
         // Get the list of countries from the map
         HashMap<String, Country> l_listOfCountries = d_Map.getD_countries();
@@ -357,58 +289,59 @@ public class GameEngineController {
         System.out.println("-----------Main Game Loop---------");
         
         // Set the game flag to indicate that the game has started
-        CommandValidationService.setD_hasGameStarted(true);
+//        CommandValidationService.setD_hasGameStarted(true);
 
         // Assign initial reinforcements to players
         Reinforcement.assignReinforcements(d_Players);
+        return true;
         
         // Execute the deploy phase
-        executeDeploy();
-    }
-
-    /**
-     * Executes the deploy phase of the game.
-     * In this phase, players issue orders for deploying reinforcements and executing their next orders.
-     * The deploy phase continues until all players have completed their reinforcements.
-    */
-    public void executeDeploy(){
-        // Continuously execute orders until all players have completed their reinforcements
-        while(Player.getD_reinforcementsCompleted() != d_Players.size()){
-            // Issue orders for deploying reinforcements for each player
-            for(Player l_player : d_Players){
-//                l_player.issue_order();
-            }
-        }
-        // Reset the count of completed reinforcements
-        Player.setD_reinforcementsCompleted(0);
-        
-        // Continue executing orders until all players have completed their reinforcements
-        while(Player.getD_reinforcementsCompleted() != d_Players.size()){
-            // Execute the next orders for each player
-            for(Player l_player : d_Players){
-                //l_player.next_order();
-            }
-        }
+//        executeDeploy();
     }
 
     public void setOrders(Command p_cmd) {
+
         if(d_completedTurns != d_Players.size()){
             setNextPlayer();
-            d_Players.get(d_currentPlayer).setOrder(p_cmd);
-            d_Players.get(d_currentPlayer).issueOrder();
+            if(p_cmd.getD_cmd().equals("endturn")){
+                d_Players.get(d_currentPlayer).setD_isTurnCompleted(true);
+                d_completedTurns++;
+                ifTurnsCompleted();
+            }
+            else{
+                d_Players.get(d_currentPlayer).setOrder(p_cmd);
+                d_Players.get(d_currentPlayer).issueOrder();
+            }
+            incrementNextPlayer();
         }
         else{
             executeAllOrders();
+            Reinforcement.assignReinforcements(d_Players);
+        }
+    }
+
+    private void ifTurnsCompleted(){
+        if(d_completedTurns == d_Players.size()){
+            executeAllOrders();
+            Reinforcement.assignReinforcements(d_Players);
         }
     }
 
     private void setNextPlayer(){
         while(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
-            d_completedTurns++;
+//            d_completedTurns++;
             d_currentPlayer++;
             if(d_currentPlayer == d_Players.size()){
                 d_currentPlayer = 0;
             }
+            return;
+        }
+    }
+
+    private void incrementNextPlayer(){
+        d_currentPlayer++;
+        if(d_currentPlayer == d_Players.size()){
+            d_currentPlayer = 0;
         }
     }
 
@@ -419,13 +352,14 @@ public class GameEngineController {
         do {
             still_more_orders = false;
             for (Player p : d_Players) {
-                l_order = p.getNextOrder();
+                l_order = p.next_order();
                 if(l_order!=null){
                     still_more_orders = true;
                     l_order.execute();
                 }
-                else{
+                else if(!p.hasCommunicatedCompletedOrders()){
                     l_playersCompleted++;
+                    p.setD_hasCommunicatedCompletedOrders(true);
                 }
             }
             if(l_playersCompleted < d_Players.size()){

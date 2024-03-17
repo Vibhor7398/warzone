@@ -12,11 +12,6 @@ public class MainPlay extends Phases {
     }
 
     @Override
-    public void showMap(Command p_command) {
-        printInvalidMessage();
-    }
-
-    @Override
     public void editMap(Command p_command) {
         printInvalidMessage();
     }

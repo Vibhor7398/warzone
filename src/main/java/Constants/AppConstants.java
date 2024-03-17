@@ -14,4 +14,6 @@ public final class AppConstants {
      * The path to the directory containing map files.
      */
     public static final String MapsPath = "./src/main/resources/Maps/";
+
+    public static final String LogFilePath = "./src/main/resources/Logs/Log.log";
 }

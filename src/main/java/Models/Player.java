@@ -24,11 +24,9 @@ public class Player {
     private final List<Player> d_NegotiatePlayers = new ArrayList<>();
     private String d_orderType;
     private String[] d_orderArgsValues;
-    private ArrayList<Order> d_orderList;
+    private ArrayList<Order> d_orderList = new ArrayList<>();
     private Order d_currentOrder;
-    private Command d_command;
-
-
+    private boolean d_hasCommunicatedCompletedOrders = false;
 
     /**
      * Constructs a player with the given name.
@@ -184,12 +182,17 @@ public class Player {
         this.d_currentOrder = p_currentOrder;
     }
 
+    public boolean hasCommunicatedCompletedOrders() {
+        return d_hasCommunicatedCompletedOrders;
+    }
+
     public Player getPlayerByName(String p_name){
         for (Player l_player : GameEngineController.d_Players){
             if (l_player.getName().equals(p_name)){
                 return l_player;
             }
         }
+        d_hasCommunicatedCompletedOrders = true;
         return null;
     }
 
@@ -236,7 +239,7 @@ public class Player {
                 d_orderList.add(getD_currentOrder());
                 break;
 
-            case "end":
+            case "endturn":
                 setD_isTurnCompleted(true);
                 return;
 
@@ -246,18 +249,21 @@ public class Player {
         }
     }
 
-    public void nextOrder(){
+    public void setD_hasCommunicatedCompletedOrders(boolean d_hasCommunicatedCompletedOrders) {
+        this.d_hasCommunicatedCompletedOrders = d_hasCommunicatedCompletedOrders;
+    }
+
+    public Order next_order(){
         if(!d_orderList.isEmpty()){
             Order l_orderToExecute = d_orderList.getFirst();
             d_orderList.removeFirst();
-            l_orderToExecute.execute();
+            return l_orderToExecute;
         }
+//        d_hasCommunicatedCompletedOrders = true;
+        return null;
     }
-
-    public Order getNextOrder(){
-        Order l_orderToExecute = d_orderList.getFirst();
-        d_orderList.removeFirst();
-        return l_orderToExecute;
+    public boolean hasMoreOrders(){
+        return !d_orderList.isEmpty();
     }
 
 }
