@@ -4,11 +4,18 @@ import Models.Command;
 import Models.ValidCommands;
 import java.util.ArrayList;
 import java.util.Arrays;
+import Exception.InvalidCommandException;
 
-
-
+/**
+ * The CommandValidator class is responsible for validating user input commands
+ * against a predefined set of valid commands. It ensures that the commands
+ * meet the expected format, including the base command, optional subcommands,
+ * and the correct number and types of arguments.
+ */
 public class CommandValidator {
+    // Array of valid commands supported by the application
     ValidCommands[] d_validCommands = {
+            // Definitions of valid commands go here
             new ValidCommands("loadmap",
                     "",
                     1,
@@ -116,7 +123,12 @@ public class CommandValidator {
                     new String[]{""})
     };
 
-
+    /**
+     * Checks if a base command has an associated subcommand.
+     *
+     * @param p_baseCommand The base command to check.
+     * @return true if there is an associated subcommand, false otherwise.
+     */
     private boolean hasSubCommand(String p_baseCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand)) {
@@ -126,6 +138,12 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Determines if the specified base command expects arguments.
+     *
+     * @param p_baseCommand The base command to check.
+     * @return true if the command expects arguments, false otherwise.
+     */
     private boolean hasArguments(String p_baseCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand)) {
@@ -135,6 +153,12 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Validates if the provided base command is recognized as a valid command.
+     *
+     * @param p_baseCommand The command to validate.
+     * @return true if the command is valid, false otherwise.
+     */
     private boolean validateBaseCommand(String p_baseCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand)) {
@@ -144,6 +168,12 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Retrieves the ValidCommands object corresponding to the provided base command.
+     *
+     * @param p_baseCommand The base command to retrieve the ValidCommands object for.
+     * @return The corresponding ValidCommands object, or null if not found.
+     */
     private ValidCommands getValidCommandObject(String p_baseCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand)) {
@@ -153,6 +183,13 @@ public class CommandValidator {
         return null;
     }
 
+    /**
+     * Retrieves the ValidCommands object for a specific combination of base command and subcommand.
+     *
+     * @param p_baseCommand The base command.
+     * @param p_subCommand The subcommand.
+     * @return The corresponding ValidCommands object, or null if not found.
+     */
     private ValidCommands getValidCommandObject(String p_baseCommand, String p_subCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand) && l_validCommand.getSubCommand().equals(p_subCommand)) {
@@ -162,28 +199,54 @@ public class CommandValidator {
         return null;
     }
 
+    /**
+     * Checks if the provided argument is a valid subcommand.
+     *
+     * @param p_subCommand The subcommand to validate.
+     * @return true if the subcommand is valid, false otherwise.
+     */
     private boolean isValidSubCommand(String p_subCommand) {
         return p_subCommand.equals("-add") || p_subCommand.equals("-remove");
     }
 
+    /**
+     * Determines if the given argument represents an integer.
+     *
+     * @param p_arg The argument to check.
+     * @return true if the argument is an integer, false otherwise.
+     */
     private boolean isInt(String p_arg) {
         try {
             Integer.parseInt(p_arg);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException l_e) {
             return false;
         }
         return true;
     }
 
+    /**
+     * Determines if the given argument represents a string.
+     * This method is a bit misleading as it essentially checks if the argument is not an integer.
+     *
+     * @param p_arg The argument to check.
+     * @return true if the argument is a string (i.e., not an integer), false otherwise.
+     */
     private boolean isString(String p_arg) {
         try {
             Integer.parseInt(p_arg);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException l_e) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Validates if the provided argument matches the expected data type.
+     *
+     * @param p_type The expected data type.
+     * @param p_arg The argument to validate.
+     * @return true if the argument matches the expected type, false otherwise.
+     */
     private boolean validateType(String p_type, String p_arg) {
         if (p_type.equals("Number")) {
             return isInt(p_arg);
@@ -197,6 +260,12 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Constructs a helpful message suggesting the correct usage of a command.
+     *
+     * @param p_baseCommand The base command for which to construct the usage message.
+     * @return A string containing the usage message.
+     */
     private String getValidCommand(String p_baseCommand) {
         StringBuilder l_args = new StringBuilder();
         ValidCommands l_validCommand = getValidCommandObject(p_baseCommand);
@@ -218,6 +287,14 @@ public class CommandValidator {
         return "Oops! You've missed the command. Did you mean to use -> " + l_args;
     }
 
+    /**
+     * Validates the user input command and constructs an array of Command objects
+     * if the input is valid. Throws an InvalidCommandException otherwise.
+     *
+     * @param p_command The user input command to validate.
+     * @return An array of Command objects representing the validated command.
+     * @throws InvalidCommandException If the command is invalid.
+     */
     public Command[] validateCommand(String p_command) throws InvalidCommandException {
             String[] l_cmd = p_command.trim().split(" ");
             String l_baseCommand = l_cmd[0];
@@ -277,9 +354,6 @@ public class CommandValidator {
                 else{
                     l_commands[i] = new Command(l_baseCommand, "", l_argsArray.subList(i * l_validCommand.getNumArgs(), (i + 1) * l_validCommand.getNumArgs()).toArray(new String[0]));
                 }
-            }
-            for(Command c:l_commands){
-                System.out.println(c.toString());
             }
             return l_commands;
     }

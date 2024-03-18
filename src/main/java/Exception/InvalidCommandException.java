@@ -1,24 +1,24 @@
 package Exception;
-/**
- * Exception thrown when an invalid command is encountered.
- */
-public class InvalidCommandException extends Exception{
-    /**
-     * Constructs an InvalidCommandException with the specified detail message.
-     *
-     * @param p_message The detail message.
-     */
-    public InvalidCommandException(String p_message){
-        super(p_message);
-    }
-    
-    /**
-     * Retrieves the valid command message associated with the exception.
-     *
-     * @return The valid command message.
-     */
-    public String getValidCommand(){
-        return super.getMessage();
-    }
 
+/**
+ * The InvalidCommandException class represents an exception that is thrown
+ * when an invalid command is entered by the user. This exception extends
+ * Throwable, making it a checked exception that must be declared or handled
+ * where it can be thrown. It provides constructors to create exception
+ * instances with a message indicating what was invalid about the command,
+ * allowing for informative error reporting.
+ */
+public class InvalidCommandException extends Throwable {
+
+    /**
+     * Constructs a new InvalidCommandException with the specified detail message.
+     * The detail message is saved for later retrieval by the {@link Throwable#getMessage()} method.
+     *
+     * @param validCommand the detail message. The detail message is a String that describes
+     *                     this particular exception, which in this case is the invalid command
+     *                     that triggered the exception.
+     */
+    public InvalidCommandException(String validCommand) {
+        super(validCommand);
+    }
 }
