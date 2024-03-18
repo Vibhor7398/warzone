@@ -15,10 +15,9 @@ public class LogEntryBuffer extends Observable {
     /**
      * Notifies observers of a new log entry along with the phase it occurred in.
      * @param p_log The log message.
-     * @param p_phase The phase during which the log occurred.
      */
-    public void notify(String p_log, String p_phase) {
-        d_logList.add("Log: " + p_log + " during the phase: "+p_phase+"\n");
+    public void notify(String p_log) {
+        d_logList.add("Log: " + p_log + "\n");
         notifyAll(this);
     }
 

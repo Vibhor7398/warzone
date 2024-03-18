@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @version 2.0
  */
 package Orders;
 
@@ -61,27 +61,27 @@ public class Airlift implements Order {
         }
         if (!d_player.getCardList().contains("Airlift")) {
             System.out.println("player " + d_player.getName() + " doesn't have the airlift card! ");
-            GameEngineController.d_Log.notify("player " + d_player.getName() + " doesn't have the airlift card! in ", "Game Play Phase");
+            GameEngineController.d_Log.notify("player " + d_player.getName() + " doesn't have the airlift card! ");
             return false;
         }
         if (!d_player.getCountriesOwned().contains(d_targetCountry)) {
             System.out.println("Player " + d_player.getName() + " does not own the target country " + d_targetCountry.getName());
-            GameEngineController.d_Log.notify("Player " + d_player.getName() + " does not own the target country " + d_targetCountry.getName()+" in ", "Game Play Phase");
+            GameEngineController.d_Log.notify("Player " + d_player.getName() + " does not own the target country " + d_targetCountry.getName());
             return false;
         }
         if (!d_player.getCountriesOwned().contains(d_sourceCountry)) {
             System.out.println("Player " + d_player.getName() + " does not own the source country " + d_sourceCountry.getName());
-            GameEngineController.d_Log.notify("Player " + d_player.getName() + " does not own the source country " + d_sourceCountry.getName()+" in ", "Game Play Phase");
+            GameEngineController.d_Log.notify("Player " + d_player.getName() + " does not own the source country " + d_sourceCountry.getName());
             return false;
         }
         if (d_sourceCountry.getName().equals(d_targetCountry.getName())) {
             System.out.println("Source and Target country must not be the same ");
-            GameEngineController.d_Log.notify("Source and Target country must not be the same in ", "Game Play Phase");
+            GameEngineController.d_Log.notify("Source and Target country must not be the same ");
             return false;
         }
         if (d_sourceCountry.getArmies() < d_armyToBeAirlift) {
             System.out.println(d_player.getName() + " does not have sufficient armies on country " + d_sourceCountry.getName() + " to airlift to target country " + d_targetCountry.getName());
-            GameEngineController.d_Log.notify(d_player.getName() + " does not have sufficient armies on country " + d_sourceCountry.getName() + " to airlift to target country " + d_targetCountry.getName()+" in ", "Game Play Phase");
+            GameEngineController.d_Log.notify(d_player.getName() + " does not have sufficient armies on country " + d_sourceCountry.getName() + " to airlift to target country " + d_targetCountry.getName());
             return false;
         }
         return true;
@@ -95,15 +95,15 @@ public class Airlift implements Order {
         if (isValid()) {
             d_sourceCountry.setArmies(d_sourceCountry.getArmies() - d_armyToBeAirlift);
             System.out.println("Armies remaining on source country " + d_sourceCountry.getName() + " after airlift is " + d_sourceCountry.getArmies());
-            GameEngineController.d_Log.notify("Armies remaining on source country " + d_sourceCountry.getName() + " after airlift is " + d_sourceCountry.getArmies()+" in ", "Game Play Phase");
+            GameEngineController.d_Log.notify("Armies remaining on source country " + d_sourceCountry.getName() + " after airlift is " + d_sourceCountry.getArmies());
             d_targetCountry.setArmies(d_targetCountry.getArmies() + d_armyToBeAirlift);
             System.out.println("Armies available on target country " + d_targetCountry.getName() + " after airlift is " + d_targetCountry.getArmies());
-            GameEngineController.d_Log.notify("Armies available on target country " + d_targetCountry.getName() + " after airlift is " + d_targetCountry.getArmies()+" in ", "Game Play Phase");
+            GameEngineController.d_Log.notify("Armies available on target country " + d_targetCountry.getName() + " after airlift is " + d_targetCountry.getArmies());
             d_player.removeCard("Airlift");
             print();
         } else {
             System.out.println("Invalid Order! ");
-            GameEngineController.d_Log.notify("Invalid Airlift Order! by "+d_player.getName()+" in ", "Game Play Phase");
+            GameEngineController.d_Log.notify("Invalid Airlift Order! by "+d_player.getName());
         }
     }
 
@@ -113,6 +113,6 @@ public class Airlift implements Order {
     @Override
     public void print() {
         System.out.println(d_player.getName() + " has successfully airlifted the number of armies: " + d_armyToBeAirlift + " from source country " + d_sourceCountry.getName() + " to target country " + d_targetCountry.getName() + ".");
-        GameEngineController.d_Log.notify(d_player.getName() + " has successfully airlifted the number of armies: " + d_armyToBeAirlift + " from source country " + d_sourceCountry.getName() + " to target country " + d_targetCountry.getName() + " in ", "Game Play Phase");
+        GameEngineController.d_Log.notify(d_player.getName() + " has successfully airlifted the number of armies: " + d_armyToBeAirlift + " from source country " + d_sourceCountry.getName() + " to target country ");
     }
 }

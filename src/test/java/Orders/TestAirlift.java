@@ -1,3 +1,7 @@
+/**
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @version 2.0
+ */
 package Orders;
 
 import Models.Country;
@@ -6,12 +10,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
+/**
+ * This class contains unit tests for the Airlift class.
+ */
 public class TestAirlift {
     Player d_player;
     Country d_sourceCountry;
     Country d_targetCountry;
-
+    /**
+     * Initializes player and countries before each test.
+     */
     @Before
     public void setUp(){
         d_player = new Player("Abhi");
@@ -21,6 +29,9 @@ public class TestAirlift {
         d_player.addCountryToCountriesOwned(d_sourceCountry);
         d_player.addCountryToCountriesOwned(d_targetCountry);
     }
+    /**
+     * Tests the validity of the Airlift order.
+     */
     @Test
     public void testIsValid() {
         d_sourceCountry.setArmies(10);
@@ -29,7 +40,9 @@ public class TestAirlift {
         Airlift l_airlift = new Airlift(d_player, d_sourceCountry, d_targetCountry, l_armyToBeAirlift);
         assertTrue(l_airlift.isValid());
     }
-
+    /**
+     * Tests the execution of the Airlift order.
+     */
     @Test
     public void testExecute() {
         d_sourceCountry.setArmies(10);
@@ -42,7 +55,9 @@ public class TestAirlift {
         assertEquals(5, d_targetCountry.getArmies());
         assertFalse(d_player.getCardList().contains("Airlift"));
     }
-
+    /**
+     * Tests the printing functionality of the Airlift order.
+     */
     @Test
     public void testPrint() {
         int l_armyToBeAirlift = 5;
