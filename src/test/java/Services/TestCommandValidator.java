@@ -1,6 +1,6 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
+ * @version 2.0
  */
 package Services;
 
@@ -8,7 +8,9 @@ import Models.Command;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.Arrays;
+
 import static org.junit.Assert.*;
 import Exception.InvalidCommandException;
 

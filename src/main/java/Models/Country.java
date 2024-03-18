@@ -1,11 +1,12 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
  * @version 2.0
  */
 
 package Models;
 
 import Controller.GameEngineController;
+
 import java.util.LinkedHashMap;
 
 /**

@@ -1,5 +1,5 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
  * @version 2.0
  */
 
@@ -8,7 +8,11 @@ package Models;
 import Controller.GameEngineController;
 import Controller.MapsController;
 import Orders.*;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Represents a player in the game.
@@ -358,17 +362,7 @@ public class Player {
             d_orderList.removeFirst();
             return l_orderToExecute;
         }
-//        d_hasCommunicatedCompletedOrders = true;
         return null;
-    }
-
-    /**
-     * Checks if there are more orders remaining for the player to execute.
-     *
-     * @return True if there are more orders remaining; false otherwise.
-     */
-    public boolean hasMoreOrders(){
-        return !d_orderList.isEmpty();
     }
 
 }

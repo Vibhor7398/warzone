@@ -1,5 +1,5 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
  * @version 2.0
  */
 package TestSuites;
@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
 
 /**
  * This class represents a test suite for testing controller.
- * It includes test cases for TestMapsController.
+ * It includes test cases for MapsController.
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({TestMapsController.class})
