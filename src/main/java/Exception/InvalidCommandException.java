@@ -1,3 +1,7 @@
+/**
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
+ * @version 2.0
+ */
 package Exception;
 
 /**
@@ -21,4 +25,5 @@ public class InvalidCommandException extends Throwable {
     public InvalidCommandException(String validCommand) {
         super(validCommand);
     }
+
 }
