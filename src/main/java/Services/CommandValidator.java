@@ -4,7 +4,7 @@ import Models.Command;
 import Models.ValidCommands;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import Exception.InvalidCommandException;
 
 /**
  * The CommandValidator class is responsible for validating user input commands
