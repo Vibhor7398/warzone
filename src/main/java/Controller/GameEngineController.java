@@ -29,13 +29,37 @@ import Exception.InvalidCommandException;
  */
 
 public class GameEngineController {
+    /**
+     * Represents the list of players participating in the game.
+     * This ArrayList stores Player objects.
+     */
     public static ArrayList<Player> d_Players;
+    /**
+     * Represents the MapsController instance used in the game.
+     * This variable holds a reference to the MapsController object.
+     */
     private static MapsController d_Map;
+    /**
+     * Represents the MapsController instance used in the game.
+     * This variable holds a reference to the MapsController object.
+     */
     private static int d_currentPlayer;
+    /**
+     * Represents the number of completed turns in the game.
+     * This variable stores an integer value indicating the total number of completed turns.
+     */
     private static int d_completedTurns;
 
+    /**
+     * ArrayList containing cards owned by players.
+     * Each element in the ArrayList is a Player object.
+     */
     public static ArrayList<Player> d_cardsOwnedByPlayer = new ArrayList<>();
 
+    /**
+     * Static variable representing a log entry buffer.
+     * This buffer is used for storing log entries.
+     */
     public static LogEntryBuffer d_Log = new LogEntryBuffer();
     public static LogHandler d_logHandler = new LogHandler(d_Log);
 
@@ -48,10 +72,22 @@ public class GameEngineController {
         d_Players = new ArrayList<>();
     }
 
+    /**
+     * Constructs a GameEngineController with the provided MapsController.
+     *
+     * @param p_mc The MapsController instance to be associated with the GameEngineController.
+     */
     public GameEngineController(MapsController p_mc){
         d_Map = p_mc;
     }
 
+
+    /**
+     * Prompts the user for the next command input and processes it.
+     * This method reads a command from the standard input, validates it,
+     * and executes the corresponding action in the game engine.
+     * If an invalid command is entered, the user is prompted again.
+     */
     public void nextUserInput() {
         CommandValidator l_cs = new CommandValidator();
         try{
@@ -245,10 +281,21 @@ public class GameEngineController {
         return -1;
     }
 
+    /**
+     * Adds a Player object representing cards owned by a player to the ArrayList.
+     *
+     * @param p_cardsOwnedByPlayer The Player object representing cards owned by a player to be added.
+     */
     static public void setD_cardsOwnedByPlayer(Player p_cardsOwnedByPlayer) {
         d_cardsOwnedByPlayer.add(p_cardsOwnedByPlayer);
     }
 
+
+    /**
+     * Retrieves the ArrayList containing cards owned by players.
+     *
+     * @return The ArrayList containing Player objects representing cards owned by players.
+     */
     static public ArrayList<Player> getD_cardsOwnedByPlayer() {
         return d_cardsOwnedByPlayer;
     }
@@ -274,6 +321,8 @@ public class GameEngineController {
     * Each country is assigned to a player in a round-robin fashion.
     * If there are fewer than 2 players, the game cannot start, and the game flag is set accordingly.
     * After assigning countries, the main game loop is initiated, and players are assigned initial reinforcements.
+     *
+     * @return True if countries are successfully assigned and the game can proceed, false otherwise.
     */
     public boolean executeAssignCountries(){
         // Check if there are at least 2 players to start the game
@@ -359,6 +408,10 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Increments the index of the next player to take a turn in the game.
+     * If the index reaches the end of the player list, it wraps around to the beginning.
+     */
     private void incrementNextPlayer(){
         d_currentPlayer++;
         if(d_currentPlayer == d_Players.size()){
@@ -366,6 +419,13 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Executes all orders from players in the game.
+     * This method iterates over all players, retrieves their next order,
+     * and executes it. It continues this process until all players have
+     * communicated their completed orders.
+     * Once all orders have been executed, the method resets the game state.
+     */
     public void executeAllOrders() {
         Order l_order;
         boolean still_more_orders;
@@ -391,6 +451,12 @@ public class GameEngineController {
         reset();
     }
 
+    /**
+     * Resets the game state.
+     * This method resets the number of completed turns, the index of the current player,
+     * and clears the flags indicating whether each player has communicated completed orders
+     * and whether their turn is completed.
+     */
     private void reset(){
         d_completedTurns = 0;
         d_currentPlayer = 0;
