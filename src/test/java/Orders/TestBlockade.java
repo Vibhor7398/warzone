@@ -1,18 +1,18 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
  * @version 2.0
  */
 package Orders;
 
-import static org.junit.Assert.*;
-
 import Controller.GameEngineController;
-import org.junit.Before;
-import org.junit.Test;
-import java.util.ArrayList;
-import java.util.List;
 import Models.Country;
 import Models.Player;
+import org.junit.Before;
+import org.junit.Test;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import static org.junit.Assert.*;
+
 /**
  * This class contains unit tests for the Blockade class.
  */
@@ -135,6 +135,16 @@ public class TestBlockade {
         // Execute the blockade
         l_blockade.execute();
         // Call the print method, which should execute without errors
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        // Test print method
         l_blockade.print();
+
+        System.setOut(System.out);
+
+        // Assert the output
+        String expectedOutput = "Blockade is successful on TestCountry by TestPlayer\nArmies on TestCountry after blockade is 0\n";
+        assertEquals(expectedOutput, outContent.toString());
+
     }
 }

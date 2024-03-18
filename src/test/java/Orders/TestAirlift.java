@@ -1,5 +1,5 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
  * @version 2.0
  */
 package Orders;
@@ -8,6 +8,9 @@ import Models.Country;
 import Models.Player;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.junit.Assert.*;
 /**
@@ -63,6 +66,17 @@ public class TestAirlift {
         int l_armyToBeAirlift = 5;
 
         Airlift l_airlift = new Airlift(d_player, d_sourceCountry, d_targetCountry, l_armyToBeAirlift);
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        // Test print method
         l_airlift.print();
+
+        System.setOut(System.out);
+
+        // Assert the output
+        String expectedOutput = "Abhi has successfully airlifted the number of armies: 5 from source country India to target country Canada.\n";
+        assertEquals(expectedOutput, outContent.toString());
+
     }
 }

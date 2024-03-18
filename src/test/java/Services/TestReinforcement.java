@@ -1,13 +1,14 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
  * @version 2.0
  */
 package Services;
 
-import static org.junit.Assert.*;
 import Controller.GameEngineController;
-import org.junit.Test;
 import Models.Player;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestReinforcement {
         @Test
