@@ -6,9 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-
+/**
+ * The CommandValidator class is responsible for validating user input commands
+ * against a predefined set of valid commands. It ensures that the commands
+ * meet the expected format, including the base command, optional subcommands,
+ * and the correct number and types of arguments.
+ */
 public class CommandValidator {
+    // Array of valid commands supported by the application
     ValidCommands[] d_validCommands = {
+            // Definitions of valid commands go here
             new ValidCommands("loadmap",
                     "",
                     1,
@@ -116,7 +123,12 @@ public class CommandValidator {
                     new String[]{""})
     };
 
-
+    /**
+     * Checks if a base command has an associated subcommand.
+     *
+     * @param p_baseCommand The base command to check.
+     * @return true if there is an associated subcommand, false otherwise.
+     */
     private boolean hasSubCommand(String p_baseCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand)) {
@@ -126,6 +138,12 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Determines if the specified base command expects arguments.
+     *
+     * @param p_baseCommand The base command to check.
+     * @return true if the command expects arguments, false otherwise.
+     */
     private boolean hasArguments(String p_baseCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand)) {
@@ -135,6 +153,12 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Validates if the provided base command is recognized as a valid command.
+     *
+     * @param p_baseCommand The command to validate.
+     * @return true if the command is valid, false otherwise.
+     */
     private boolean validateBaseCommand(String p_baseCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand)) {
@@ -144,6 +168,12 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Retrieves the ValidCommands object corresponding to the provided base command.
+     *
+     * @param p_baseCommand The base command to retrieve the ValidCommands object for.
+     * @return The corresponding ValidCommands object, or null if not found.
+     */
     private ValidCommands getValidCommandObject(String p_baseCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand)) {
