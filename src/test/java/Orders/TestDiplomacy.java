@@ -7,9 +7,10 @@ package Orders;
 import Models.Player;
 import org.junit.Before;
 import org.junit.Test;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This class contains unit tests for the Diplomacy class.
@@ -147,6 +148,15 @@ public class TestDiplomacy {
         // Execute the Diplomacy order
         l_diplomacy.execute();
         // Call the print method, which should execute without errors
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        // Test print method
         l_diplomacy.print();
+
+        System.setOut(System.out);
+
+        // Assert the output
+        String expectedOutput = "Diplomacy applied by Player 1 on the player Player 2\n";
+        assertEquals(expectedOutput, outContent.toString());
     }
 }
