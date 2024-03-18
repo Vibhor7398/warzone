@@ -8,6 +8,10 @@ import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.Assert.*;
 /**
  * This class contains unit tests for the Advance class.
@@ -92,7 +96,15 @@ public class TestAdvance {
         // Create Advance object
         Advance l_advance = new Advance(l_player, l_sourceTerritory, l_targetTerritory, 3);
 
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
         // Test print method
         l_advance.print();
+
+        System.setOut(System.out);
+
+        // Assert the output
+        String expectedOutput = "3 armies moved from Source to Target\n";
+        assertEquals(expectedOutput, outContent.toString());
     }
 }

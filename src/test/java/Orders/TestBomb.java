@@ -13,6 +13,10 @@ import org.junit.Test;
 
 import Models.Country;
 import Models.Player;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 /**
  * This class contains unit tests for the Bomb class.
  */
@@ -86,6 +90,17 @@ public class TestBomb {
     public void testExecuteWhenInvalid() {
         Bomb l_bomb = new Bomb(d_player, d_nonNeighboringCountry);
         d_nonNeighboringCountry.setArmies(10);
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        // Test print method
         l_bomb.execute();
+        //l_bomb.print();
+
+        System.setOut(System.out);
+
+        // Assert the output
+        String expectedOutput = "Invalid Order! \n";
+        assertEquals(expectedOutput, outContent.toString());
     }
 }
