@@ -4,13 +4,8 @@ package GameEngine;
  * @version 1.0
  */
 import Controller.GameEngineController;
-import Models.Command;
 import Phases.MapEditor.MapEditor;
 import Phases.Phases;
-import Services.CommandValidator;
-import Services.InvalidCommandException;
-
-import java.util.Scanner;
 
 /**
  * This class represents the game engine for the application.
@@ -40,20 +35,6 @@ public class GameEngine {
     public static Phases getPhase(){
         return d_phase;
     }
-
-//    public void nextUserInput() {
-//        CommandValidator l_cs = new CommandValidator();
-//        try{
-//            Scanner l_sc = new Scanner(System.in);
-//            System.out.println("Enter your command");
-//            String l_command = l_sc.nextLine();
-//            Command[] l_val= l_cs.validateCommand(l_command);
-//            d_phase.execute(l_val);
-//        } catch (InvalidCommandException e) {
-//            System.out.println(e.getMessage());
-//            nextUserInput();
-//        }
-//    }
 
     public void start(){
         setD_phase(new MapEditor(this));

@@ -278,8 +278,6 @@ public class GameEngineController {
         // Check if there are at least 2 players to start the game
         if(d_Players.size() < 2){
             System.out.println("Cannot play with less than 2 players");
-
-//            CommandValidationService.setD_hasGameStarted(false);
             return false;
         }
         // Get the list of countries from the map
@@ -301,16 +299,10 @@ public class GameEngineController {
         }
         System.out.println();
         System.out.println("-----------Main Game Loop---------");
-        
-        // Set the game flag to indicate that the game has started
-//        CommandValidationService.setD_hasGameStarted(true);
 
         // Assign initial reinforcements to players
         Reinforcement.assignReinforcements(d_Players);
         return true;
-        
-        // Execute the deploy phase
-//        executeDeploy();
     }
 
     public void setOrders(Command p_cmd) {
@@ -331,7 +323,6 @@ public class GameEngineController {
                 d_Players.get(d_currentPlayer).issueOrder();
                 incrementNextPlayer();
             }
-//            incrementNextPlayer();
         }
         else{
             executeAllOrders();
@@ -352,7 +343,6 @@ public class GameEngineController {
 
     private void setNextPlayer(){
         while(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
-//            d_completedTurns++;
             d_currentPlayer++;
             if(d_currentPlayer == d_Players.size()){
                 d_currentPlayer = 0;
