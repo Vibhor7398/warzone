@@ -4,13 +4,8 @@ package GameEngine;
  * @version 1.0
  */
 import Controller.GameEngineController;
-import Models.Command;
 import Phases.MapEditor.MapEditor;
 import Phases.Phases;
-import Services.CommandValidator;
-import Services.InvalidCommandException;
-
-import java.util.Scanner;
 
 /**
  * This class represents the game engine for the application.
