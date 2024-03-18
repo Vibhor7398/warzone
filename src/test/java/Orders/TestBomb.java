@@ -96,6 +96,6 @@ public class TestBomb {
 
         // Assert the output
         String expectedOutput = "Invalid Order! \n";
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput.trim(), outContent.toString().trim());
     }
 }

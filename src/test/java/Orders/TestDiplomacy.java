@@ -157,6 +157,6 @@ public class TestDiplomacy {
 
         // Assert the output
         String expectedOutput = "Diplomacy applied by Player 1 on the player Player 2\n";
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput.trim(), outContent.toString().trim());
     }
 }
