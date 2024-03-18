@@ -1,80 +1,140 @@
-//package Orders;
-//
-//import static org.junit.Assert.*;
-//
-//import Controller.GameEngineController;
-//import org.junit.Before;
-//import org.junit.Test;
-//import java.util.ArrayList;
-//import java.util.List;
-//import Models.Country;
-//import Models.Player;
-//
-//public class TestBlockade {
-//    private Player d_player;
-//    private Country d_country;
-//
-//    @Before
-//    public void setUp() {
-//        GameEngineController gameEngineController = new GameEngineController();
-//        gameEngineController.executeAddGamePlayer("TestPlayer");
-////        Phases
-//        d_player = new Player("TestPlayer");
-//        d_country = new Country("TestCountry");
-//        d_player.addCountryToCountriesOwned(d_country);
-//
-//        d_player = new Player("Abhi");
-//        d_player.addCard("Bloackade");
-//    }
-//
-//    @Test
-//    public void testIsValidWithNullPlayer() {
-//        Blockade blockade = new Blockade(null, d_country);
-//        assertFalse(blockade.isValid());
-//    }
-//
-//    @Test
-//    public void testIsValidWithNullCountry() {
-//        Blockade blockade = new Blockade(d_player, null);
-//        assertFalse(blockade.isValid());
-//    }
-//
-//    @Test
-//    public void testIsValidWithNoBlockadeCard() {
-//        Blockade blockade = new Blockade(d_player, d_country);
-//        assertFalse(blockade.isValid());
-//    }
-//
-//    @Test
-//    public void testIsValidWithValidInputs() {
-//        List<String> cardList = new ArrayList<>();
-//        d_player.addCard("Blockade");
-//        Blockade blockade = new Blockade(d_player, d_country);
-//        assertTrue(blockade.isValid());
-//    }
-//
-//    @Test
-//    public void testExecute() {
-//        d_player.addCard("Blockade");
-//        Blockade blockade = new Blockade(d_player, d_country);
-//        blockade.execute();
-//        assertEquals(0, d_player.getCountriesOwned().size());
-//        assertEquals(0, d_country.getArmies());
-//    }
-//
-//    @Test
-//    public void testExecuteWithInvalidOrder() {
-//        Blockade blockade = new Blockade(d_player, d_country);
-//        blockade.execute(); // This should not change the state
-//        assertEquals(1, d_player.getCountriesOwned().size());
-//        assertEquals(1, d_country.getArmies());
-//    }
-//
-//    @Test
-//    public void testPrint() {
-//        List<String> cardList = new ArrayList<>();
-//        d_player.addCard("Blockade");
-//        Blockade blockade = new Blockade(d_player, d_country);
-//        blockade.execute();
-//    }
-//}
+/**
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @version 2.0
+ */
+package Orders;
+
+import static org.junit.Assert.*;
+
+import Controller.GameEngineController;
+import org.junit.Before;
+import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
+import Models.Country;
+import Models.Player;
+/**
+ * This class contains unit tests for the Blockade class.
+ */
+public class TestBlockade {
+    private Player d_player;
+    private Country d_country;
+
+    /**
+     * Sets up the test scenario before each test.
+     * It initializes a test player, adds them to the game engine controller's list of players,
+     * and assigns a country to the test player.
+     */
+    @Before
+    public void setUp() {
+        // Initialize a game engine controller
+        GameEngineController gameEngineController = new GameEngineController();
+        // Add a test player to the game
+        gameEngineController.executeAddGamePlayer("TestPlayer");
+        // Initialize the test player
+        d_player = new Player("TestPlayer");
+        // Add the test player to the list of players in the game engine controller
+        gameEngineController.d_Players.add(d_player);
+        // Initialize a test country
+        d_country = new Country("TestCountry");
+        // Add the test country to the list of countries owned by the test player
+        d_player.addCountryToCountriesOwned(d_country);
+    }
+
+
+    /**
+     * Tests the isValid method when the player parameter is null.
+     */
+    @Test
+    public void testIsValidWithNullPlayer() {
+        // Create a blockade with null player
+        Blockade blockade = new Blockade(null, d_country);
+        // Assert that isValid returns false
+        assertFalse(blockade.isValid());
+    }
+
+    /**
+     * Tests the isValid method when the country parameter is null.
+     */
+    @Test
+    public void testIsValidWithNullCountry() {
+        // Create a blockade with null country
+        Blockade blockade = new Blockade(d_player, null);
+        // Assert that isValid returns false
+        assertFalse(blockade.isValid());
+    }
+
+    /**
+     * Tests the isValid method when the player has no Blockade card.
+     */
+    @Test
+    public void testIsValidWithNoBlockadeCard() {
+        // Create a blockade with a player who has no Blockade card
+        Blockade blockade = new Blockade(d_player, d_country);
+        // Assert that isValid returns false
+        assertFalse(blockade.isValid());
+    }
+
+    /**
+     * Tests the isValid method with valid inputs.
+     */
+    @Test
+    public void testIsValidWithValidInputs() {
+        // Add a Blockade card to the test player's card list
+        d_player.addCard("Blockade");
+        // Create a blockade with valid inputs
+        Blockade blockade = new Blockade(d_player, d_country);
+        // Assert that isValid returns true
+        assertTrue(blockade.isValid());
+    }
+
+    /**
+     * Tests the execute method of Blockade.
+     * It verifies that executing a blockade removes armies from the country and removes the country from the player's list of owned countries.
+     */
+    @Test
+    public void testExecute() {
+        // Add a Blockade card to the test player's card list
+        d_player.addCard("Blockade");
+        // Create a blockade
+        Blockade blockade = new Blockade(d_player, d_country);
+        // Execute the blockade
+        blockade.execute();
+        // Assert that the country is removed from the player's list of owned countries
+        assertEquals(0, d_player.getCountriesOwned().size());
+        // Assert that the country has no armies left
+        assertEquals(0, d_country.getArmies());
+    }
+
+    /**
+     * Tests the execute method of Blockade when the order is invalid.
+     * It verifies that executing a blockade without a Blockade card does not change the state.
+     */
+    @Test
+    public void testExecuteWithInvalidOrder() {
+        // Create a blockade without adding a Blockade card to the player
+        Blockade blockade = new Blockade(d_player, d_country);
+        // Execute the blockade, which should not change the state
+        blockade.execute();
+        // Assert that the player still owns the country
+        assertEquals(1, d_player.getCountriesOwned().size());
+        // Assert that the country still has no armies
+        assertEquals(0, d_country.getArmies());
+    }
+
+    /**
+     * Tests the print method of Blockade.
+     * It verifies that the print method executes without errors.
+     */
+    @Test
+    public void testPrint() {
+        // Add a Blockade card to the test player's card list
+        d_player.addCard("Blockade");
+        // Create a blockade
+        Blockade blockade = new Blockade(d_player, d_country);
+        // Execute the blockade
+        blockade.execute();
+        // Call the print method, which should execute without errors
+        blockade.print();
+    }
+}

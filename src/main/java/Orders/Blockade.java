@@ -70,8 +70,7 @@ public class Blockade implements Order{
     public void execute() {
         if (isValid()) {
             d_country.setArmies(d_country.getArmies() * 3);
-            Player l_player = d_country.getOwner();
-            l_player.removeCountryFromCountriesOwned(d_country);
+            d_player.removeCountryFromCountriesOwned(d_country);
             d_player.removeCard("Blockade");
             print();
         } else {
