@@ -3,49 +3,175 @@ package Phases;
 import GameEngine.GameEngine;
 import Models.Command;
 
+/**
+ * The Phases class represents the various phases of the game.
+ * It is an abstract class providing methods for executing commands in different phases.
+ */
 public abstract class Phases {
     GameEngine d_ge;
 
+    /**
+     * Displays the game map.
+     *
+     * @param p_command The command object.
+     */
     public void showMap(Command p_command) {
         d_ge.getD_gc().executeShowMap();
     }
 
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
     abstract public void editMap(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void saveMap(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void validateMap(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void editContinent(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void editCountry(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void editNeighbor(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void loadMap(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void assignPlayers(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void assignCountries(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void deploy(Command p_command);
 
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
     abstract public void advance(Command p_command);
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void bomb(Command p_command);
 
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
+
     abstract public void blockade(Command p_command);
+
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void airlift(Command p_command);
 
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
+
     abstract public void negotiate(Command p_command);
+
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
 
     abstract public void endGame(Command p_command);
 
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
+
     abstract public void endTurn(Command p_command);
 
+
+    /**
+     * Transitions to the next phase.
+     */
     abstract public void next();
 
+    /**
+     * Executes a series of commands.
+     * This method iterates through the commands and executes them based on their type.
+     *
+     * @param p_command An array of Command objects to be executed.
+     */
     public void execute(Command[] p_command) {
         for (Command l_command : p_command) {
             switch (l_command.getD_cmd()) {
@@ -133,11 +259,20 @@ public abstract class Phases {
         d_ge.getD_gc().nextUserInput();
     }
 
+    /**
+     * Prints an invalid command message.
+     * This method prints a message indicating that the command is invalid in the current state.
+     */
     public void printInvalidMessage() {
         System.out.println("Invalid Command in the state " + this.getClass().getSimpleName());
         //d_ge.nextUserInput();
     }
 
+    /**
+     * Constructs a Phases object with the specified GameEngine.
+     *
+     * @param p_ge The GameEngine instance.
+     */
     public Phases(GameEngine p_ge) {
         d_ge = p_ge;
     }

@@ -306,6 +306,13 @@ public class GameEngineController {
         return true;
     }
 
+    /**
+     * Sets orders for the current player based on the given command.
+     * If not all players have completed their turns, sets orders for the current player.
+     * If all players have completed their turns, executes all orders and proceeds to the reinforcement phase.
+     *
+     * @param p_cmd The command specifying the action to be taken.
+     */
     public void setOrders(Command p_cmd) {
 
         if(d_completedTurns != d_Players.size()){

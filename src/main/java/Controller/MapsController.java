@@ -32,6 +32,10 @@ public class MapsController{
     private static LinkedHashMap<String, Continent> d_Continents;
     private static LinkedHashMap<String, Country> d_Countries;
 
+    /**
+     * Constructs a new MapsController object.
+     * Initializes the Maps object and retrieves the continents and countries data.
+     */
     public MapsController() {
         this.d_maps = new Maps();
         d_Continents = this.d_maps.getContinents();
