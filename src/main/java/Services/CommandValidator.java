@@ -183,6 +183,13 @@ public class CommandValidator {
         return null;
     }
 
+    /**
+     * Retrieves the ValidCommands object for a specific combination of base command and subcommand.
+     *
+     * @param p_baseCommand The base command.
+     * @param p_subCommand The subcommand.
+     * @return The corresponding ValidCommands object, or null if not found.
+     */
     private ValidCommands getValidCommandObject(String p_baseCommand, String p_subCommand) {
         for (ValidCommands l_validCommand : d_validCommands) {
             if (l_validCommand.getBaseCommand().equals(p_baseCommand) && l_validCommand.getSubCommand().equals(p_subCommand)) {
@@ -192,10 +199,22 @@ public class CommandValidator {
         return null;
     }
 
+    /**
+     * Checks if the provided argument is a valid subcommand.
+     *
+     * @param p_subCommand The subcommand to validate.
+     * @return true if the subcommand is valid, false otherwise.
+     */
     private boolean isValidSubCommand(String p_subCommand) {
         return p_subCommand.equals("-add") || p_subCommand.equals("-remove");
     }
 
+    /**
+     * Determines if the given argument represents an integer.
+     *
+     * @param p_arg The argument to check.
+     * @return true if the argument is an integer, false otherwise.
+     */
     private boolean isInt(String p_arg) {
         try {
             Integer.parseInt(p_arg);
@@ -205,6 +224,13 @@ public class CommandValidator {
         return true;
     }
 
+    /**
+     * Determines if the given argument represents a string.
+     * This method is a bit misleading as it essentially checks if the argument is not an integer.
+     *
+     * @param p_arg The argument to check.
+     * @return true if the argument is a string (i.e., not an integer), false otherwise.
+     */
     private boolean isString(String p_arg) {
         try {
             Integer.parseInt(p_arg);
@@ -214,6 +240,13 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Validates if the provided argument matches the expected data type.
+     *
+     * @param p_type The expected data type.
+     * @param p_arg The argument to validate.
+     * @return true if the argument matches the expected type, false otherwise.
+     */
     private boolean validateType(String p_type, String p_arg) {
         if (p_type.equals("Number")) {
             return isInt(p_arg);
