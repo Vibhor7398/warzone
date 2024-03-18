@@ -1,13 +1,14 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
  * @version 2.0
  */
 package Orders;
 
+import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
+
 import java.util.ArrayList;
-import Controller.GameEngineController;
 
 /**
  * The Deploy class represents a deployment order in a game.
