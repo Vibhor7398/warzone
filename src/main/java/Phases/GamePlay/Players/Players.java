@@ -3,15 +3,11 @@ package Phases.GamePlay.Players;
 import GameEngine.GameEngine;
 import Models.Command;
 import Phases.GamePlay.MainPlay.MainPlay;
+import Phases.GamePlay.MainPlay.OrderCreationPhase;
+import Phases.GamePlay.MainPlay.ReinforcementPhase;
 import Phases.Phases;
 
 public class Players extends Phases {
-    private final GameEngine d_ge;
-    public Players(GameEngine p_ge) {
-        super(p_ge);
-        d_ge = p_ge;
-    }
-
     @Override
     public void editMap(Command p_command) {
         printInvalidMessage();
@@ -107,6 +103,6 @@ public class Players extends Phases {
 
     @Override
     public void next() {
-        d_ge.setD_phase(new MainPlay(d_ge));
+        d_ge.setD_phase(new OrderCreationPhase(d_ge));
     }
 }

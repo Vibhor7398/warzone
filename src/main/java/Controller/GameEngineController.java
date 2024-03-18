@@ -307,45 +307,50 @@ public class GameEngineController {
 //        CommandValidationService.setD_hasGameStarted(true);
 
         // Assign initial reinforcements to players
-        Reinforcement.assignReinforcements(d_Players);
+        assignReinforcements();
         return true;
         
         // Execute the deploy phase
 //        executeDeploy();
     }
 
-    public void setOrders(Command p_cmd) {
+    public void assignReinforcements(){
+        Reinforcement.assignReinforcements(d_Players);
+    }
+
+    public boolean setOrders(Command p_cmd) {
 
         if(d_completedTurns != d_Players.size()){
             setNextPlayer();
             if(p_cmd.getD_cmd().equals("endturn")){
                 d_Players.get(d_currentPlayer).setD_isTurnCompleted(true);
                 d_completedTurns++;
-                if(!ifTurnsCompleted()){
+                if(!ifTurnsCompleted()) {
                     incrementNextPlayer();
+                    return false;
+                }else {
+                    return true;
                 }
-                getD_cardsOwnedByPlayer().clear();
-                d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
+//                getD_cardsOwnedByPlayer().clear();
+//                d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
             }
             else{
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);
                 d_Players.get(d_currentPlayer).issueOrder();
                 incrementNextPlayer();
+                return false;
             }
 //            incrementNextPlayer();
         }
         else{
-            executeAllOrders();
-            Reinforcement.assignReinforcements(d_Players);
+//            executeAllOrders();
+            return true;
         }
     }
 
-
-
     private boolean ifTurnsCompleted(){
         if(d_completedTurns == d_Players.size()){
-            executeAllOrders();
-            Reinforcement.assignReinforcements(d_Players);
+//            executeAllOrders();
             return true;
         }
         return false;
@@ -401,6 +406,8 @@ public class GameEngineController {
             p.setD_hasCommunicatedCompletedOrders(false);
             p.setD_isTurnCompleted(false);
         }
+        getD_cardsOwnedByPlayer().clear();
+        d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
     }
 
 }

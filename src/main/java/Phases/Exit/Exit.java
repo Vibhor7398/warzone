@@ -5,13 +5,6 @@ import Models.Command;
 import Phases.Phases;
 
 public class Exit extends Phases {
-    private final GameEngine d_ge;
-    public Exit(GameEngine p_ge) {
-        super(p_ge);
-        d_ge = p_ge;
-        next();
-    }
-
     @Override
     public void showMap(Command p_command) {
         printInvalidMessage();

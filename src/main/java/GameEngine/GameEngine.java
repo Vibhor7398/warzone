@@ -56,7 +56,8 @@ public class GameEngine {
 //    }
 
     public void start(){
-        setD_phase(new MapEditor(this));
+        Phases.setD_ge(this);
+        setD_phase(new MapEditor());
         d_gc.nextUserInput();
     }
 

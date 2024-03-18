@@ -6,10 +6,8 @@ import Phases.GamePlay.Players.Players;
 import Phases.Phases;
 
 public class MapEditor extends Phases {
-    private final GameEngine d_ge;
-    public MapEditor(GameEngine p_ge) {
-        super(p_ge);
-        d_ge = p_ge;
+
+    public MapEditor() {
     }
 
     @Override
@@ -116,6 +114,6 @@ public class MapEditor extends Phases {
 
     @Override
     public void next() {
-        d_ge.setD_phase(new Players(d_ge));
+        d_ge.setD_phase(new Players());
     }
 }

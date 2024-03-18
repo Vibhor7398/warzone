@@ -4,7 +4,11 @@ import GameEngine.GameEngine;
 import Models.Command;
 
 public abstract class Phases {
-    GameEngine d_ge;
+    public static GameEngine d_ge;
+
+    public static void setD_ge(GameEngine d_ge) {
+        Phases.d_ge = d_ge;
+    }
 
     public void showMap(Command p_command) {
         d_ge.getD_gc().executeShowMap();
@@ -136,10 +140,6 @@ public abstract class Phases {
     public void printInvalidMessage() {
         System.out.println("Invalid Command in the state " + this.getClass().getSimpleName());
         //d_ge.nextUserInput();
-    }
-
-    public Phases(GameEngine p_ge) {
-        d_ge = p_ge;
     }
 
 }
