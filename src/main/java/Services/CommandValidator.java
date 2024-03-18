@@ -218,7 +218,7 @@ public class CommandValidator {
     private boolean isInt(String p_arg) {
         try {
             Integer.parseInt(p_arg);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException l_e) {
             return false;
         }
         return true;
@@ -234,7 +234,7 @@ public class CommandValidator {
     private boolean isString(String p_arg) {
         try {
             Integer.parseInt(p_arg);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException l_e) {
             return true;
         }
         return false;
@@ -260,6 +260,12 @@ public class CommandValidator {
         return false;
     }
 
+    /**
+     * Constructs a helpful message suggesting the correct usage of a command.
+     *
+     * @param p_baseCommand The base command for which to construct the usage message.
+     * @return A string containing the usage message.
+     */
     private String getValidCommand(String p_baseCommand) {
         StringBuilder l_args = new StringBuilder();
         ValidCommands l_validCommand = getValidCommandObject(p_baseCommand);
@@ -281,6 +287,14 @@ public class CommandValidator {
         return "Oops! You've missed the command. Did you mean to use -> " + l_args;
     }
 
+    /**
+     * Validates the user input command and constructs an array of Command objects
+     * if the input is valid. Throws an InvalidCommandException otherwise.
+     *
+     * @param p_command The user input command to validate.
+     * @return An array of Command objects representing the validated command.
+     * @throws InvalidCommandException If the command is invalid.
+     */
     public Command[] validateCommand(String p_command) throws InvalidCommandException {
             String[] l_cmd = p_command.trim().split(" ");
             String l_baseCommand = l_cmd[0];
@@ -340,9 +354,6 @@ public class CommandValidator {
                 else{
                     l_commands[i] = new Command(l_baseCommand, "", l_argsArray.subList(i * l_validCommand.getNumArgs(), (i + 1) * l_validCommand.getNumArgs()).toArray(new String[0]));
                 }
-            }
-            for(Command c:l_commands){
-                System.out.println(c.toString());
             }
             return l_commands;
     }
