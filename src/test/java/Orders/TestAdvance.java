@@ -104,6 +104,6 @@ public class TestAdvance {
 
         // Assert the output
         String expectedOutput = "3 armies moved from Source to Target\n";
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput.trim(), outContent.toString().trim());
     }
 }

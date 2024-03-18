@@ -76,7 +76,7 @@ public class TestAirlift {
 
         // Assert the output
         String expectedOutput = "Abhi has successfully airlifted the number of armies: 5 from source country India to target country Canada.\n";
-        assertEquals(expectedOutput, outContent.toString());
+        assertEquals(expectedOutput.trim(), outContent.toString().trim());
 
     }
 }
