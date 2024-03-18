@@ -5,9 +5,14 @@ import Models.Country;
 import Models.Player;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+/**
+ * This class contains unit tests for the Advance class.
+ */
 public class TestAdvance {
-
+    /**
+     * Tests the execution of an Advance order.
+     * Scenario: Player advances armies from source country to target country.
+     */
     @Test
     public void testAdvanceMove() {
         // Setup - create actual objects rather than mocks
@@ -38,7 +43,9 @@ public class TestAdvance {
         assertEquals("Source country should have 5 armies left.", 10, l_sourceCountry.getArmies());
         assertEquals("Target country should have 10 armies now.", 5, l_targetCountry.getArmies());
     }
-
+    /**
+     * Tests the validity of an Advance order when the source territory is not owned by the player.
+     */
     @Test
     public void testIsValid_SourceTerritoryNotOwnedByPlayer() {
         GameEngineController l_gameC = new GameEngineController();
@@ -59,7 +66,9 @@ public class TestAdvance {
         // Test isValid method
         assertFalse(l_advance.isValid());
     }
-
+    /**
+     * Tests the printing functionality of the Advance class for an unsuccessful attack.
+     */
     @Test
     public void testPrint_UnsuccessfulAttack() {
         // Create a player
