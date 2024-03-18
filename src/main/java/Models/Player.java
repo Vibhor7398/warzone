@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @version 2.0
  */
 
 package Models;
@@ -105,27 +105,64 @@ public class Player {
     }
 
 
+    /**
+     * Adds a card to the player's list of cards.
+     * This method is used to give a player a new card, which can be used in the game for various strategic advantages.
+     *
+     * @param p_card The card to be added to the player's list.
+     */
     public void addCard(String p_card){
         d_cardList.add(p_card);
     }
 
+
+    /**
+     * Removes a card from the player's list of cards.
+     * This method is used when a player has used a card, and it needs to be removed from their possession.
+     *
+     * @param p_card The card to be removed from the player's list.
+     */
     public void removeCard(String p_card) {
         d_cardList.remove(p_card);
     }
 
+    /**
+     * Retrieves the player's list of cards.
+     * This method provides access to the cards the player currently holds.
+     *
+     * @return An ArrayList of strings representing the player's cards.
+     */
     public ArrayList<String> getCardList(){
         return d_cardList;
     }
 
+    /**
+     * Adds a player to the list of players with whom this player has negotiated peace.
+     * This method is used to keep track of players that have agreed not to attack each other for a certain number of turns.
+     *
+     * @param p_player The player with whom to negotiate peace.
+     */
     public void addNegotiatePlayer(Player p_player){
         if (!d_NegotiatePlayers.contains(p_player))
             d_NegotiatePlayers.add(p_player);
     }
 
+    /**
+     * Removes a player from the list of players with whom this player has negotiated peace.
+     * This method is used when the negotiation agreement comes to an end, allowing for potential conflicts in future turns.
+     *
+     * @param p_player The player to remove from the negotiation list.
+     */
     public void removeNegotiatePlayer(Player p_player){
         d_NegotiatePlayers.remove(p_player);
     }
     
+    /**
+     * Retrieves the list of players with whom this player has negotiated peace.
+     * This method provides access to the list of players that are currently in a peace agreement with this player.
+     *
+     * @return A list of players with whom peace has been negotiated.
+     */
     public List<Player> getNegotiatePlayers(){
         return d_NegotiatePlayers;
     }
@@ -139,6 +176,12 @@ public class Player {
         d_orderArgs.add(p_orderArgs);
     }
 
+    /**
+     * Removes a country from the list of countries owned by the player.
+     * This method is typically called when a player loses control of a country due to an attack or a diplomatic action.
+     *
+     * @param p_country The country to be removed from the player's control.
+     */
     public void removeCountryFromCountriesOwned(Country p_country) {
         d_countriesOwned.remove(p_country);
     }
@@ -161,35 +204,77 @@ public class Player {
         Player.d_ReinforcementsCompleted = p_reinforcementsCompleted;
     }
 
+    /**
+     * Sets the order for the player based on the provided command.
+     * This method extracts the command type and arguments from the given command object and sets them accordingly.
+     *
+     * @param p_cmd The command containing the order details.
+     */
     public void setOrder(Command p_cmd) {
         d_orderType = p_cmd.getD_cmd();
         d_orderArgsValues = p_cmd.getArgs();
     }
-
+    
+    /**
+     * Retrieves the arguments associated with the current order.
+     *
+     * @return An array containing the arguments of the current order.
+     */
     public String[] getD_orderArgsValues() {
         return d_orderArgsValues;
     }
 
+    /**
+     * Sets the arguments associated with the current order.
+     *
+     * @param p_orderArgsValues An array containing the arguments of the current order.
+     */
     public void setD_orderArgsValues(String[] p_orderArgsValues) {
         this.d_orderArgsValues = p_orderArgsValues;
     }
 
+    /**
+     * Sets the list of orders associated with the player.
+     *
+     * @param p_orderList The list of orders to be associated with the player.
+     */
     public void setD_orderList(ArrayList<Order> p_orderList) {
         this.d_orderList = p_orderList;
     }
 
+    /**
+     * Retrieves the current order assigned to the player.
+     *
+     * @return The current order assigned to the player.
+     */
     public Order getD_currentOrder() {
         return d_currentOrder;
     }
 
+    /**
+     * Sets the current order assigned to the player.
+     *
+     * @param p_currentOrder The current order to be assigned to the player.
+     */
     public void setD_currentOrder(Order p_currentOrder) {
         this.d_currentOrder = p_currentOrder;
     }
 
+    /**
+     * Checks if the player has communicated completed orders.
+     *
+     * @return True if the player has communicated completed orders; false otherwise.
+     */
     public boolean hasCommunicatedCompletedOrders() {
         return d_hasCommunicatedCompletedOrders;
     }
 
+    /**
+     * Retrieves the player object by name.
+     *
+     * @param p_name The name of the player to retrieve.
+     * @return The player object corresponding to the provided name.
+     */
     public Player getPlayerByName(String p_name){
         for (Player l_player : GameEngineController.d_Players){
             if (l_player.getName().equals(p_name)){
@@ -253,10 +338,20 @@ public class Player {
         }
     }
 
+    /**
+     * Sets whether the player has communicated completed orders.
+     *
+     * @param d_hasCommunicatedCompletedOrders A boolean value indicating whether the player has communicated completed orders.
+     */
     public void setD_hasCommunicatedCompletedOrders(boolean d_hasCommunicatedCompletedOrders) {
         this.d_hasCommunicatedCompletedOrders = d_hasCommunicatedCompletedOrders;
     }
 
+    /**
+     * Retrieves the next order to be executed by the player.
+     *
+     * @return The next order to be executed, or null if there are no more orders.
+     */
     public Order next_order(){
         if(!d_orderList.isEmpty()){
             Order l_orderToExecute = d_orderList.getFirst();
@@ -266,9 +361,14 @@ public class Player {
 //        d_hasCommunicatedCompletedOrders = true;
         return null;
     }
+
+    /**
+     * Checks if there are more orders remaining for the player to execute.
+     *
+     * @return True if there are more orders remaining; false otherwise.
+     */
     public boolean hasMoreOrders(){
         return !d_orderList.isEmpty();
-
     }
 
 }
