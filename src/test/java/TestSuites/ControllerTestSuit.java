@@ -4,6 +4,7 @@
  */
 package TestSuites;
 
+import Controller.TestGameEngineController;
 import Controller.TestMapsController;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -13,6 +14,6 @@ import org.junit.runners.Suite;
  * It includes test cases for MapsController.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TestMapsController.class})
+@Suite.SuiteClasses({TestMapsController.class, TestGameEngineController.class})
 public class ControllerTestSuit {
 }
