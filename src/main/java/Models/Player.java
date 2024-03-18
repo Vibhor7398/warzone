@@ -50,6 +50,11 @@ public class Player {
         this.d_name = p_name;
     }
 
+    /**
+     * Retrieves the status indicating whether the turn is completed.
+     *
+     * @return true if the turn is completed, false otherwise.
+     */
     public boolean getD_isTurnCompleted() {
         return d_isTurnCompleted;
     }

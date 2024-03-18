@@ -40,6 +40,11 @@ public class Country {
         this.d_neighbors.put(this, new LinkedHashMap<>());
     }
 
+    /**
+     * Constructs a Country object with the specified name.
+     *
+     * @param p_name The name of the country.
+     */
     public Country(String p_name) {
         d_name = p_name;
     }
