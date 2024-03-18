@@ -28,13 +28,13 @@ public class TestBlockade {
     @Before
     public void setUp() {
         // Initialize a game engine controller
-        GameEngineController gameEngineController = new GameEngineController();
+        GameEngineController l_gameEngineController = new GameEngineController();
         // Add a test player to the game
-        gameEngineController.executeAddGamePlayer("TestPlayer");
+        l_gameEngineController.executeAddGamePlayer("TestPlayer");
         // Initialize the test player
         d_player = new Player("TestPlayer");
         // Add the test player to the list of players in the game engine controller
-        gameEngineController.d_Players.add(d_player);
+        l_gameEngineController.d_Players.add(d_player);
         // Initialize a test country
         d_country = new Country("TestCountry");
         // Add the test country to the list of countries owned by the test player
@@ -48,9 +48,9 @@ public class TestBlockade {
     @Test
     public void testIsValidWithNullPlayer() {
         // Create a blockade with null player
-        Blockade blockade = new Blockade(null, d_country);
+        Blockade l_blockade = new Blockade(null, d_country);
         // Assert that isValid returns false
-        assertFalse(blockade.isValid());
+        assertFalse(l_blockade.isValid());
     }
 
     /**
@@ -59,9 +59,9 @@ public class TestBlockade {
     @Test
     public void testIsValidWithNullCountry() {
         // Create a blockade with null country
-        Blockade blockade = new Blockade(d_player, null);
+        Blockade l_blockade = new Blockade(d_player, null);
         // Assert that isValid returns false
-        assertFalse(blockade.isValid());
+        assertFalse(l_blockade.isValid());
     }
 
     /**
@@ -70,9 +70,9 @@ public class TestBlockade {
     @Test
     public void testIsValidWithNoBlockadeCard() {
         // Create a blockade with a player who has no Blockade card
-        Blockade blockade = new Blockade(d_player, d_country);
+        Blockade l_blockade = new Blockade(d_player, d_country);
         // Assert that isValid returns false
-        assertFalse(blockade.isValid());
+        assertFalse(l_blockade.isValid());
     }
 
     /**
@@ -83,9 +83,9 @@ public class TestBlockade {
         // Add a Blockade card to the test player's card list
         d_player.addCard("Blockade");
         // Create a blockade with valid inputs
-        Blockade blockade = new Blockade(d_player, d_country);
+        Blockade l_blockade = new Blockade(d_player, d_country);
         // Assert that isValid returns true
-        assertTrue(blockade.isValid());
+        assertTrue(l_blockade.isValid());
     }
 
     /**
@@ -97,9 +97,9 @@ public class TestBlockade {
         // Add a Blockade card to the test player's card list
         d_player.addCard("Blockade");
         // Create a blockade
-        Blockade blockade = new Blockade(d_player, d_country);
+        Blockade l_blockade = new Blockade(d_player, d_country);
         // Execute the blockade
-        blockade.execute();
+        l_blockade.execute();
         // Assert that the country is removed from the player's list of owned countries
         assertEquals(0, d_player.getCountriesOwned().size());
         // Assert that the country has no armies left
@@ -113,9 +113,9 @@ public class TestBlockade {
     @Test
     public void testExecuteWithInvalidOrder() {
         // Create a blockade without adding a Blockade card to the player
-        Blockade blockade = new Blockade(d_player, d_country);
+        Blockade l_blockade = new Blockade(d_player, d_country);
         // Execute the blockade, which should not change the state
-        blockade.execute();
+        l_blockade.execute();
         // Assert that the player still owns the country
         assertEquals(1, d_player.getCountriesOwned().size());
         // Assert that the country still has no armies
@@ -131,10 +131,10 @@ public class TestBlockade {
         // Add a Blockade card to the test player's card list
         d_player.addCard("Blockade");
         // Create a blockade
-        Blockade blockade = new Blockade(d_player, d_country);
+        Blockade l_blockade = new Blockade(d_player, d_country);
         // Execute the blockade
-        blockade.execute();
+        l_blockade.execute();
         // Call the print method, which should execute without errors
-        blockade.print();
+        l_blockade.print();
     }
 }
