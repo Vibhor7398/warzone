@@ -225,7 +225,12 @@ public class CommandValidator {
                 throw new InvalidCommandException("Invalid Command!!");
             }
             int commandPointer = 1;
+
             if (!hasSubCommand(l_baseCommand) && !hasArguments(l_baseCommand)) {
+                if(l_cmd.length!=1)
+                {
+                    throw new InvalidCommandException("Invalid Command");
+                }
                 return new Command[]{new Command(l_baseCommand, "", new String[]{})};
             }
             if (l_cmd.length == 1) {
@@ -268,12 +273,10 @@ public class CommandValidator {
             for (int i = 0; i < size; i++) {
                 if(hasSubCommand(l_baseCommand)){
                     l_commands[i] = new Command(l_baseCommand, l_cmd[1], l_argsArray.subList(i * l_validCommand.getNumArgs(), (i + 1) * l_validCommand.getNumArgs()).toArray(new String[0]));
-//                    continue;
                 }
                 else{
                     l_commands[i] = new Command(l_baseCommand, "", l_argsArray.subList(i * l_validCommand.getNumArgs(), (i + 1) * l_validCommand.getNumArgs()).toArray(new String[0]));
                 }
-                //l_commands[i] = new Command(l_baseCommand, l_cmd[1], l_argsArray.subList(i * l_validCommand.getNumArgs(), (i + 1) * l_validCommand.getNumArgs()).toArray(new String[0]));
             }
             for(Command c:l_commands){
                 System.out.println(c.toString());
