@@ -1,13 +1,10 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @version 2.0
  */
 package TestSuites;
 
-import Orders.TestAdvance;
-import Orders.TestAirlift;
-import Orders.TestBomb;
-import Orders.TestDeploy;
+import Orders.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -16,7 +13,7 @@ import org.junit.runners.Suite;
  * It includes test cases for Orders.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TestAdvance.class, TestAirlift.class, TestBomb.class, TestDeploy.class})
+@Suite.SuiteClasses({TestAdvance.class, TestAirlift.class, TestBomb.class, TestDeploy.class, TestDiplomacy.class, TestBlockade.class})
 public class OrderTestSuite {
 
 }
