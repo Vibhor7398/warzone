@@ -76,7 +76,7 @@ public class Advance implements Order{
             GameEngineController.d_Log.notify("Source country does not belong to the current player.");
             return false;
         }
-        // todo - check this
+
         if (!d_source_country.getNeighbors().containsValue(d_target_country)) {
             System.out.println("Target country is not adjacent to the source country.");
             GameEngineController.d_Log.notify("Target country is not adjacent to the source country.");

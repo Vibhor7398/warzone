@@ -76,7 +76,6 @@ public class MapEditor extends Phases {
      */
     @Override
     public void editCountry(Command p_command) {
-        System.out.println("EditCountry"+p_command.toString());
         if(p_command.getD_subCmd().equals("-add")){
             d_ge.getD_gc().executeAddCountry(p_command.getArgs()[0], p_command.getArgs()[1]);
         }
