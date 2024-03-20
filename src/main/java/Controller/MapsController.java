@@ -1,19 +1,23 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
+ * @version 2.0
  */
 
 package Controller;
 
-import Models.Maps;
 import Models.Continent;
 import Models.Country;
+import Models.Maps;
+
 import java.io.File;
-import java.nio.file.StandardOpenOption;
-import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -23,11 +27,15 @@ import java.util.stream.Collectors;
  * Additionally, it checks for the existence and validity of continents and countries, as well as their connectivity.
  * The class also handles operations related to neighbors of countries, such as adding and removing neighbors.
  */
-public class MapsController {
+public class MapsController{
     private final Maps d_maps;
     private static LinkedHashMap<String, Continent> d_Continents;
     private static LinkedHashMap<String, Country> d_Countries;
 
+    /**
+     * Constructs a new MapsController object.
+     * Initializes the Maps object and retrieves the continents and countries data.
+     */
     public MapsController() {
         this.d_maps = new Maps();
         d_Continents = this.d_maps.getContinents();
@@ -392,7 +400,10 @@ public class MapsController {
     * @throws IOException If an I/O error occurs while reading the file.
     */
     public void loadMap(String p_file) throws IOException {
+        d_Continents.clear();
+        d_Countries.clear();
         // Read the entire content of the file into a string
+        //System.out.println((Paths.get(p_file)).toAbsolutePath());
         String l_content = Files.readString(Paths.get(p_file));
         
         // Split the content into lines
@@ -452,7 +463,8 @@ public class MapsController {
                     " | Continent Value: " + p_continent.getContinentValue() +
                     " | Number of Countries: " + p_continent.getCountries().size());
             p_continent.getCountries().forEach((countryId, country) -> {
-                System.out.println("\tCountry ID: " + country.getId() + " | Name: " + country.getName()+" | Armies: " + country.getArmies());
+                System.out.println("\tCountry ID: " + country.getId() + " | Name: " + country.getName());
+                System.out.println("\t\tArmies: " + country.getArmies() + " | Owner: " + (country.getOwner() == null ? "Neutral" : country.getOwner().getName()));
                 LinkedHashMap<String, Country> l_neighborsMap = country.getNeighbors();
                 if (!l_neighborsMap.isEmpty()) {
                     String l_neighbors = String.join(", ", l_neighborsMap.keySet());

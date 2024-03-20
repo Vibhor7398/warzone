@@ -1,27 +1,67 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
+ * @version 2.0
  */
 
 package Controller;
 
 import Constants.AppConstants;
+import GameEngine.GameEngine;
+import Logger.LogEntryBuffer;
+import Logger.LogHandler;
+import Models.Command;
 import Models.Country;
 import Models.Player;
-import Services.CommandValidationService;
+import Orders.Order;
+import Services.CommandValidator;
 import Services.Reinforcement;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
+import Exception.InvalidCommandException;
 
 /**
  * Controls the game engine functionality.
  * This class manages the game's core operations, including map loading, player actions, and game flow.
  */
+
 public class GameEngineController {
-    private static ArrayList<Player> d_Players;
+    /**
+     * Represents the list of players participating in the game.
+     * This ArrayList stores Player objects.
+     */
+    public static ArrayList<Player> d_Players;
+    /**
+     * Represents the MapsController instance used in the game.
+     * This variable holds a reference to the MapsController object.
+     */
     private static MapsController d_Map;
+    /**
+     * Represents the MapsController instance used in the game.
+     * This variable holds a reference to the MapsController object.
+     */
+    private static int d_currentPlayer;
+    /**
+     * Represents the number of completed turns in the game.
+     * This variable stores an integer value indicating the total number of completed turns.
+     */
+    private static int d_completedTurns;
+
+    /**
+     * ArrayList containing cards owned by players.
+     * Each element in the ArrayList is a Player object.
+     */
+    public static ArrayList<Player> d_cardsOwnedByPlayer = new ArrayList<>();
+
+    /**
+     * Static variable representing a log entry buffer.
+     * This buffer is used for storing log entries.
+     */
+    public static LogEntryBuffer d_Log = new LogEntryBuffer();
+    public static LogHandler d_logHandler = new LogHandler(d_Log);
 
     /**
      * Constructs a new instance of GameEngineController.
@@ -33,71 +73,32 @@ public class GameEngineController {
     }
 
     /**
-    * Executes a command based on the provided command string.
-    * The command string is parsed to identify the command and its parameters, then the corresponding action is executed.
-    *
-    * @param p_command The command string to be executed.
-    * @throws ArrayIndexOutOfBoundsException If the command string does not contain enough parameters.
-    * @throws NumberFormatException If parsing of numerical parameters fails.
-    */
-    public void executeCommand(String p_command){
-        // Get the base command from the provided command string
-        String l_baseCmd = CommandValidationService.getBaseCommand(p_command);
+     * Constructs a GameEngineController with the provided MapsController.
+     *
+     * @param p_mc The MapsController instance to be associated with the GameEngineController.
+     */
+    public GameEngineController(MapsController p_mc){
+        d_Map = p_mc;
+    }
 
-        // Split the command string into an array of command components
-        String[] l_cmdArr = p_command.trim().split("\\ ");
 
-        // Execute the corresponding action based on the base command
-        switch (l_baseCmd){
-            case "loadmap":
-                executeLoadMap(l_cmdArr[1]);
-                break;
-            case "showmap":
-                executeShowMap();
-                break;
-            case "savemap":
-                executeSaveMap(l_cmdArr[1]);
-                break;
-            case "editmap":
-                executeEditMap(l_cmdArr[1]);
-                break;
-            case "editcontinent":
-                // Execute add or remove continent action based on the provided sub-command
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddContinent(l_cmdArr[2], Integer.parseInt(l_cmdArr[3]));
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveContinent(l_cmdArr[2]);
-                break;
-            case "editcountry":
-                // Execute add or remove country action based on the provided sub-command
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddCountry(l_cmdArr[2], l_cmdArr[3]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveCountry(l_cmdArr[2]);
-                break;
-            case "editneighbor":
-                // Execute add or remove neighbor action based on the provided sub-command
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddNeighbor(l_cmdArr[2], l_cmdArr[3]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveNeighbor(l_cmdArr[2], l_cmdArr[3]);
-                break;
-            case "validatemap":
-                executeValidateMap();
-                break;
-            case "gameplayer":
-                // Execute add or remove game player action based on the provided sub-command
-                if(l_cmdArr[1].trim().equals("-add"))
-                    executeAddGamePlayer(l_cmdArr[2]);
-                else if(l_cmdArr[1].trim().equals("-remove"))
-                    executeRemoveGamePlayer(l_cmdArr[2]);
-                break;
-            case "assigncountries":
-                executeAssignCountries();
-                break;
-            case "deploy":
-                executeDeploy();
-                break;
+    /**
+     * Prompts the user for the next command input and processes it.
+     * This method reads a command from the standard input, validates it,
+     * and executes the corresponding action in the game engine.
+     * If an invalid command is entered, the user is prompted again.
+     */
+    public void nextUserInput() {
+        CommandValidator l_cs = new CommandValidator();
+        try{
+            Scanner l_sc = new Scanner(System.in);
+            System.out.println("Enter your command");
+            String l_command = l_sc.nextLine();
+            Command[] l_val= l_cs.validateCommand(l_command);
+            GameEngine.getPhase().execute(l_val);
+        } catch (InvalidCommandException e) {
+            System.out.println(e.getMessage());
+            nextUserInput();
         }
     }
 
@@ -108,16 +109,19 @@ public class GameEngineController {
      *
      * @param p_filename The name of the file containing the map to be loaded.
      */
-    private void executeLoadMap(String p_filename){
+    public boolean executeLoadMap(String p_filename){
         try {
             d_Map.loadMap(AppConstants.MapsPath + p_filename);
             d_Map.validateMap();
             boolean l_isValid = d_Map.isMapValid();
             if(!l_isValid){
                 System.out.println("Map is invalid!");
+                return false;
             }
+            return true;
         } catch (IOException l_e) {
             System.out.println("Load map failed. Check for map file. " + l_e.getMessage());
+            return false;
         }
     }
 
@@ -126,7 +130,7 @@ public class GameEngineController {
      * This method invokes the `showMap` method of the game map object to display the details of the map,
      * including continents, countries, and their respective neighbors.
      */
-    private void executeShowMap(){
+    public void executeShowMap(){
         d_Map.showMap();
     }
 
@@ -137,7 +141,7 @@ public class GameEngineController {
      *
      * @param p_filename The name of the file to which the map will be saved.
     */
-    private void executeSaveMap(String p_filename){
+    public void executeSaveMap(String p_filename){
         d_Map.validateMap();
         boolean l_isValid = d_Map.isMapValid();
         if(!l_isValid){
@@ -160,7 +164,7 @@ public class GameEngineController {
      *
      * @param p_filename The name of the file containing the map data to be used for editing.
     */
-    private void executeEditMap(String p_filename){
+    public void executeEditMap(String p_filename){
         File l_file = new File(AppConstants.MapsPath + p_filename);
         try {
             d_Map.editMap(l_file);
@@ -175,7 +179,7 @@ public class GameEngineController {
      * @param p_continentID     The unique identifier for the new continent.
      * @param p_continentValue  The control value associated with the new continent.
      */
-    private void executeAddContinent(String p_continentID, int p_continentValue){
+    public void executeAddContinent(String p_continentID, int p_continentValue){
         d_Map.addContinent(p_continentID,p_continentValue);
     }
 
@@ -186,7 +190,7 @@ public class GameEngineController {
      * @param p_continentID The unique identifier of the continent to be removed.
      * 
     */
-    private void executeRemoveContinent(String p_continentID){
+    public void executeRemoveContinent(String p_continentID){
         d_Map.removeContinent(p_continentID);
     }
 
@@ -196,7 +200,7 @@ public class GameEngineController {
      * @param p_countryID     The unique identifier for the new country.
      * @param p_continentID   The unique identifier of the continent to which the new country belongs.
     */
-    private void executeAddCountry(String p_countryID, String p_continentID){
+    public void executeAddCountry(String p_countryID, String p_continentID){
         d_Map.addCountry(p_countryID,p_continentID);
     }
 
@@ -206,7 +210,7 @@ public class GameEngineController {
      *
      * @param p_countryID The unique identifier of the country to be removed.
     */
-    private void executeRemoveCountry(String p_countryID){
+    public void executeRemoveCountry(String p_countryID){
         d_Map.removeCountry(p_countryID);
     }
 
@@ -216,7 +220,7 @@ public class GameEngineController {
      * @param p_countryID The unique identifier of the country to which the neighbor will be added.
      * @param p_neighborCountryID The unique identifier of the neighbor country to be added.
     */
-    private void executeAddNeighbor(String p_countryID, String p_neighborCountryID){
+    public void executeAddNeighbor(String p_countryID, String p_neighborCountryID){
         d_Map.editNeighbors("add", p_countryID, p_neighborCountryID);
     }
 
@@ -226,7 +230,7 @@ public class GameEngineController {
      * @param p_countryID The unique identifier of the country from which the neighbor will be removed.
      * @param p_neighborCountryID The unique identifier of the neighbor country to be removed.
     */
-    private void executeRemoveNeighbor(String p_countryID, String p_neighborCountryID){
+    public void executeRemoveNeighbor(String p_countryID, String p_neighborCountryID){
         d_Map.editNeighbors("remove", p_countryID, p_neighborCountryID);
     }
 
@@ -236,7 +240,7 @@ public class GameEngineController {
      * country connectivity, and other map integrity rules. It then prints the status of the map,
      * indicating whether it is valid or invalid.
     */
-    private void executeValidateMap(){
+    public void executeValidateMap(){
         d_Map.validateMap();
         boolean l_isValid = d_Map.isMapValid();
         if (l_isValid) {
@@ -255,7 +259,7 @@ public class GameEngineController {
      *
      * @param p_gamePlayer The name of the player to be added.
     */
-    private void executeAddGamePlayer(String p_gamePlayer){
+    public void executeAddGamePlayer(String p_gamePlayer){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
         if (l_playerIndex != -1){
             System.out.println("Player name already exists!");
@@ -271,7 +275,7 @@ public class GameEngineController {
      * @param p_gamePlayer The name of the player to check for existence.
      * @return The index of the player in the list if found, or -1 if the player does not exist.
     */
-    private int doesPlayerExists(String p_gamePlayer){
+    public int doesPlayerExists(String p_gamePlayer){
         for(int i = 0 ; i < d_Players.size() ; i++){
             if(d_Players.get(i).getName().equals(p_gamePlayer)){
                 return i;
@@ -281,12 +285,31 @@ public class GameEngineController {
     }
 
     /**
+     * Adds a Player object representing cards owned by a player to the ArrayList.
+     *
+     * @param p_cardsOwnedByPlayer The Player object representing cards owned by a player to be added.
+     */
+    static public void setD_cardsOwnedByPlayer(Player p_cardsOwnedByPlayer) {
+        d_cardsOwnedByPlayer.add(p_cardsOwnedByPlayer);
+    }
+
+
+    /**
+     * Retrieves the ArrayList containing cards owned by players.
+     *
+     * @return The ArrayList containing Player objects representing cards owned by players.
+     */
+    static public ArrayList<Player> getD_cardsOwnedByPlayer() {
+        return d_cardsOwnedByPlayer;
+    }
+
+    /**
      * Removes a player from the list of players if the player exists.
      * If the player does not exist, a message indicating the same is printed.
      *
      * @param p_gamePlayer The name of the player to be removed.
     */
-    private void executeRemoveGamePlayer(String p_gamePlayer){
+    public void executeRemoveGamePlayer(String p_gamePlayer){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
         if(l_playerIndex != -1){
             d_Players.remove(l_playerIndex);
@@ -301,13 +324,14 @@ public class GameEngineController {
     * Each country is assigned to a player in a round-robin fashion.
     * If there are fewer than 2 players, the game cannot start, and the game flag is set accordingly.
     * After assigning countries, the main game loop is initiated, and players are assigned initial reinforcements.
+     *
+     * @return True if countries are successfully assigned and the game can proceed, false otherwise.
     */
-    private void executeAssignCountries(){
+    public boolean executeAssignCountries(){
         // Check if there are at least 2 players to start the game
         if(d_Players.size() < 2){
             System.out.println("Cannot play with less than 2 players");
-            CommandValidationService.setD_hasGameStarted(false);
-            return;
+            return false;
         }
         // Get the list of countries from the map
         HashMap<String, Country> l_listOfCountries = d_Map.getD_countries();
@@ -328,39 +352,121 @@ public class GameEngineController {
         }
         System.out.println();
         System.out.println("-----------Main Game Loop---------");
-        
-        // Set the game flag to indicate that the game has started
-        CommandValidationService.setD_hasGameStarted(true);
 
         // Assign initial reinforcements to players
         Reinforcement.assignReinforcements(d_Players);
-        
-        // Execute the deploy phase
-        executeDeploy();
+        return true;
     }
 
     /**
-     * Executes the deploy phase of the game.
-     * In this phase, players issue orders for deploying reinforcements and executing their next orders.
-     * The deploy phase continues until all players have completed their reinforcements.
-    */
-    private void executeDeploy(){
-        // Continuously execute orders until all players have completed their reinforcements
-        while(Player.getD_reinforcementsCompleted() != d_Players.size()){
-            // Issue orders for deploying reinforcements for each player
-            for(Player l_player : d_Players){
-                l_player.issue_order();
+     * Sets orders for the current player based on the given command.
+     * If not all players have completed their turns, sets orders for the current player.
+     * If all players have completed their turns, executes all orders and proceeds to the reinforcement phase.
+     *
+     * @param p_cmd The command specifying the action to be taken.
+     */
+    public void setOrders(Command p_cmd) {
+
+        if(d_completedTurns != d_Players.size()){
+            setNextPlayer();
+            if(p_cmd.getD_cmd().equals("endturn")){
+                d_Players.get(d_currentPlayer).setD_isTurnCompleted(true);
+                d_completedTurns++;
+                if(!ifTurnsCompleted()){
+                    incrementNextPlayer();
+                }
+                getD_cardsOwnedByPlayer().clear();
+                d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
+            }
+            else{
+                d_Players.get(d_currentPlayer).setOrder(p_cmd);
+                d_Players.get(d_currentPlayer).issueOrder();
+                incrementNextPlayer();
             }
         }
-        // Reset the count of completed reinforcements
-        Player.setD_reinforcementsCompleted(0);
-        
-        // Continue executing orders until all players have completed their reinforcements
-        while(Player.getD_reinforcementsCompleted() != d_Players.size()){
-            // Execute the next orders for each player
-            for(Player l_player : d_Players){
-                l_player.next_order();
-            }
+        else{
+            executeAllOrders();
+            Reinforcement.assignReinforcements(d_Players);
         }
     }
+
+
+
+    private boolean ifTurnsCompleted(){
+        if(d_completedTurns == d_Players.size()){
+            executeAllOrders();
+            Reinforcement.assignReinforcements(d_Players);
+            return true;
+        }
+        return false;
+    }
+
+    private void setNextPlayer(){
+        while(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
+            d_currentPlayer++;
+            if(d_currentPlayer == d_Players.size()){
+                d_currentPlayer = 0;
+            }
+            return;
+        }
+    }
+
+    /**
+     * Increments the index of the next player to take a turn in the game.
+     * If the index reaches the end of the player list, it wraps around to the beginning.
+     */
+    private void incrementNextPlayer(){
+        d_currentPlayer++;
+        if(d_currentPlayer == d_Players.size()){
+            d_currentPlayer = 0;
+        }
+    }
+
+    /**
+     * Executes all orders from players in the game.
+     * This method iterates over all players, retrieves their next order,
+     * and executes it. It continues this process until all players have
+     * communicated their completed orders.
+     * Once all orders have been executed, the method resets the game state.
+     */
+    public void executeAllOrders() {
+        Order l_order;
+        boolean still_more_orders;
+        int l_playersCompleted = 0;
+        do {
+            still_more_orders = false;
+            for (Player p : d_Players) {
+                l_order = p.next_order();
+
+                if(l_order!=null){
+                    still_more_orders = true;
+                    l_order.execute();
+                }
+                else if(!p.hasCommunicatedCompletedOrders()){
+                    l_playersCompleted++;
+                    p.setD_hasCommunicatedCompletedOrders(true);
+                }
+            }
+            if(l_playersCompleted < d_Players.size()){
+                still_more_orders = true;
+            }
+        } while (still_more_orders);
+        reset();
+    }
+
+    /**
+     * Resets the game state.
+     * This method resets the number of completed turns, the index of the current player,
+     * and clears the flags indicating whether each player has communicated completed orders
+     * and whether their turn is completed.
+     */
+    private void reset(){
+        d_completedTurns = 0;
+        d_currentPlayer = 0;
+        for (Player p : d_Players){
+            p.setD_hasCommunicatedCompletedOrders(false);
+            p.setD_isTurnCompleted(false);
+        }
+    }
+
 }

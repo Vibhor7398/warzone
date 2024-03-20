@@ -1,6 +1,6 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
+ * @version 2.0
  */
 package TestSuites;
 
@@ -9,9 +9,9 @@ import org.junit.runners.Suite;
 
 /**
  * This class represents the global test suite for running all test suites together.
- * It includes the ServicesTestSuite and ControllerTestSuit.
+ * It includes the ServicesTestSuite, ControllerTestSuit and OrderTestSuite.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ServicesTestSuite.class, ControllerTestSuit.class})
+@Suite.SuiteClasses({ServicesTestSuite.class, ControllerTestSuit.class, OrderTestSuite.class})
 public class GlobalTestSuite {
 }

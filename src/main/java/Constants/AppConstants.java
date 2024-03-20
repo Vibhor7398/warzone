@@ -1,6 +1,6 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
+ * @version 2.0
  */
 
 package Constants;
@@ -14,4 +14,8 @@ public final class AppConstants {
      * The path to the directory containing map files.
      */
     public static final String MapsPath = "./src/main/resources/Maps/";
+    /**
+     * The path to the log file.
+     */
+    public static final String LogFilePath = "./src/main/resources/Logs/Log.log";
 }
