@@ -403,7 +403,7 @@ public class MapsController{
         d_Continents.clear();
         d_Countries.clear();
         // Read the entire content of the file into a string
-        System.out.println((Paths.get(p_file)).toAbsolutePath());
+        //System.out.println((Paths.get(p_file)).toAbsolutePath());
         String l_content = Files.readString(Paths.get(p_file));
         
         // Split the content into lines

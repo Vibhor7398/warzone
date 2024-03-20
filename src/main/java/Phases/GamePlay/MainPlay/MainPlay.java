@@ -1,4 +1,5 @@
 package Phases.GamePlay.MainPlay;
+import Controller.GameEngineController;
 import GameEngine.GameEngine;
 import Models.Command;
 import Phases.Exit.Exit;
@@ -19,6 +20,7 @@ public class MainPlay extends Phases {
     public MainPlay(GameEngine p_ge) {
         super(p_ge);
         d_ge = p_ge;
+        GameEngineController.d_Log.notify("Currently in phase: MainPlay");
     }
 
     /**

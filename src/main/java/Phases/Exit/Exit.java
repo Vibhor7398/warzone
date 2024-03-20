@@ -1,5 +1,6 @@
 package Phases.Exit;
 
+import Controller.GameEngineController;
 import GameEngine.GameEngine;
 import Models.Command;
 import Phases.Phases;
@@ -18,6 +19,7 @@ public class Exit extends Phases {
     public Exit(GameEngine p_ge) {
         super(p_ge);
         d_ge = p_ge;
+        GameEngineController.d_Log.notify("Currently in phase: Exit");
         next();
     }
 

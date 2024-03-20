@@ -38,7 +38,7 @@ public class LogHandler implements Observer {
             d_logHandler.write(l_logCollector.toString());
             d_logHandler.close();
         } catch (IOException p_ioException) {
-            p_ioException.getMessage();
+            System.out.println(p_ioException.getMessage());
         }
     }
 }

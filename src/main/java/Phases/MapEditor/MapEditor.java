@@ -1,5 +1,6 @@
 package Phases.MapEditor;
 
+import Controller.GameEngineController;
 import GameEngine.GameEngine;
 import Models.Command;
 import Phases.GamePlay.Players.Players;
@@ -19,6 +20,7 @@ public class MapEditor extends Phases {
     public MapEditor(GameEngine p_ge) {
         super(p_ge);
         d_ge = p_ge;
+        GameEngineController.d_Log.notify("Currently in phase: MapEditor");
     }
 
     /**
@@ -109,8 +111,14 @@ public class MapEditor extends Phases {
      */
     @Override
     public void loadMap(Command p_command) {
-        d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0]);
-        next();
+        boolean isSuccessful = d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0]);
+         if (isSuccessful){
+             GameEngineController.d_Log.notify("Map " + p_command.getArgs()[0] + " loaded successfully!");
+             next();
+         }
+         else{
+             GameEngineController.d_Log.notify("Map " + p_command.getArgs()[0] + " failed to load!");
+         }
     }
 
     /**

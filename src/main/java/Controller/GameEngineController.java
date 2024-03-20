@@ -109,16 +109,19 @@ public class GameEngineController {
      *
      * @param p_filename The name of the file containing the map to be loaded.
      */
-    public void executeLoadMap(String p_filename){
+    public boolean executeLoadMap(String p_filename){
         try {
             d_Map.loadMap(AppConstants.MapsPath + p_filename);
             d_Map.validateMap();
             boolean l_isValid = d_Map.isMapValid();
             if(!l_isValid){
                 System.out.println("Map is invalid!");
+                return false;
             }
+            return true;
         } catch (IOException l_e) {
             System.out.println("Load map failed. Check for map file. " + l_e.getMessage());
+            return false;
         }
     }
 

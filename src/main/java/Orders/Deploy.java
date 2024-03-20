@@ -82,10 +82,11 @@ public class Deploy implements Order {
             int l_previousArmies = d_country.getArmies();
             int l_newArmies = d_armyToBeDeployed + l_previousArmies;
             d_country.setArmies(l_newArmies);
+            d_player.setArmies(d_player.getArmies() - d_armyToBeDeployed);
             print();
         } else {
-            System.out.println("Invalid Order!");
-            GameEngineController.d_Log.notify("Invalid Deploy Order! by "+d_player.getName());
+            System.out.println("Invalid order!");
+            GameEngineController.d_Log.notify("Invalid deploy order by "+d_player.getName());
         }
     }
 
@@ -96,10 +97,8 @@ public class Deploy implements Order {
     public void print() {
         System.out.println(d_armyToBeDeployed + " Army Deployment is successful on "+d_country.getName()+" by "+d_player.getName());
         GameEngineController.d_Log.notify(d_armyToBeDeployed + " Army Deployment is successful on "+d_country.getName()+" by "+d_player.getName());
-
         System.out.println("Deployed armies on " + d_country.getName() + " is " + d_country.getArmies());
         GameEngineController.d_Log.notify("Deployed armies on " + d_country.getName() + " is " + d_country.getArmies());
-
     }
 }
 

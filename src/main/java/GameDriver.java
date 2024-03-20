@@ -2,6 +2,7 @@
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
  * @version 2.0
  */
+import Controller.GameEngineController;
 import GameEngine.GameEngine;
 
 /**
@@ -14,6 +15,8 @@ public class GameDriver {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
+        System.out.println("---------Welcome to WARZONE-------");
+        GameEngineController.d_Log.notify("Game has started!");
         GameEngine l_ge = new GameEngine();
         l_ge.start();
     }

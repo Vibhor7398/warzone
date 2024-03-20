@@ -1,5 +1,6 @@
 package Phases.GamePlay.Players;
 
+import Controller.GameEngineController;
 import GameEngine.GameEngine;
 import Models.Command;
 import Phases.GamePlay.MainPlay.MainPlay;
@@ -19,6 +20,7 @@ public class Players extends Phases {
     public Players(GameEngine p_ge) {
         super(p_ge);
         d_ge = p_ge;
+        GameEngineController.d_Log.notify("Currently in phase: Players");
     }
 
     /**

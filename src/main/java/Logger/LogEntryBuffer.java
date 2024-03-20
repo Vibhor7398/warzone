@@ -21,7 +21,7 @@ public class LogEntryBuffer extends Observable {
      * @param p_log The log message.
      */
     public void notify(String p_log) {
-        d_logList.add("Log: " + p_log + "\n");
+        d_logList.add("\nLog: " + p_log);
         notifyAll(this);
     }
 

@@ -302,37 +302,43 @@ public class Player {
     public void issueOrder() {
         switch (d_orderType) {
             case "deploy":
-                System.out.println("Deploy Order");
+                System.out.println("Deploy order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Deploy order issued for " + this.getName());
                 setD_currentOrder(new Deploy(this, MapsController.getCountryByName(d_orderArgsValues[0]), Integer.parseInt(d_orderArgsValues[1])));
                 d_orderList.add(getD_currentOrder());
                 break;
 
             case "advance":
-                System.out.println("Advance Order");
+                System.out.println("Advance order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Advance order issued for " + this.getName());
                 setD_currentOrder(new Advance(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
                 d_orderList.add(getD_currentOrder());
                 break;
 
             case "airlift":
-                System.out.println("Airlift Order");
+                System.out.println("Airlift order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Airlift order issued for " + this.getName());
                 setD_currentOrder(new Airlift(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
                 d_orderList.add(getD_currentOrder());
                 break;
 
             case "bomb":
-                System.out.println("Bomb Order");
+                System.out.println("Bomb order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Bomb order issued for " + this.getName());
                 setD_currentOrder(new Bomb(this, MapsController.getCountryByName(d_orderArgsValues[0])));
                 d_orderList.add(getD_currentOrder());
                 break;
 
             case "blockade":
-                System.out.println("Blockade Order");
+                System.out.println("Blockade order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Blockade order issued for " + this.getName());
                 setD_currentOrder(new Blockade(this, MapsController.getCountryByName(d_orderArgsValues[0])));
                 d_orderList.add(getD_currentOrder());
                 break;
 
             case "negotiate":
-                System.out.println("Negotiate Order");
+                System.out.println("Negotiate order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Negotiate order issued for " + this.getName());
                 setD_currentOrder(new Diplomacy(this, getPlayerByName(d_orderArgsValues[0])));
                 d_orderList.add(getD_currentOrder());
                 break;
@@ -343,6 +349,7 @@ public class Player {
 
             default:
                 System.out.println("Please enter correct order!");
+//                GameEngineController.d_Log.notify("Deploy order issued!");
                 break;
         }
     }
