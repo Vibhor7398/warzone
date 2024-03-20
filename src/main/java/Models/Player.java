@@ -1,12 +1,18 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
+ * @version 2.0
  */
 
 package Models;
 
-import Services.CommandValidationService;
-import java.util.*;
+import Controller.GameEngineController;
+import Controller.MapsController;
+import Orders.*;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Represents a player in the game.
@@ -14,9 +20,17 @@ import java.util.*;
 public class Player {
     private String d_name;
     private static int d_ReinforcementsCompleted;
-    private int d_armiesCount;
-    private ArrayList<Country> d_countriesOwned;
-    private Queue<String> d_orderArgs;
+    private boolean d_isTurnCompleted = false;
+    private int d_armiesCount = 0;
+    private ArrayList<Country> d_countriesOwned = new ArrayList<>();
+    private Queue<String> d_orderArgs = new LinkedList<>();
+    private ArrayList<String> d_cardList = new ArrayList<>();
+    private final List<Player> d_NegotiatePlayers = new ArrayList<>();
+    private String d_orderType;
+    private String[] d_orderArgsValues;
+    private ArrayList<Order> d_orderList = new ArrayList<>();
+    private Order d_currentOrder;
+    private boolean d_hasCommunicatedCompletedOrders = false;
 
     /**
      * Constructs a player with the given name.
@@ -25,9 +39,6 @@ public class Player {
      */
     public Player(String p_name) {
         this.setName(p_name);
-        d_armiesCount=0;
-        d_countriesOwned = new ArrayList<>();
-        d_orderArgs = new LinkedList<>();
     }
 
     /**
@@ -37,6 +48,24 @@ public class Player {
      */
     public void setName(String p_name) {
         this.d_name = p_name;
+    }
+
+    /**
+     * Retrieves the status indicating whether the turn is completed.
+     *
+     * @return true if the turn is completed, false otherwise.
+     */
+    public boolean getD_isTurnCompleted() {
+        return d_isTurnCompleted;
+    }
+
+    /**
+     * Sets the name of the player.
+     *
+     * @param p_isTurnCompleted Has the turn of the player been completed.
+     */
+    public void setD_isTurnCompleted(boolean p_isTurnCompleted) {
+        this.d_isTurnCompleted = p_isTurnCompleted;
     }
 
     /**
@@ -84,6 +113,69 @@ public class Player {
         d_countriesOwned.add(p_country);
     }
 
+
+    /**
+     * Adds a card to the player's list of cards.
+     * This method is used to give a player a new card, which can be used in the game for various strategic advantages.
+     *
+     * @param p_card The card to be added to the player's list.
+     */
+    public void addCard(String p_card){
+        d_cardList.add(p_card);
+    }
+
+
+    /**
+     * Removes a card from the player's list of cards.
+     * This method is used when a player has used a card, and it needs to be removed from their possession.
+     *
+     * @param p_card The card to be removed from the player's list.
+     */
+    public void removeCard(String p_card) {
+        d_cardList.remove(p_card);
+    }
+
+    /**
+     * Retrieves the player's list of cards.
+     * This method provides access to the cards the player currently holds.
+     *
+     * @return An ArrayList of strings representing the player's cards.
+     */
+    public ArrayList<String> getCardList(){
+        return d_cardList;
+    }
+
+    /**
+     * Adds a player to the list of players with whom this player has negotiated peace.
+     * This method is used to keep track of players that have agreed not to attack each other for a certain number of turns.
+     *
+     * @param p_player The player with whom to negotiate peace.
+     */
+    public void addNegotiatePlayer(Player p_player){
+        if (!d_NegotiatePlayers.contains(p_player))
+            d_NegotiatePlayers.add(p_player);
+    }
+
+    /**
+     * Removes a player from the list of players with whom this player has negotiated peace.
+     * This method is used when the negotiation agreement comes to an end, allowing for potential conflicts in future turns.
+     *
+     * @param p_player The player to remove from the negotiation list.
+     */
+    public void removeNegotiatePlayer(Player p_player){
+        d_NegotiatePlayers.remove(p_player);
+    }
+    
+    /**
+     * Retrieves the list of players with whom this player has negotiated peace.
+     * This method provides access to the list of players that are currently in a peace agreement with this player.
+     *
+     * @return A list of players with whom peace has been negotiated.
+     */
+    public List<Player> getNegotiatePlayers(){
+        return d_NegotiatePlayers;
+    }
+
     /**
      * Sets the order for the player.
      *
@@ -91,6 +183,16 @@ public class Player {
      */
     public void setOrder(String p_orderArgs) {
         d_orderArgs.add(p_orderArgs);
+    }
+
+    /**
+     * Removes a country from the list of countries owned by the player.
+     * This method is typically called when a player loses control of a country due to an attack or a diplomatic action.
+     *
+     * @param p_country The country to be removed from the player's control.
+     */
+    public void removeCountryFromCountriesOwned(Country p_country) {
+        d_countriesOwned.remove(p_country);
     }
 
     /**
@@ -112,123 +214,167 @@ public class Player {
     }
 
     /**
+     * Sets the order for the player based on the provided command.
+     * This method extracts the command type and arguments from the given command object and sets them accordingly.
+     *
+     * @param p_cmd The command containing the order details.
+     */
+    public void setOrder(Command p_cmd) {
+        d_orderType = p_cmd.getD_cmd();
+        d_orderArgsValues = p_cmd.getArgs();
+    }
+    
+    /**
+     * Retrieves the arguments associated with the current order.
+     *
+     * @return An array containing the arguments of the current order.
+     */
+    public String[] getD_orderArgsValues() {
+        return d_orderArgsValues;
+    }
+
+    /**
+     * Sets the arguments associated with the current order.
+     *
+     * @param p_orderArgsValues An array containing the arguments of the current order.
+     */
+    public void setD_orderArgsValues(String[] p_orderArgsValues) {
+        this.d_orderArgsValues = p_orderArgsValues;
+    }
+
+    /**
+     * Sets the list of orders associated with the player.
+     *
+     * @param p_orderList The list of orders to be associated with the player.
+     */
+    public void setD_orderList(ArrayList<Order> p_orderList) {
+        this.d_orderList = p_orderList;
+    }
+
+    /**
+     * Retrieves the current order assigned to the player.
+     *
+     * @return The current order assigned to the player.
+     */
+    public Order getD_currentOrder() {
+        return d_currentOrder;
+    }
+
+    /**
+     * Sets the current order assigned to the player.
+     *
+     * @param p_currentOrder The current order to be assigned to the player.
+     */
+    public void setD_currentOrder(Order p_currentOrder) {
+        this.d_currentOrder = p_currentOrder;
+    }
+
+    /**
+     * Checks if the player has communicated completed orders.
+     *
+     * @return True if the player has communicated completed orders; false otherwise.
+     */
+    public boolean hasCommunicatedCompletedOrders() {
+        return d_hasCommunicatedCompletedOrders;
+    }
+
+    /**
+     * Retrieves the player object by name.
+     *
+     * @param p_name The name of the player to retrieve.
+     * @return The player object corresponding to the provided name.
+     */
+    public Player getPlayerByName(String p_name){
+        for (Player l_player : GameEngineController.d_Players){
+            if (l_player.getName().equals(p_name)){
+                return l_player;
+            }
+        }
+        d_hasCommunicatedCompletedOrders = true;
+        return null;
+    }
+
+    /**
      * Allows the player to issue orders for reinforcement deployment.
      * The method prompts the player to issue orders for deploying reinforcements based on their available armies
      * and the countries they own. It ensures that the issued orders are valid before processing them.
     */
-    public void issue_order() {
-        Scanner l_sc =  new Scanner(System.in);
-        CommandValidationService l_cvs = new CommandValidationService();
-        ArrayList<String> l_countriesOwned = new ArrayList<>();
-        
-        // Populate the list of country names owned by the player
-        for (Country l_country : this.getCountriesOwned()) {
-            l_countriesOwned.add(l_country.getName());
-        }
-        boolean l_valid = false;
+    public void issueOrder() {
+        switch (d_orderType) {
+            case "deploy":
+                System.out.println("Deploy order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Deploy order issued for " + this.getName());
+                setD_currentOrder(new Deploy(this, MapsController.getCountryByName(d_orderArgsValues[0]), Integer.parseInt(d_orderArgsValues[1])));
+                d_orderList.add(getD_currentOrder());
+                break;
 
-        // Continue prompting for orders until a valid order is issued
-        while (!l_valid) {
-            l_valid=true;
-            if (this.getArmies() != 0) {
-                System.out.println(this.getName() + " please issue your orders: ");
-                System.out.println("Reinforcement(s) available for deployment: " + this.getArmies());
-                String l_order = l_sc.nextLine();
-                String[] l_orderArgs = l_order.trim().split("\\s+");
+            case "advance":
+                System.out.println("Advance order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Advance order issued for " + this.getName());
+                setD_currentOrder(new Advance(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
+                d_orderList.add(getD_currentOrder());
+                break;
 
-                if (!l_cvs.validateDeployCommand(l_orderArgs)) {
-                    System.out.print("Invalid Command! ");
-                    l_valid=false;
-                } else {
-                    String l_countryName = l_orderArgs[1];
-                    if (!l_countriesOwned.contains(l_countryName)) {
-                        System.out.println("This country does not belong to you");
-                        l_valid=false;
-                    }else if (checkArmyExceeded(Integer.parseInt(l_orderArgs[2]),this.getArmies())) { //Integer.parseInt(l_orderArgs[2]) > this.getArmies()
-                        System.out.println("Not having enough armies");
-                        l_valid=false;
-                    } else if (Integer.parseInt(l_orderArgs[2]) < 1) {
-                        System.out.println("Number of armies should be greater than 0:");
-                        l_valid = false;
-                    } else {
-                        
-                        // Process the valid order
-                        this.setArmies(this.getArmies() - Integer.parseInt(l_orderArgs[2]));
-                        if (this.getArmies() == 0) {
-                            d_ReinforcementsCompleted++;
-                        }
-                        setOrder(l_order);
-                    }
-                }
-            }
+            case "airlift":
+                System.out.println("Airlift order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Airlift order issued for " + this.getName());
+                setD_currentOrder(new Airlift(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "bomb":
+                System.out.println("Bomb order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Bomb order issued for " + this.getName());
+                setD_currentOrder(new Bomb(this, MapsController.getCountryByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "blockade":
+                System.out.println("Blockade order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Blockade order issued for " + this.getName());
+                setD_currentOrder(new Blockade(this, MapsController.getCountryByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "negotiate":
+                System.out.println("Negotiate order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Negotiate order issued for " + this.getName());
+                setD_currentOrder(new Diplomacy(this, getPlayerByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
+
+            case "endturn":
+                setD_isTurnCompleted(true);
+                return;
+
+            default:
+                System.out.println("Please enter correct order!");
+//                GameEngineController.d_Log.notify("Deploy order issued!");
+                break;
         }
     }
 
     /**
-     * Checks if the number of armies specified in a command exceeds the available army count.
+     * Sets whether the player has communicated completed orders.
      *
-     * @param l_cmd      The number of armies specified in the command.
-     * @param armyCount  The available army count.
-     * @return True if the number of armies exceeds the available count, false otherwise.
-    */
-    public boolean checkArmyExceeded(int l_cmd, int armyCount){
-        if(l_cmd > armyCount ){
-            System.out.println("Not having enough armies");
-            return true;
-        }
-        return false;
+     * @param d_hasCommunicatedCompletedOrders A boolean value indicating whether the player has communicated completed orders.
+     */
+    public void setD_hasCommunicatedCompletedOrders(boolean d_hasCommunicatedCompletedOrders) {
+        this.d_hasCommunicatedCompletedOrders = d_hasCommunicatedCompletedOrders;
     }
 
     /**
-     * Handles the deployment of armies to a country based on the given command.
+     * Retrieves the next order to be executed by the player.
      *
-     * @param p_command The command containing the country name and the number of armies to deploy.
-    */
-    private void handleDeployOrder(ArrayList<String> p_command) {
-        Order l_order = new Order();
-        l_order.deployOrder(this, p_command.get(0), Integer.parseInt(p_command.get(1)));
-    }
-    
-    /**
-     * Handles an invalid command by printing a message indicating that the command is invalid.
+     * @return The next order to be executed, or null if there are no more orders.
      */
-    private void handleInvalidCommand() {
-        System.out.println("Invalid Command! --- Command is \"deploy countryID num\"");
-    }
-
-    /**
-     * Processes the next order in the order queue.
-     * This method dequeues the next order from the order queue, processes it, and updates the game state accordingly.
-     */
-    public void next_order() {
-        // Check if there are orders to process
-        if (!d_orderArgs.isEmpty()) {
-
-            // Dequeue the next order command
-            String l_orderCommand = d_orderArgs.poll();
-
-            // If the order queue is empty after dequeuing, increment the count of completed reinforcements
-            if(d_orderArgs.isEmpty()){
-                d_ReinforcementsCompleted++;
-            }
-            // Split the order command into individual components
-            String[] l_orderCommandList = l_orderCommand.trim().split("\\s+");
-            ArrayList<String> l_commandList = new ArrayList<>(Arrays.asList(l_orderCommandList));
-            String d_orderType = l_orderCommandList[0];
-            
-            // Remove the order type from the command list
-            if (!l_commandList.isEmpty()) {
-                l_commandList.removeFirst();
-            }
-            // Process the order based on its type
-            switch (d_orderType) {
-                case "deploy":
-                    handleDeployOrder(l_commandList);
-                    break;
-                default:
-                    handleInvalidCommand();
-                    break;
-            }
+    public Order next_order(){
+        if(!d_orderList.isEmpty()){
+            Order l_orderToExecute = d_orderList.getFirst();
+            d_orderList.removeFirst();
+            return l_orderToExecute;
         }
+        return null;
     }
+
 }

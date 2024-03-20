@@ -1,9 +1,11 @@
 /**
- * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghirmire, Inderjeet Singh Chauhan, Mohammad Zaid
- * @version 1.0
+ * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
+ * @version 2.0
  */
 
 package Models;
+
+import Controller.GameEngineController;
 
 import java.util.LinkedHashMap;
 
@@ -18,7 +20,7 @@ public class Country {
     private int d_armies;
     private String d_xCoordinate;
     private String d_yCoordinate;
-    private LinkedHashMap<Country, LinkedHashMap<String, Country>> d_neighbors;
+    private LinkedHashMap<Country, LinkedHashMap<String, Country>> d_neighbors = new LinkedHashMap<>();;
 
     /**
      * Constructs a Country object with the specified ID, name, continent ID, x-coordinate, and y-coordinate.
@@ -35,8 +37,16 @@ public class Country {
         this.d_xCoordinate = p_xCoordinate;
         this.d_yCoordinate = p_yCoordinate;
         this.d_armies = 0;
-        this.d_neighbors = new LinkedHashMap<>();
         this.d_neighbors.put(this, new LinkedHashMap<>());
+    }
+
+    /**
+     * Constructs a Country object with the specified name.
+     *
+     * @param p_name The name of the country.
+     */
+    public Country(String p_name) {
+        d_name = p_name;
     }
 
     /**
@@ -136,5 +146,19 @@ public class Country {
     public void removeNeighborById(int p_id) {
         LinkedHashMap<String, Country> l_neighbors = d_neighbors.get(this);
         l_neighbors.values().removeIf(neighbor -> p_id == neighbor.getId());
+    }
+
+    /**
+     * Retrieves the owner of the country.
+     *
+     * @return The player who owns the country, or null if the country is not owned by any player.
+     */
+    public Player getOwner() {
+        for (Player l_player : GameEngineController.d_Players) {
+            if (l_player.getCountriesOwned().contains(this)) {
+                return l_player;
+            }
+        }
+        return null;
     }
 }
