@@ -47,7 +47,7 @@ public class MapsController{
      *
      * @return A {@code LinkedHashMap} containing the countries, where the keys are country names and the values are country objects.
     */
-    public LinkedHashMap<String, Country> getD_countries() {
+    public static LinkedHashMap<String, Country> getD_countries() {
         return d_Countries;
     }
 
