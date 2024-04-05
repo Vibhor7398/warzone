@@ -5,6 +5,8 @@
 
 package Controller;
 
+import Adapter.DominationMapIO;
+import Adapter.MapAdapter;
 import Constants.AppConstants;
 import GameEngine.GameEngine;
 import Logger.LogEntryBuffer;
@@ -111,7 +113,9 @@ public class GameEngineController {
      */
     public boolean executeLoadMap(String p_filename){
         try {
-            d_Map.loadMap(AppConstants.MapsPath + p_filename);
+            MapAdapter l_adapter=new MapAdapter(new DominationMapIO());
+            l_adapter.loadMap(d_Map.getD_maps(),AppConstants.MapsPath + p_filename);
+//            d_Map.loadMap(AppConstants.MapsPath + p_filename);
             d_Map.validateMap();
             boolean l_isValid = d_Map.isMapValid();
             if(!l_isValid){
