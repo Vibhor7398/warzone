@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
  * The class also handles operations related to neighbors of countries, such as adding and removing neighbors.
  */
 public class MapsController{
+
+
     private final Maps d_maps;
     private static LinkedHashMap<String, Continent> d_Continents;
     private static LinkedHashMap<String, Country> d_Countries;
@@ -40,6 +42,14 @@ public class MapsController{
         this.d_maps = new Maps();
         d_Continents = this.d_maps.getContinents();
         d_Countries = this.d_maps.getCountries();
+    }
+    /**
+     * Retrieves a reference to the map
+     *
+     * @return A {@code LinkedHashMap} complete map of the game.
+     */
+    public Maps getD_maps() {
+        return d_maps;
     }
 
     /**
@@ -389,7 +399,7 @@ public class MapsController{
         }
         loadMap(p_file.getPath());
     }
-
+    //TODO: remove the code from here
     /**
     * Loads a map from the specified file and populates the map data structures accordingly.
     * The file is expected to have sections for continents, countries, and borders.

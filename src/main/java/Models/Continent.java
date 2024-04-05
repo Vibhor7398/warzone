@@ -15,7 +15,7 @@ public class Continent {
     private int d_id;
     private String d_name;
     private final int d_continentValue;
-    private final String d_color;
+    private String d_color;
 
     /**
      * Constructs a Continent object with the specified ID, name, control value, and color.
