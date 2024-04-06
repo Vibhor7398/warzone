@@ -109,6 +109,9 @@ public class Players extends Phases {
         if(p_command.getD_subCmd().equals("-add")){
             d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0]);
         }
+        else if(p_command.getD_subCmd().equals("-cpu")){
+            d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0]);
+        }
         else{
             d_ge.getD_gc().executeRemoveGamePlayer(p_command.getArgs()[0]);
         }
