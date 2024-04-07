@@ -5,6 +5,8 @@
 
 package Controller;
 
+import Adapter.ConquestMapIO;
+import Adapter.ConquestMapInterface;
 import Adapter.DominationMapIO;
 import Adapter.MapAdapter;
 import Constants.AppConstants;
@@ -104,6 +106,7 @@ public class GameEngineController {
         }
     }
 
+
     /**
      * Loads a map from a file and validates it.
      * This method attempts to load a map from the specified file, validates it, and checks if the map is valid.
@@ -113,7 +116,8 @@ public class GameEngineController {
      */
     public boolean executeLoadMap(String p_filename){
         try {
-            MapAdapter l_adapter=new MapAdapter(new DominationMapIO());
+
+            ConquestMapIO l_adapter=new ConquestMapIO();
             l_adapter.loadMap(d_Map.getD_maps(),AppConstants.MapsPath + p_filename);
 //            d_Map.loadMap(AppConstants.MapsPath + p_filename);
             d_Map.validateMap();
