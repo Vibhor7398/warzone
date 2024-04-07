@@ -66,4 +66,19 @@ public class TestBenevolentStrategy {
         // assertEquals("Country2", ((Airlift) l_order).getSourceCountry().getName());
         // assertEquals("Country1", ((Airlift) l_order).getTargetCountry().getName());
     }
+
+    @Test
+    public void testCreateOrder_AdvanceIfNoAirliftCard() {
+        // Make sure player does not have an Airlift card
+        d_testPlayer.setArmies(0);
+        d_testPlayer.getCountriesOwned().forEach(c -> c.setArmies(3));
+        d_testPlayer.removeCard("Airlift"); // Assuming there's a method to remove cards
+
+        // Strategy execution
+        Order l_order = d_benevolentStrategy.createOrder();
+
+        // Since no Airlift card is available, an Advance order should be created instead
+        assertTrue(l_order instanceof Advance);
+    }
+
 }
