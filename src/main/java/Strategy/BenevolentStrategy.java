@@ -41,7 +41,12 @@ public class BenevolentStrategy extends PlayerStrategy{
 
     @Override
     protected Country toMoveFrom() {
-        return null;
+            final int threshold = d_player.getCountriesOwned().getFirst().getArmies();
+            return d_player.getCountriesOwned().stream()
+                    .filter(c -> c.getNeighbors().containsValue(toDefend()))
+                    .filter(c -> c.getArmies() > threshold)
+                    .max(Comparator.comparingInt(Country::getArmies))
+                    .orElse(null);
     }
 
     @Override
