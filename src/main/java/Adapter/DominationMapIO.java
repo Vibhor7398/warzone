@@ -62,8 +62,18 @@ public class DominationMapIO {
                 Country l_country = new Country(l_countryId,l_parts[0],findContinentIdByName(p_gameMap,l_parts[3]), l_parts[1], l_parts[2]);
                 p_gameMap.getCountries().put(l_parts[0], l_country);
                 String l_continent=l_parts[3].trim();
-                System.out.println(p_gameMap.getContinents()) ;
-                p_gameMap.getContinents().get(l_continent).addCountry(l_country);
+                System.out.println(p_gameMap.getContinents());
+                String l_continentKey = null;
+                Set<String> keys = p_gameMap.getContinents().keySet();
+
+                for (String key : keys) {
+                    if(p_gameMap.getContinents().get(key).getName().equals(l_continent)) {
+                        l_continentKey = key;
+                    }
+                    System.out.println(key + " -- "
+                            + p_gameMap.getContinents().get(key).getName());
+                }
+                p_gameMap.getContinents().get(l_continentKey).addCountry(l_country);
 
             }
         }
