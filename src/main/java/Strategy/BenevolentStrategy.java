@@ -28,18 +28,21 @@ public class BenevolentStrategy extends PlayerStrategy{
         }
 
         if (d_player.getCardList().contains("Airlift")) {
-            ArrayList<Country> l_countires = new ArrayList<>();
-            l_countires = d_player.getCountriesOwned();
-            l_countires.remove(toMoveFrom());
-            Country l_weakest_country = l_countires.stream()
-                    .min(Comparator.comparingInt(Country::getArmies))
-                    .orElse(null);
-            new Airlift(d_player, toMoveFrom(), l_weakest_country, toMoveFrom().getArmies());
+            ArrayList<Country> l_countries = new ArrayList<>();
+            for(Country l_country : d_player.getCountriesOwned()){
+                l_countries.add(l_country);
+            }
+            l_countries.remove(toMoveFrom());
+            Country l_weakest_country = l_countries.getFirst();
+            for(Country l_country : l_countries){
+                if(l_country.getArmies()<l_weakest_country.getArmies()){
+                    l_weakest_country = l_country;
+                }
+            }
+            return new Airlift(d_player, toMoveFrom(), l_weakest_country, toMoveFrom().getArmies());
         } else {
-            new Advance(d_player, toMoveFrom(), toDefend(), toMoveFrom().getArmies());
+            return new Advance(d_player, toMoveFrom(), toDefend(), toMoveFrom().getArmies());
         }
-
-        return null;
     }
 
     @Override
@@ -54,18 +57,26 @@ public class BenevolentStrategy extends PlayerStrategy{
 
     @Override
     protected Country toMoveFrom() {
-            final int threshold = d_player.getCountriesOwned().getFirst().getArmies();
-            return d_player.getCountriesOwned().stream()
-                    .filter(c -> c.getNeighbors().containsValue(toDefend()))
-                    .filter(c -> c.getArmies() > threshold)
-                    .max(Comparator.comparingInt(Country::getArmies))
-                    .orElse(null);
+        List<Country> l_countryList = d_player.getCountriesOwned();
+        Country l_maxArmy = l_countryList.getFirst();
+        for(Country l_country : l_countryList){
+            if(l_maxArmy.getArmies()<l_country.getArmies() && l_maxArmy.getNeighbors().containsValue(l_country)){
+                l_maxArmy = l_country;
+            }
+        }
+        return l_maxArmy;
     }
 
     @Override
     protected Country toDefend() {
-        return d_player.getCountriesOwned().stream()
-                .min(Comparator.comparingInt(Country::getArmies))
-                .orElse(null);
+        List<Country> l_countryList = d_player.getCountriesOwned();
+        Country l_minArmy = l_countryList.getFirst();
+
+        for(Country l_country : l_countryList){
+            if(l_minArmy.getArmies()<l_country.getArmies()){
+                l_minArmy = l_country;
+            }
+        }
+        return l_minArmy;
     }
 }
