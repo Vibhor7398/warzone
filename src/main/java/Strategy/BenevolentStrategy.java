@@ -26,6 +26,19 @@ public class BenevolentStrategy extends PlayerStrategy{
                 d_player.setArmies(0);
             }
         }
+
+        if (d_player.getCardList().contains("Airlift")) {
+            ArrayList<Country> l_countires = new ArrayList<>();
+            l_countires = d_player.getCountriesOwned();
+            l_countires.remove(toMoveFrom());
+            Country l_weakest_country = l_countires.stream()
+                    .min(Comparator.comparingInt(Country::getArmies))
+                    .orElse(null);
+            new Airlift(d_player, toMoveFrom(), l_weakest_country, toMoveFrom().getArmies());
+        } else {
+            new Advance(d_player, toMoveFrom(), toDefend(), toMoveFrom().getArmies());
+        }
+
         return null;
     }
 
