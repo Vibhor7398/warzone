@@ -19,7 +19,6 @@ public class ConquestMapIO {
         p_gameMap.getContinents().put(String.valueOf(p_gameMap.getContinents().size() + 1), l_continent);
     }
 
-
     private void processCountryLine(Maps p_gameMap,String p_line) {
         String[] l_parts = p_line.split(" ");
         Country l_country = new Country(Integer.parseInt(l_parts[0]), l_parts[1], l_parts[2], l_parts[3], l_parts[4]);
@@ -57,54 +56,60 @@ public class ConquestMapIO {
         return null;
     }
 
-    public void loadMap(Maps p_gameMap, String p_fileName) throws IOException {
-        p_gameMap.resetMap();
-        String l_content = Files.readString(Paths.get(p_fileName));
-        String[] l_lines = l_content.split("\n");
-        boolean l_readingContinents = false, l_readingCountries = false, l_readingBorders = false;
-        for (String l_line : l_lines) {
-            l_line = l_line.trim();
-            switch (l_line) {
-                case "[continents]" -> {
-                    l_readingContinents = true;
-                    l_readingCountries = l_readingBorders = false;
-                    continue;
+    public void loadMap(Maps p_gameMap, String p_fileName) {
+        try {
+            p_gameMap.resetMap();
+            String l_content = Files.readString(Paths.get(p_fileName));
+            String[] l_lines = l_content.split("\n");
+            boolean l_readingContinents = false, l_readingCountries = false, l_readingBorders = false;
+            for (String l_line : l_lines) {
+                l_line = l_line.trim();
+                switch (l_line) {
+                    case "[continents]" -> {
+                        l_readingContinents = true;
+                        l_readingCountries = l_readingBorders = false;
+                        continue;
+                    }
+                    case "[countries]" -> {
+                        l_readingCountries = true;
+                        l_readingContinents = l_readingBorders = false;
+                        continue;
+                    }
+                    case "[borders]" -> {
+                        l_readingBorders = true;
+                        l_readingContinents = l_readingCountries = false;
+                        continue;
+                    }
                 }
-                case "[countries]" -> {
-                    l_readingCountries = true;
-                    l_readingContinents = l_readingBorders = false;
-                    continue;
-                }
-                case "[borders]" -> {
-                    l_readingBorders = true;
-                    l_readingContinents = l_readingCountries = false;
-                    continue;
-                }
-            }
 
-            // Skip empty lines or lines outside of any known section
-            if (l_line.isEmpty() || (!(l_readingContinents || l_readingCountries || l_readingBorders))) {
-                continue;
-            }
+                // Skip empty lines or lines outside of any known section
+                if (l_line.isEmpty() || (!(l_readingContinents || l_readingCountries || l_readingBorders))) {
+                    continue;
+                }
 
-            // Process the line based on the current section being read
-            if (l_readingContinents) {
-                processContinentLine(p_gameMap,l_line);
+                // Process the line based on the current section being read
+                if (l_readingContinents) {
+                    processContinentLine(p_gameMap, l_line);
+                }
+                if (l_readingCountries) {
+                    processCountryLine(p_gameMap, l_line);
+                }
+                if (l_readingBorders) {
+                    processBorderLine(p_gameMap, l_line);
+                }
             }
-            if (l_readingCountries) {
-                processCountryLine(p_gameMap,l_line);
-            }
-            if (l_readingBorders) {
-                processBorderLine(p_gameMap,l_line);
-            }
+        }catch(IOException e){
+            System.out.println("Map loading failed");
+            return;
         }
     }
 
-    public void saveMap(Maps p_gameMap, String p_fileName) throws IOException {
-            File l_file=new File(p_fileName);
+    public void saveMap(Maps p_gameMap, String p_fileName) {
+        try {
+            File l_file = new File(p_fileName);
             if (!l_file.exists()) {
                 System.out.println("The file doesn't exist, creating a new file.");
-                if(!l_file.createNewFile()){
+                if (!l_file.createNewFile()) {
                     return;
                 }
             }
@@ -141,5 +146,10 @@ public class ConquestMapIO {
 
             l_contentBuilder.append("[borders]\n").append(l_borders);
             Files.writeString(Paths.get(l_file.getPath()), l_contentBuilder.toString(), StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            System.out.println("Saving Map failed");
+            return;
         }
+    }
+
 }

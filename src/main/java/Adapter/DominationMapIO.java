@@ -28,16 +28,8 @@ public class DominationMapIO {
         return null;
     }
 
-    private Country findCountryById(Maps p_gameMap,String p_id) {
-        for (Country l_country : p_gameMap.getCountries().values()) {
-            if (String.valueOf(l_country.getId()).equals(p_id)) {
-                return l_country;
-            }
-        }
-        return null;
-    }
-
-    public void loadMap(Maps p_gameMap, String p_fileName) throws IOException {
+    public void loadMap(Maps p_gameMap, String p_fileName) {
+        try{
         p_gameMap.resetMap();
         String l_content = Files.readString(Paths.get(p_fileName));
         String[] l_lines = l_content.split("\n");
@@ -66,12 +58,10 @@ public class DominationMapIO {
             }
             if(l_readingCountries){
                 String[] l_parts = l_line.trim().split(",");
-                System.out.println(l_parts);
                 int l_countryId=p_gameMap.getCountries().size() + 1;
                 Country l_country = new Country(l_countryId,l_parts[0],findContinentIdByName(p_gameMap,l_parts[3]), l_parts[1], l_parts[2]);
                 p_gameMap.getCountries().put(l_parts[0], l_country);
                 String l_continent=l_parts[3].trim();
-                System.out.println(p_gameMap.getContinents());
                 String l_continentKey = null;
                 Set<String> keys = p_gameMap.getContinents().keySet();
 
@@ -79,11 +69,8 @@ public class DominationMapIO {
                     if(p_gameMap.getContinents().get(key).getName().equals(l_continent)) {
                         l_continentKey = key;
                     }
-                    System.out.println(key + " -- "
-                            + p_gameMap.getContinents().get(key).getName());
                 }
                 p_gameMap.getContinents().get(l_continentKey).addCountry(l_country);
-
             }
         }
 
@@ -100,7 +87,7 @@ public class DominationMapIO {
                 String[] l_parts = l_line.split(",");
                 if (l_parts.length < 4) return;
                 String l_countryId = l_parts[0].trim();
-                Country l_country = findCountryById(p_gameMap,l_countryId);
+                Country l_country = findCountryByName(p_gameMap,l_countryId);
                 if (l_country == null) {
                     return;
                 }
@@ -113,10 +100,34 @@ public class DominationMapIO {
                 }
             }
 
+        }    }catch(IOException e){
+            System.out.println("Map loading failed");
+            return;
         }
 
     }
-    public  void saveMap(Maps p_gameMap, String p_fileName) throws IOException {
+    public void saveMap(Maps p_gameMap, String p_fileName) {
+        StringBuilder mapContent = new StringBuilder();
+        mapContent.append("[Continents]\n");
+        for (Continent continent : p_gameMap.getContinents().values()) {
+            mapContent.append(continent.getName()).append("=").append(continent.getContinentValue()).append("\n");
+        }
+        mapContent.append("\n");
+        mapContent.append("[Territories]\n");
+        for (Country country : p_gameMap.getCountries().values()) {
+//            Continent continent = findContinentIdByName(p_gameMap, country.getContinentId());
+//            mapContent.append(country.getName()).append(",").append(country.getXCoordinate()).append(",").append(country.getYCoordinate()).append(",").append(continent.getName());
+//            if (country.getNeighbors() != null) {
+////                country.getNeighbors().values().stream().map(neighbor ->  mapContent.append(",").append(neighbor.getName()));
+//            }
+//            mapContent.append("\n");
+        }
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(p_fileName))) {
+            writer.write(mapContent.toString());
+        } catch (IOException e) {
+            System.out.println("Failed to save map: " + e.getMessage());
+        }
     }
+
 
 }

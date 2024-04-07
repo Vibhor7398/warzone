@@ -28,8 +28,6 @@ import java.util.stream.Collectors;
  * The class also handles operations related to neighbors of countries, such as adding and removing neighbors.
  */
 public class MapsController{
-
-
     private final Maps d_maps;
     private static LinkedHashMap<String, Continent> d_Continents;
     private static LinkedHashMap<String, Country> d_Countries;
@@ -42,14 +40,6 @@ public class MapsController{
         this.d_maps = new Maps();
         d_Continents = this.d_maps.getContinents();
         d_Countries = this.d_maps.getCountries();
-    }
-    /**
-     * Retrieves a reference to the map
-     *
-     * @return A {@code LinkedHashMap} complete map of the game.
-     */
-    public Maps getD_maps() {
-        return d_maps;
     }
 
     /**
@@ -382,23 +372,7 @@ public class MapsController{
         System.out.println("Country that you are trying to remove does not exit");
     }
 
-    /**
-     * Edits the map data by loading a new map from the specified file.
-     * If the file does not exist, a new file is created. The method then loads the map data from the file,
-     * updating the existing map data structures.
-     *
-     * @param p_file The file containing the map data to be loaded.
-     * @throws IOException If an I/O error occurs while reading the file or creating a new file.
-    */
-    public void editMap(File p_file) throws IOException{
-        if (!p_file.exists()) {
-            System.out.println("The file doesn't exist, creating a new file.");
-           if(!p_file.createNewFile()){
-               return;
-           }
-        }
-        loadMap(p_file.getPath());
-    }
+
     //TODO: remove the code from here
     /**
     * Loads a map from the specified file and populates the map data structures accordingly.
