@@ -17,13 +17,13 @@ public class AggressiveStrategy extends PlayerStrategy{
     @Override
     public Order createOrder() {
         Country l_AttackFrom = toAttackFrom();
-        Country l_countryToAttack = toAttack();
 
         if(d_player.getArmies()!=0){
             d_player.setD_orderList(new Deploy(d_player, l_AttackFrom, d_player.getArmies()));
             d_player.setArmies(0);
         }
 
+        Country l_countryToAttack = toAttack();
         int l_armyForAttack = l_AttackFrom.getArmies();
 
         return new Advance(d_player, l_AttackFrom, l_countryToAttack, l_armyForAttack);
