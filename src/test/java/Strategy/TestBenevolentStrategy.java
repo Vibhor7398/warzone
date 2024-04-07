@@ -71,7 +71,7 @@ public class TestBenevolentStrategy {
 
         // Check if an Airlift order was created since the card is available
         assertTrue(l_order instanceof Airlift);
-         assertEquals("Country1", d_benevolentStrategy.toMoveFrom().getName());
+         assertEquals("Country2", d_benevolentStrategy.toMoveFrom().getName());
     }
 
     @Test
