@@ -33,6 +33,8 @@ public class TestBenevolentStrategy {
         d_testPlayer.addCountryToCountriesOwned(l_country1);
         d_testPlayer.addCountryToCountriesOwned(l_country2);
         l_country1.addNeighbor(l_country2);
+        l_country1.setArmies(1);
+        l_country2.setArmies(2);
 
         d_benevolentStrategy = new BenevolentStrategy(d_testPlayer, l_countriesOwned);
     }
@@ -46,25 +48,30 @@ public class TestBenevolentStrategy {
         Order l_order = d_benevolentStrategy.createOrder();
 
         // Then
-        assertTrue(l_order instanceof Deploy);
-        assertEquals("Country1", d_benevolentStrategy.toDefend());
-        assertEquals(5, d_benevolentStrategy.toDefend().getArmies());
+        assertTrue(l_order instanceof Advance);
+        assertEquals("Country2", d_benevolentStrategy.toDefend().getName());
+        assertEquals(2, d_benevolentStrategy.toDefend().getArmies());
     }
 
     @Test
     public void testCreateOrder_AirliftIfCardAvailable() {
         // Adjust initial conditions
         d_testPlayer.setArmies(0);
-        d_testPlayer.getCountriesOwned().forEach(c -> c.setArmies(3));
         d_testPlayer.addCard("Airlift");
+        ArrayList<Country> l_countries = new ArrayList<>();
+        l_countries = d_testPlayer.getCountriesOwned();
+        int count =1;
+        for(Country l_country : l_countries){
+            l_country.setArmies(count);
+            count++;
+        }
 
         // Execute the strategy to create an order
         Order l_order = d_benevolentStrategy.createOrder();
 
         // Check if an Airlift order was created since the card is available
         assertTrue(l_order instanceof Airlift);
-        // assertEquals("Country2", ((Airlift) l_order).getSourceCountry().getName());
-        // assertEquals("Country1", ((Airlift) l_order).getTargetCountry().getName());
+         assertEquals("Country1", d_benevolentStrategy.toMoveFrom().getName());
     }
 
     @Test
