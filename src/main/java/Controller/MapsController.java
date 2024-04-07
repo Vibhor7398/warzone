@@ -382,23 +382,7 @@ public class MapsController{
         System.out.println("Country that you are trying to remove does not exit");
     }
 
-    /**
-     * Edits the map data by loading a new map from the specified file.
-     * If the file does not exist, a new file is created. The method then loads the map data from the file,
-     * updating the existing map data structures.
-     *
-     * @param p_file The file containing the map data to be loaded.
-     * @throws IOException If an I/O error occurs while reading the file or creating a new file.
-    */
-    public void editMap(File p_file) throws IOException{
-        if (!p_file.exists()) {
-            System.out.println("The file doesn't exist, creating a new file.");
-           if(!p_file.createNewFile()){
-               return;
-           }
-        }
-        loadMap(p_file.getPath());
-    }
+
     //TODO: remove the code from here
     /**
     * Loads a map from the specified file and populates the map data structures accordingly.

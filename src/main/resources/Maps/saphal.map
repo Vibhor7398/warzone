@@ -1,0 +1,100 @@
+[files]
+pic saphal_pic.jpg
+map saphal_map.gif
+crd saphal.cards
+
+[continents]
+NorthAmerica 5 gray
+SouthAmerica 2 gray
+Africa 3 gray
+Europe 5 gray
+Asia 7 gray
+Australia 2 gray
+
+[countries]
+1 Alaska 1 70 126
+2 NorthwestTerritory 1 148 127
+3 Alberta 1 147 163
+4 Greenland 1 324 76
+5 Ontario 1 199 167
+6 Quebec 1 253 166
+7 WesternUnitedStates 1 159 204
+8 EasternUnitedStates 1 219 216
+9 CentralAmerica 1 183 262
+10 Venezuala 2 259 303
+11 Peru 2 262 349
+12 Argentina 2 263 407
+13 Brazil 2 308 337
+14 NorthAfrica 3 420 264
+15 Congo 3 475 318
+16 SouthAfrica 3 483 371
+17 Madagascar 3 536 361
+18 EastAfrica 3 517 298
+19 Egypt 3 480 249
+20 Iceland 4 380 126
+21 GreatBritain 4 419 169
+22 WesternEurope 4 423 202
+23 Scandinavia 4 463 127
+24 NorthernEurope 4 460 173
+25 SouthernEurope 4 473 197
+26 Ukraine 4 524 157
+27 MiddleEast 5 530 234
+28 Ural 5 613 136
+29 Afghanistan 5 585 192
+30 India 5 612 249
+31 Siberia 5 666 110
+32 China 5 662 217
+33 Siam 5 671 270
+34 Mongolia 5 707 188
+35 Irkutsk 5 698 152
+36 Yatusk 5 738 118
+37 Kamchatka 5 806 125
+38 Japan 5 759 220
+39 Indonesia 6 698 314
+40 NewGuinea 6 768 325
+41 WesternAustralia 6 729 373
+42 EasternAustralia 6 779 381
+
+[borders]
+1 2 3 37
+2 1 3 5 4
+3 1 2 5 7
+4 2 5 6 20
+5 2 3 4 6 7 8
+6 4 5 8
+7 3 5 8 9
+8 5 6 7 9
+9 7 8 10
+10 9 11 13
+11 10 13 12
+12 11 13
+13 10 11 12 14
+14 13 22 25 19 18 15
+15 14 18 16
+16 15 18 17
+17 18 16
+18 19 27 15 14 16 17
+19 25 14 27 18
+20 4 21 23
+21 20 23 22 24
+22 21 24 25 14
+23 20 21 24 26
+24 21 23 26 25 22
+25 24 26 27 19 14 22
+26 28 29 27 25 24 23
+27 26 29 30 25 19 18
+28 31 32 29 26
+29 28 32 30 27 26
+30 32 33 29 27
+31 36 35 34 32 28
+32 28 31 34 33 30 29
+33 32 30 39
+34 31 35 38 32 37
+35 31 36 37 34
+36 31 35 37
+37 36 35 38 1 34
+38 37 34
+39 33 40 41
+40 39 41 42
+41 39 40 42
+42 41 40
