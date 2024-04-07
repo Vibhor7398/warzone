@@ -19,6 +19,15 @@ public class DominationMapIO {
         return "-1";
     }
 
+    private Country findCountryByName(Maps p_gameMap,String p_id) {
+        for (Country l_country : p_gameMap.getCountries().values()) {
+            if (String.valueOf(l_country.getName()).equals(p_id)) {
+                return l_country;
+            }
+        }
+        return null;
+    }
+
     private Country findCountryById(Maps p_gameMap,String p_id) {
         for (Country l_country : p_gameMap.getCountries().values()) {
             if (String.valueOf(l_country.getId()).equals(p_id)) {
@@ -97,7 +106,7 @@ public class DominationMapIO {
                 }
                 for (int i = 4; i < l_parts.length; i++) {
                     String l_neighborId = l_parts[i].trim();
-                    Country l_neighbor = findCountryById(p_gameMap,l_neighborId);
+                    Country l_neighbor = findCountryByName(p_gameMap,l_neighborId);
                     if (l_neighbor != null) {
                         l_country.addNeighbor(l_neighbor);
                     }
