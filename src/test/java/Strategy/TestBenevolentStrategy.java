@@ -19,4 +19,21 @@ public class TestBenevolentStrategy {
     private Player d_testPlayer;
     private GameEngineController d_gc;
 
+    @Before
+    public void setUp() {
+        d_gc = new GameEngineController();
+        d_gc.executeAddGamePlayer("TestPlayer");
+        d_testPlayer = GameEngineController.d_Players.getFirst();
+
+        List<Country> l_countriesOwned = new ArrayList<>();
+        Country l_country1 = new Country("Country1");
+        l_countriesOwned.add(l_country1);
+        Country l_country2 = new Country("Country2");
+        l_countriesOwned.add(l_country2);
+        d_testPlayer.addCountryToCountriesOwned(l_country1);
+        d_testPlayer.addCountryToCountriesOwned(l_country2);
+        l_country1.addNeighbor(l_country2);
+
+        d_benevolentStrategy = new BenevolentStrategy(d_testPlayer, l_countriesOwned);
+    }
 }
