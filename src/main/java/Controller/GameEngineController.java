@@ -5,6 +5,9 @@
 
 package Controller;
 
+import Adapter.ConquestMapIO;
+import Adapter.DominationMapIO;
+import Adapter.MapAdapter;
 import Constants.AppConstants;
 import GameEngine.GameEngine;
 import Logger.LogEntryBuffer;
@@ -18,6 +21,8 @@ import Services.Reinforcement;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -62,6 +67,7 @@ public class GameEngineController {
      */
     public static LogEntryBuffer d_Log = new LogEntryBuffer();
     public static LogHandler d_logHandler = new LogHandler(d_Log);
+    private ConquestMapIO l_adapter;
 
     /**
      * Constructs a new instance of GameEngineController.
@@ -102,6 +108,15 @@ public class GameEngineController {
         }
     }
 
+    private boolean isMapofOtherType(String p_fileName){
+        try {
+            String l_content = Files.readString(Paths.get(p_fileName));
+            return l_content.contains("[Map]");
+        }catch (IOException e){
+            return false;
+        }
+
+    }
     /**
      * Loads a map from a file and validates it.
      * This method attempts to load a map from the specified file, validates it, and checks if the map is valid.
@@ -110,19 +125,19 @@ public class GameEngineController {
      * @param p_filename The name of the file containing the map to be loaded.
      */
     public boolean executeLoadMap(String p_filename){
-        try {
-            d_Map.loadMap(AppConstants.MapsPath + p_filename);
-            d_Map.validateMap();
-            boolean l_isValid = d_Map.isMapValid();
-            if(!l_isValid){
-                System.out.println("Map is invalid!");
-                return false;
-            }
-            return true;
-        } catch (IOException l_e) {
-            System.out.println("Load map failed. Check for map file. " + l_e.getMessage());
+        if(isMapofOtherType(AppConstants.MapsPath + p_filename)){
+             l_adapter=new MapAdapter(new DominationMapIO());
+        }else{
+            l_adapter=new ConquestMapIO();
+        }
+        l_adapter.loadMap(d_Map.getD_maps(),AppConstants.MapsPath + p_filename);
+        d_Map.validateMap();
+        boolean l_isValid = d_Map.isMapValid();
+        if(!l_isValid){
+            System.out.println("Map is invalid!");
             return false;
         }
+        return true;
     }
 
     /**
@@ -143,17 +158,17 @@ public class GameEngineController {
     */
     public void executeSaveMap(String p_filename){
         d_Map.validateMap();
+        if(l_adapter.getClass().equals(MapAdapter.class)){
+            l_adapter=new MapAdapter(new DominationMapIO());
+        }else{
+            l_adapter=new ConquestMapIO();
+        }
         boolean l_isValid = d_Map.isMapValid();
         if(!l_isValid){
             System.out.println("Map is invalid!");
             return;
         }
-        File l_file = new File(AppConstants.MapsPath + p_filename);
-        try {
-            d_Map.saveMap(l_file);
-        } catch (IOException l_e) {
-            System.out.println("Map could not be saved! " + l_e.getMessage());
-        }
+        l_adapter.saveMap(d_Map.getD_maps(),AppConstants.MapsPath + p_filename);
     }
 
 
@@ -167,7 +182,13 @@ public class GameEngineController {
     public void executeEditMap(String p_filename){
         File l_file = new File(AppConstants.MapsPath + p_filename);
         try {
-            d_Map.editMap(l_file);
+            if (!l_file.exists()) {
+                System.out.println("The file doesn't exist, creating a new file.");
+                if(!l_file.createNewFile()){
+                    return;
+                }
+            }
+            executeLoadMap(p_filename);
         } catch (IOException l_e) {
             System.out.println("Map could not be created. " + l_e.getMessage());
         }

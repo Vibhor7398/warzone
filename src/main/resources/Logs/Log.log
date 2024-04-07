@@ -1,5 +1,3 @@
-[Log: Blockade is successful on TestCountry by TestPlayer
-, Log: Armies on TestCountry after blockade is 0
-, Log: Blockade is successful on TestCountry by TestPlayer
-, Log: Armies on TestCountry after blockade is 0
-]
+[
+Log: Game has started!, 
+Log: Currently in phase: MapEditor]
