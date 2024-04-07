@@ -51,6 +51,8 @@ public class BenevolentStrategy extends PlayerStrategy{
 
     @Override
     protected Country toDefend() {
-        return null;
+        return d_player.getCountriesOwned().stream()
+                .min(Comparator.comparingInt(Country::getArmies))
+                .orElse(null);
     }
 }
