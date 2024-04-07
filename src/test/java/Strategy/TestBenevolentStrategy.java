@@ -36,4 +36,19 @@ public class TestBenevolentStrategy {
 
         d_benevolentStrategy = new BenevolentStrategy(d_testPlayer, l_countriesOwned);
     }
+
+    @Test
+public void testCreateOrder_DeployToWeakestCountry() {
+    // Given
+    d_testPlayer.setArmies(5);
+
+    // When
+    Order l_order = d_benevolentStrategy.createOrder();
+
+    // Then
+    assertTrue(l_order instanceof Deploy);
+    assertEquals("Country1", d_benevolentStrategy.toDefend());
+    assertEquals(5, d_benevolentStrategy.toDefend().getArmies());
+}
+
 }
