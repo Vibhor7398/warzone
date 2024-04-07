@@ -38,17 +38,32 @@ public class TestBenevolentStrategy {
     }
 
     @Test
-public void testCreateOrder_DeployToWeakestCountry() {
-    // Given
-    d_testPlayer.setArmies(5);
+    public void testCreateOrder_DeployToWeakestCountry() {
+        // Given
+        d_testPlayer.setArmies(5);
 
-    // When
-    Order l_order = d_benevolentStrategy.createOrder();
+        // When
+        Order l_order = d_benevolentStrategy.createOrder();
 
-    // Then
-    assertTrue(l_order instanceof Deploy);
-    assertEquals("Country1", d_benevolentStrategy.toDefend());
-    assertEquals(5, d_benevolentStrategy.toDefend().getArmies());
-}
+        // Then
+        assertTrue(l_order instanceof Deploy);
+        assertEquals("Country1", d_benevolentStrategy.toDefend());
+        assertEquals(5, d_benevolentStrategy.toDefend().getArmies());
+    }
 
+    @Test
+    public void testCreateOrder_AirliftIfCardAvailable() {
+        // Adjust initial conditions
+        d_testPlayer.setArmies(0);
+        d_testPlayer.getCountriesOwned().forEach(c -> c.setArmies(3));
+        d_testPlayer.addCard("Airlift");
+
+        // Execute the strategy to create an order
+        Order l_order = d_benevolentStrategy.createOrder();
+
+        // Check if an Airlift order was created since the card is available
+        assertTrue(l_order instanceof Airlift);
+        // assertEquals("Country2", ((Airlift) l_order).getSourceCountry().getName());
+        // assertEquals("Country1", ((Airlift) l_order).getTargetCountry().getName());
+    }
 }
