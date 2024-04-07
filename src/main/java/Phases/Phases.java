@@ -177,7 +177,8 @@ public abstract class Phases {
             switch (l_command.getD_cmd()) {
                 case "tournament":
                     d_ge.getD_phase().startTournament(l_command);
-                    break;
+                    System.out.println("Tournament ended!");
+                    System.exit(0);
 
                 case "showmap":
                     d_ge.getD_phase().showMap(l_command);

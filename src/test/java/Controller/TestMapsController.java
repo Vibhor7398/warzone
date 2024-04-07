@@ -36,19 +36,14 @@ public class TestMapsController {
      */
     @Test
     public void validateMap_ValidMap() {
-        try {
-            d_mapsController.editMap(new File("test.map"));
-            d_mapsController.addContinent("Asia", 5);
-            d_mapsController.addCountry("India", "Asia");
-            d_mapsController.addCountry("China", "Asia");
-            d_mapsController.editNeighbors("add", "India", "China");
-            d_mapsController.editNeighbors("add", "China", "India");
-            d_mapsController.validateMap();
-            boolean l_isValid=d_mapsController.isMapValid();
-            assertTrue("Map is valid",l_isValid);
-        }catch (IOException e){
-            fail("No map found" );
-        }
+        d_mapsController.addContinent("Asia", 5);
+        d_mapsController.addCountry("India", "Asia");
+        d_mapsController.addCountry("China", "Asia");
+        d_mapsController.editNeighbors("add", "India", "China");
+        d_mapsController.editNeighbors("add", "China", "India");
+        d_mapsController.validateMap();
+        boolean l_isValid=d_mapsController.isMapValid();
+        assertTrue("Map is valid",l_isValid);
     }
     /**
      * Tests the validation of a map with a disconnected subgraph.
@@ -57,17 +52,12 @@ public class TestMapsController {
      */
     @Test
     public void validateMap_ContinentValidation() {
-        try {
-            d_mapsController.editMap(new File("test.map"));
-            d_mapsController.addContinent("Asia", 5);
-            d_mapsController.addCountry("India", "Asia");
-            d_mapsController.addCountry("China", "Asia");
-            d_mapsController.validateMap();
-            boolean l_isValid=d_mapsController.isMapValid();
-            assertFalse("Map has a disconnected subgraph",l_isValid);
-        }catch (IOException e){
-            fail("No map found" );
-        }
+        d_mapsController.addContinent("Asia", 5);
+        d_mapsController.addCountry("India", "Asia");
+        d_mapsController.addCountry("China", "Asia");
+        d_mapsController.validateMap();
+        boolean l_isValid=d_mapsController.isMapValid();
+        assertFalse("Map has a disconnected subgraph",l_isValid);
     }
     /**
      * Tests the addition of a continent.

@@ -1,6 +1,7 @@
 package Services;
 
 import Constants.AppConstants;
+import Controller.GameEngineController;
 import Controller.MapsController;
 import Models.Command;
 import Models.Strategy;
@@ -385,6 +386,10 @@ public class CommandValidator {
             return null;
         }
         try{
+            boolean isValid = validateMaps(p_cmd[2]) && validatePlayerStrategies(p_cmd[4]) && validateGames(p_cmd[6]) && validateTurns(p_cmd[8]);
+            if(!isValid){
+                return null;
+            }
             String[] l_args = new String[4];
             l_args[0] = p_cmd[2]; //maps
             l_args[1] = p_cmd[4]; //players
@@ -398,17 +403,14 @@ public class CommandValidator {
     }
 
     private boolean validateMaps(String p_listOfMaps) throws IOException {
-        MapsController l_mc = new MapsController();
+        GameEngineController l_gc = new GameEngineController();
         String[] l_listOfMaps = p_listOfMaps.split(",");
         if(l_listOfMaps.length > 5 || l_listOfMaps.length < 1){
             System.out.println("Invalid number of maps");
             return false;
         }
         for(String l_filename: l_listOfMaps){
-            l_mc.loadMap(l_filename.trim());
-            l_mc.validateMap();
-            if(!l_mc.isMapValid()){
-                System.out.println("Invalid map: " + l_filename);
+            if(!l_gc.executeLoadMap(l_filename.trim())){
                 return false;
             }
         }
@@ -437,7 +439,7 @@ public class CommandValidator {
         return true;
     }
 
-    private boolean validateGames(String p_games, String p_players){
+    private boolean validateGames(String p_games){
         try {
             Integer.parseInt(p_games);
             return true;
