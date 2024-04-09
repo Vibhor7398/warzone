@@ -42,7 +42,15 @@ public class RandomStrategy extends PlayerStrategy{
             d_player.setD_orderList(new Deploy(d_player, l_randomCountry, d_player.getArmies()));
         }
 
-        int l_randomValue = l_random.nextInt(4);
+        int l_randomValue = 0;
+        if(d_player.getCardList().contains("Airlift")) {
+            l_randomValue = 1;
+        } else if(d_player.getCardList().contains("Bomb")) {
+            l_randomValue = 2;
+        } else if(d_player.getCardList().contains("Blockade")) {
+            l_randomValue = 3;
+        }
+
 
         return switch (l_randomValue) {
             case (0) -> new Advance(d_player, toAttackFrom(), toAttack(), (toAttackFrom().getArmies()));
@@ -62,6 +70,11 @@ public class RandomStrategy extends PlayerStrategy{
     protected Country toAttack() {
         Country l_toAttackFrom = toAttackFrom();
         List<Country> l_countryList = new ArrayList<>(l_toAttackFrom.getNeighbors().values());
+        for(Country l_country : l_countryList){
+            if(l_toAttackFrom.getNeighbors().containsValue(l_country)){
+                return l_country;
+            }
+        }
         return l_countryList.get(l_random.nextInt(l_countryList.size()));
     }
 
@@ -94,5 +107,11 @@ public class RandomStrategy extends PlayerStrategy{
     protected Country toDefend() {
         Country l_toMoveFrom = toMoveFrom();
         List<Country> l_countryList = new ArrayList<>(l_toMoveFrom.getNeighbors().values());
-        return l_countryList.get(l_random.nextInt(l_countryList.size()));    }
+        for(Country l_country : l_countryList){
+            if(l_toMoveFrom.getNeighbors().containsValue(l_country)){
+                return l_country;
+            }
+        }
+        return l_countryList.get(l_random.nextInt(l_countryList.size()));
+    }
 }

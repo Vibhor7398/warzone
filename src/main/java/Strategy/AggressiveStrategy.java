@@ -77,9 +77,10 @@ public class AggressiveStrategy extends PlayerStrategy{
         }
 
         List<Country> l_countryList = new ArrayList<>(l_attackFrom.getNeighbors().values());
-        Country l_countryToAttack = l_countryList.get(d_random.nextInt(l_countryList.size()));
+        Country l_countryToAttack = null;
 
         for (Country l_tempCountryToAttack : l_countryList) {
+            l_countryToAttack = l_countryList.get(d_random.nextInt(l_countryList.size()));
             if(l_tempCountryToAttack.getArmies() > l_countryToAttack.getArmies()){
                 l_countryToAttack = l_tempCountryToAttack;
             }

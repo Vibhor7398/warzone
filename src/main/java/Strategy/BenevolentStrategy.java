@@ -6,7 +6,6 @@ import Orders.Advance;
 import Orders.Airlift;
 import Orders.Deploy;
 import Orders.Order;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -34,29 +33,21 @@ public class BenevolentStrategy extends PlayerStrategy{
     @Override
     public Order createOrder() {
 
-        if(d_player.getCountriesOwned().isEmpty()){
+        Country l_toDefend = toDefend();
+        Country l_toMoveFrom = toMoveFrom();
+
+        if(d_player.getCountriesOwned().isEmpty() || l_toDefend == null || l_toMoveFrom == null){
             return null;
         }
 
         if (d_player.getArmies() > 0) {
-            Country weakestCountry = toDefend();
-            if (weakestCountry != null) {
-                d_player.setD_orderList(new Deploy(d_player, weakestCountry, d_player.getArmies()));
-            }
+            d_player.setD_orderList(new Deploy(d_player, l_toDefend, d_player.getArmies()));
         }
 
         if (d_player.getCardList().contains("Airlift")) {
-            ArrayList<Country> l_countries = new ArrayList<>(d_player.getCountriesOwned());
-            l_countries.remove(toMoveFrom());
-            Country l_weakest_country = l_countries.get(d_random.nextInt(l_countries.size()));
-            for(Country l_country : l_countries){
-                if(l_country.getArmies()<l_weakest_country.getArmies()){
-                    l_weakest_country = l_country;
-                }
-            }
-            return new Airlift(d_player, toMoveFrom(), l_weakest_country, toMoveFrom().getArmies());
+            return new Airlift(d_player, l_toMoveFrom, l_toDefend, l_toMoveFrom.getArmies());
         } else {
-            return new Advance(d_player, toMoveFrom(), toDefend(), toMoveFrom().getArmies());
+            return new Advance(d_player, l_toMoveFrom, l_toDefend, l_toMoveFrom.getArmies());
         }
     }
 
@@ -89,14 +80,34 @@ public class BenevolentStrategy extends PlayerStrategy{
      */
     @Override
     protected Country toMoveFrom() {
-        List<Country> l_countryList = d_player.getCountriesOwned();
-        Country l_maxArmy = l_countryList.get(d_random.nextInt(d_player.getCountriesOwned().size()));
-        for(Country l_country : l_countryList){
-            if(l_maxArmy.getArmies()<l_country.getArmies()){
-                l_maxArmy = l_country;
+        List<Country> l_countryListAirlift = new ArrayList<>(d_player.getCountriesOwned());
+        List<Country> l_countryList = new ArrayList<>(toDefend().getNeighbors().values());
+
+        if(d_player.getCardList().contains("Airlift")){
+            Country l_maxArmyAirlift = l_countryListAirlift.get(d_random.nextInt(d_player.getCountriesOwned().size()));
+            for(Country l_c : l_countryListAirlift){
+                if(l_c.getArmies() > l_maxArmyAirlift.getArmies()){
+                    l_maxArmyAirlift = l_c;
+                }
             }
+            return l_maxArmyAirlift;
+        } else {
+            Country l_maxArmy = null;
+            for(Country l_c : l_countryList){
+                if(l_c.getNeighbors().containsValue(toDefend())){
+                    l_maxArmy = l_c;
+                }
+            }
+            for(Country l_c : l_countryList){
+                if(l_maxArmy==null){
+                    return null;
+                }
+                if(l_c.getArmies() > l_maxArmy.getArmies() && l_c.getNeighbors().containsValue(toDefend())){
+                    l_maxArmy = l_c;
+                }
+            }
+            return l_maxArmy;
         }
-        return l_maxArmy;
     }
 
     /**
@@ -107,8 +118,7 @@ public class BenevolentStrategy extends PlayerStrategy{
      */
     @Override
     protected Country toDefend() {
-        Country l_toMove = toMoveFrom();
-        List<Country> l_countryList = new ArrayList<>(l_toMove.getNeighbors().values());//d_player.getCountriesOwned();
+        List<Country> l_countryList = new ArrayList<>(d_player.getCountriesOwned());//d_player.getCountriesOwned();
         Country l_minArmy = l_countryList.get(d_random.nextInt(l_countryList.size()));
 
         for(Country l_country : l_countryList){
