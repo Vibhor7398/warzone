@@ -80,6 +80,9 @@ public class GameEngineController {
         updateGameModel();
     }
 
+    /**
+     * Updates the game model with the current game state.
+     */
     public void updateGameModel(){
         d_Map = d_gameModel.getD_Map();
         d_Players = d_gameModel.getD_Players();
@@ -421,8 +424,12 @@ public class GameEngineController {
         }
     }
 
-
-
+    /**
+     * Checks if all players have completed their turns.
+     * If all players have completed their turns, executes all orders and proceeds to the reinforcement phase.
+     *
+     * @return True if all players have completed their turns, false otherwise.
+     */
     private boolean ifTurnsCompleted(){
         if(d_completedTurns == d_Players.size()){
             executeAllOrders();
@@ -432,6 +439,10 @@ public class GameEngineController {
         return false;
     }
 
+    /**
+     * Sets the index of the next player to take a turn in the game.
+     * If the current player has completed their turn, the index is incremented to the next player.
+     */
     private void setNextPlayer(){
         while(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
             d_currentPlayer++;
@@ -500,6 +511,12 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Saves the current game state to a file.
+     * This method saves the current game state to the specified file.
+     *
+     * @param p_fileName The name of the file to which the game state will be saved.
+     */
     public boolean executeSaveGame(String p_fileName){
         try {
             GameLoader.SaveGame(d_gameModel,p_fileName);
@@ -512,6 +529,12 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Loads a game state from a file.
+     * This method loads a game state from the specified file.
+     *
+     * @param p_fileName The name of the file from which the game state will be loaded.
+     */
     public boolean executeLoadGame(String p_fileName){
         try {
             d_gameModel = GameLoader.LoadGame(p_fileName);
