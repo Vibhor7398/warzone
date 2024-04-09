@@ -70,6 +70,10 @@ public class GameEngineController {
     public static LogHandler d_logHandler = new LogHandler(d_Log);
     private ConquestMapIO l_adapter;
 
+    private void resetGame(){
+        d_Map = new MapsController();
+        d_Players = new ArrayList<>();
+    }
     /**
      * Constructs a new instance of GameEngineController.
      * Initializes the game map and player list.
@@ -367,6 +371,7 @@ public class GameEngineController {
         // Assign countries to players in a round-robin fashion
         for(Country l_country : l_listOfCountries.values()){
             System.out.println("Assigning " + l_country.getName() + " to " + d_Players.get(l_playerIndex).getName());
+            GameEngineController.d_Log.notify("Assigning " + l_country.getName() + " to " + d_Players.get(l_playerIndex).getName());
             d_Players.get(l_playerIndex++).addCountryToCountriesOwned(l_country);
             if(l_playerIndex == l_NumPlayers){
                 l_playerIndex = 0;
@@ -489,6 +494,65 @@ public class GameEngineController {
             p.setD_hasCommunicatedCompletedOrders(false);
             p.setD_isTurnCompleted(false);
         }
+    }
+
+
+    public void startTournament(Command p_command){
+        //tournament -M listofmapfiles -P listofplayerstrategies -G numberofgames -D maxnumberofturns
+        System.out.println("Tournament started!");
+        String[] l_maps = p_command.getArgs()[0].split(",");
+        String[] l_strategies = p_command.getArgs()[1].split(",");
+        int l_games = Integer.parseInt(p_command.getArgs()[2]);
+        int l_turns = Integer.parseInt(p_command.getArgs()[3]);
+        ArrayList<Strategy> l_allowedStrategies = new ArrayList<>();
+        for(String l_strategy : l_strategies){
+            l_allowedStrategies.add(Strategy.valueOf(l_strategy));
+        }
+
+        String[][] l_winners = new String[l_maps.length][l_games];
+
+        for(int i = 0; i < l_maps.length ; i++){
+            for(int j = 0 ; j < l_games ; j++){
+                l_winners[i][j] = startGame(l_maps[i], l_allowedStrategies, l_turns);
+            }
+        }
+
+        for(int i = 0; i < l_maps.length ; i++){
+            for(int j = 0 ; j < l_games ; j++){
+                System.out.print(l_winners[i][j] + "      ");
+            }
+            System.out.println();
+        }
+    }
+
+    public String startGame(String p_map, ArrayList<Strategy> p_strategies, int p_turns){
+        resetGame();
+        executeLoadMap(p_map);
+        for(Strategy l_strategy : p_strategies){
+            Player l_player = new Player(l_strategy.name(), l_strategy);
+            d_Players.add(l_player);
+        }
+        executeAssignCountries();
+        for(int i = 0 ; i < p_turns ; i++){
+            if(d_Players.size() == 1){
+                break;
+            }
+            for(Player l_player : d_Players){
+                l_player.issueOrder();
+            }
+
+            executeAllOrders();
+            d_Players.removeIf(l_player -> l_player.getCountriesOwned().isEmpty());
+            Reinforcement.assignReinforcements(d_Players);
+        }
+        return checkWinner();
+    }
+
+    public String checkWinner(){
+        if(d_Players.size() == 1){
+            return d_Players.getFirst().getName();
+        }
+        return "Draw";
     }
 
 }

@@ -441,7 +441,10 @@ public class CommandValidator {
 
     private boolean validateGames(String p_games){
         try {
-            Integer.parseInt(p_games);
+            int x = Integer.parseInt(p_games);
+            if(x < 1 || x > 5){
+                throw new Exception();
+            }
             return true;
         }
         catch (Exception ex){
@@ -452,7 +455,10 @@ public class CommandValidator {
 
     private boolean validateTurns(String p_turns){
         try {
-            Integer.parseInt(p_turns);
+            int x = Integer.parseInt(p_turns);
+//            if(x < 10 || x > 50){
+//                throw new Exception();
+//            }
             return true;
         }
         catch (Exception ex){

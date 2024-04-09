@@ -35,8 +35,10 @@ public class CheaterStrategy extends PlayerStrategy{
             for(Country l_cheaterNeighbour : l_cheaterCountry.getNeighbors().values()){
                 if(l_cheaterNeighbour.getOwner()!=d_player){
                     Player l_player = l_cheaterNeighbour.getOwner();
-                    l_player.removeCountryFromCountriesOwned(l_cheaterNeighbour);
-                    l_tempCountry.add(l_cheaterNeighbour);
+                    if(l_player!=null){
+                        l_player.removeCountryFromCountriesOwned(l_cheaterNeighbour);
+                        l_tempCountry.add(l_cheaterNeighbour);
+                    }
                 }
             }
         }
