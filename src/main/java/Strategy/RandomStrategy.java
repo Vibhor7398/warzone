@@ -33,19 +33,22 @@ public class RandomStrategy extends PlayerStrategy{
      */
     @Override
     public Order createOrder() {
+        if(d_player.getCountriesOwned().isEmpty()){
+            return null;
+        }
 
         Country l_randomCountry = d_player.getCountriesOwned().get(l_random.nextInt(d_player.getCountriesOwned().size()));
 
         if(d_player.getArmies()!=0){
             d_player.setD_orderList(new Deploy(d_player, l_randomCountry, d_player.getArmies()));
-            d_player.setArmies(0);
+//            d_player.setArmies(0);
         }
 
         int l_randomValue = l_random.nextInt(2);
 
         return switch (l_randomValue) {
-            case (0) -> new Advance(d_player, toAttackFrom(), toAttack(), l_random.nextInt(toAttackFrom().getArmies()));
-            case (1) -> new Advance(d_player, toMoveFrom(), toDefend(), l_random.nextInt(toDefend().getArmies()));
+            case (0) -> new Advance(d_player, toAttackFrom(), toAttack(), (toAttackFrom().getArmies()));
+            case (1) -> new Advance(d_player, toMoveFrom(), toDefend(), (toDefend().getArmies()));
             default -> null;
         };
     }

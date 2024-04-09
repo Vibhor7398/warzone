@@ -10,6 +10,7 @@ import Orders.Order;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Implements a benevolent strategy for a player in a game similar to Risk.
@@ -17,12 +18,7 @@ import java.util.List;
  * available armies to them or using airlift cards to move armies between their countries.
  */
 public class BenevolentStrategy extends PlayerStrategy{
-    /**
-     * Constructs a BenevolentStrategy with a specified player and a list of countries owned by the player.
-     *
-     * @param p_player The player adopting this strategy.
-     * @param p_country The list of countries owned by the player.
-     */
+    Random d_random = new Random();
     public BenevolentStrategy(Player p_player, List<Country> p_country) {
         super(p_player, p_country);
     }
@@ -38,11 +34,15 @@ public class BenevolentStrategy extends PlayerStrategy{
     @Override
     public Order createOrder() {
 
+        if(d_player.getCountriesOwned().isEmpty()){
+            return null;
+        }
+
         if (d_player.getArmies() > 0) {
             Country weakestCountry = toDefend();
             if (weakestCountry != null) {
                 d_player.setD_orderList(new Deploy(d_player, weakestCountry, d_player.getArmies()));
-                d_player.setArmies(0);
+//                d_player.setArmies(0);
             }
         }
 
@@ -52,7 +52,7 @@ public class BenevolentStrategy extends PlayerStrategy{
                 l_countries.add(l_country);
             }
             l_countries.remove(toMoveFrom());
-            Country l_weakest_country = l_countries.getFirst();
+            Country l_weakest_country = l_countries.get(d_random.nextInt(d_player.getCountriesOwned().size()));
             for(Country l_country : l_countries){
                 if(l_country.getArmies()<l_weakest_country.getArmies()){
                     l_weakest_country = l_country;
@@ -94,9 +94,9 @@ public class BenevolentStrategy extends PlayerStrategy{
     @Override
     protected Country toMoveFrom() {
         List<Country> l_countryList = d_player.getCountriesOwned();
-        Country l_maxArmy = l_countryList.getFirst();
+        Country l_maxArmy = l_countryList.get(d_random.nextInt(d_player.getCountriesOwned().size()));
         for(Country l_country : l_countryList){
-            if(l_maxArmy.getArmies()<l_country.getArmies() && l_maxArmy.getNeighbors().containsValue(l_country) && !toDefend().equals(l_country)){
+            if(l_maxArmy.getArmies()<l_country.getArmies()){
                 l_maxArmy = l_country;
             }
         }
@@ -111,8 +111,9 @@ public class BenevolentStrategy extends PlayerStrategy{
      */
     @Override
     protected Country toDefend() {
-        List<Country> l_countryList = d_player.getCountriesOwned();
-        Country l_minArmy = l_countryList.getFirst();
+        Country l_toMove = toMoveFrom();
+        List<Country> l_countryList = new ArrayList<>(l_toMove.getNeighbors().values());//d_player.getCountriesOwned();
+        Country l_minArmy = l_countryList.get(d_random.nextInt(l_countryList.size()));
 
         for(Country l_country : l_countryList){
             if(l_minArmy.getArmies()>l_country.getArmies()){

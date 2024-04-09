@@ -8,6 +8,7 @@ import Orders.Order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Represents an aggressive strategy for a player in a risk-like game.
@@ -16,6 +17,7 @@ import java.util.List;
  * and targets the enemy country with the lowest number of armies for attack.
  */
 public class AggressiveStrategy extends PlayerStrategy{
+    Random d_random = new Random();
 
     /**
      * Constructs an AggressiveStrategy with a specified player and a list of countries owned by the player.
@@ -37,11 +39,14 @@ public class AggressiveStrategy extends PlayerStrategy{
      */
     @Override
     public Order createOrder() {
+        if(toAttackFrom()==null || toAttack()==null){
+            return null;
+        }
         Country l_AttackFrom = toAttackFrom();
 
         if(d_player.getArmies()!=0){
             d_player.setD_orderList(new Deploy(d_player, l_AttackFrom, d_player.getArmies()));
-            d_player.setArmies(0);
+//            d_player.setArmies(0);
         }
 
         Country l_countryToAttack = toAttack();
@@ -59,6 +64,9 @@ public class AggressiveStrategy extends PlayerStrategy{
      */
     @Override
     protected Country toAttack() {
+        if(toAttackFrom()==null){
+            return null;
+        }
         Country l_attackFrom = toAttackFrom();
 
         for (Country l_countryToAttack : l_attackFrom.getNeighbors().values()) {
@@ -68,7 +76,9 @@ public class AggressiveStrategy extends PlayerStrategy{
         }
 
         List<Country> l_countryList = new ArrayList<>(l_attackFrom.getNeighbors().values());
-        Country l_countryToAttack = l_countryList.get(0);
+        //l_countryList = l_attackFrom.getNeighbors().values();
+        //d_player.getCountriesOwned().get(l_random.nextInt(d_player.getCountriesOwned().size()));
+        Country l_countryToAttack = l_countryList.get(d_random.nextInt(l_countryList.size()));
 
         for (Country l_tempCountryToAttack : l_countryList) {
             if(l_tempCountryToAttack.getArmies() > l_countryToAttack.getArmies()){
@@ -87,7 +97,10 @@ public class AggressiveStrategy extends PlayerStrategy{
      */
     @Override
     protected Country toAttackFrom() {
-        Country l_attackFrom = d_player.getCountriesOwned().get(0);
+        if(d_player.getCountriesOwned().isEmpty()){
+            return null;
+        }
+        Country l_attackFrom = d_player.getCountriesOwned().get(d_random.nextInt(d_player.getCountriesOwned().size()));
         List<Country> l_countryList = d_player.getCountriesOwned();
 
         for (Country l_tempCountry : l_countryList) {

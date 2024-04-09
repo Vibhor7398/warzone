@@ -277,7 +277,7 @@ public abstract class Phases {
      * This method prints a message indicating that the command is invalid in the current state.
      */
     public void startTournament(Command p_command) {
-        System.out.println("Tournament started!");
+        d_ge.getD_gc().startTournament(p_command);
     }
 
     /**
