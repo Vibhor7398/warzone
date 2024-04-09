@@ -17,10 +17,6 @@ import java.util.LinkedHashMap;
  */
 public class Reinforcement {
 
-    public static boolean isAllArmiesDeployed(Player p_player) {
-        return p_player.getArmies() == 0;
-    }
-
     /**
      * Assigns reinforcements to players based on the number of countries owned and continents controlled.
      * @param p_playerList The list of players to whom reinforcements are to be assigned.

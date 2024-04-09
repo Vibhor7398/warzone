@@ -5,9 +5,6 @@
 
 package Controller;
 
-import Adapter.ConquestMapIO;
-import Adapter.DominationMapIO;
-import Adapter.MapAdapter;
 import Constants.AppConstants;
 import GameEngine.GameEngine;
 import Logger.LogEntryBuffer;
@@ -15,15 +12,12 @@ import Logger.LogHandler;
 import Models.Command;
 import Models.Country;
 import Models.Player;
-import Models.Strategy;
 import Orders.Order;
 import Services.CommandValidator;
 import Services.Reinforcement;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -68,12 +62,7 @@ public class GameEngineController {
      */
     public static LogEntryBuffer d_Log = new LogEntryBuffer();
     public static LogHandler d_logHandler = new LogHandler(d_Log);
-    private ConquestMapIO l_adapter;
 
-    private void resetGame(){
-        d_Map = new MapsController();
-        d_Players = new ArrayList<>();
-    }
     /**
      * Constructs a new instance of GameEngineController.
      * Initializes the game map and player list.
@@ -100,12 +89,12 @@ public class GameEngineController {
      * If an invalid command is entered, the user is prompted again.
      */
     public void nextUserInput() {
-        CommandValidator l_cv = new CommandValidator();
+        CommandValidator l_cs = new CommandValidator();
         try{
             Scanner l_sc = new Scanner(System.in);
             System.out.println("Enter your command");
             String l_command = l_sc.nextLine();
-            Command[] l_val= l_cv.validateCommand(l_command);
+            Command[] l_val= l_cs.validateCommand(l_command);
             GameEngine.getPhase().execute(l_val);
         } catch (InvalidCommandException e) {
             System.out.println(e.getMessage());
@@ -113,15 +102,6 @@ public class GameEngineController {
         }
     }
 
-    private boolean isMapofOtherType(String p_fileName){
-        try {
-            String l_content = Files.readString(Paths.get(p_fileName));
-            return l_content.contains("[Map]");
-        }catch (IOException e){
-            return false;
-        }
-
-    }
     /**
      * Loads a map from a file and validates it.
      * This method attempts to load a map from the specified file, validates it, and checks if the map is valid.
@@ -130,19 +110,19 @@ public class GameEngineController {
      * @param p_filename The name of the file containing the map to be loaded.
      */
     public boolean executeLoadMap(String p_filename){
-        if(isMapofOtherType(AppConstants.MapsPath + p_filename)){
-             l_adapter=new MapAdapter(new DominationMapIO());
-        }else{
-            l_adapter=new ConquestMapIO();
-        }
-        l_adapter.loadMap(d_Map.getD_maps(),AppConstants.MapsPath + p_filename);
-        d_Map.validateMap();
-        boolean l_isValid = d_Map.isMapValid();
-        if(!l_isValid){
-            System.out.println("Map is invalid!");
+        try {
+            d_Map.loadMap(AppConstants.MapsPath + p_filename);
+            d_Map.validateMap();
+            boolean l_isValid = d_Map.isMapValid();
+            if(!l_isValid){
+                System.out.println("Map is invalid!");
+                return false;
+            }
+            return true;
+        } catch (IOException l_e) {
+            System.out.println("Load map failed. Check for map file. " + l_e.getMessage());
             return false;
         }
-        return true;
     }
 
     /**
@@ -163,17 +143,17 @@ public class GameEngineController {
     */
     public void executeSaveMap(String p_filename){
         d_Map.validateMap();
-        if(l_adapter.getClass().equals(MapAdapter.class)){
-            l_adapter=new MapAdapter(new DominationMapIO());
-        }else{
-            l_adapter=new ConquestMapIO();
-        }
         boolean l_isValid = d_Map.isMapValid();
         if(!l_isValid){
             System.out.println("Map is invalid!");
             return;
         }
-        l_adapter.saveMap(d_Map.getD_maps(),AppConstants.MapsPath + p_filename);
+        File l_file = new File(AppConstants.MapsPath + p_filename);
+        try {
+            d_Map.saveMap(l_file);
+        } catch (IOException l_e) {
+            System.out.println("Map could not be saved! " + l_e.getMessage());
+        }
     }
 
 
@@ -187,13 +167,7 @@ public class GameEngineController {
     public void executeEditMap(String p_filename){
         File l_file = new File(AppConstants.MapsPath + p_filename);
         try {
-            if (!l_file.exists()) {
-                System.out.println("The file doesn't exist, creating a new file.");
-                if(!l_file.createNewFile()){
-                    return;
-                }
-            }
-            executeLoadMap(p_filename);
+            d_Map.editMap(l_file);
         } catch (IOException l_e) {
             System.out.println("Map could not be created. " + l_e.getMessage());
         }
@@ -285,13 +259,13 @@ public class GameEngineController {
      *
      * @param p_gamePlayer The name of the player to be added.
     */
-    public void executeAddGamePlayer(String p_gamePlayer, Strategy p_strategy){
+    public void executeAddGamePlayer(String p_gamePlayer){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
         if (l_playerIndex != -1){
             System.out.println("Player name already exists!");
         }
         else{
-            d_Players.add(new Player(p_gamePlayer, p_strategy));
+            d_Players.add(new Player(p_gamePlayer));
         }
     }
 
@@ -371,7 +345,6 @@ public class GameEngineController {
         // Assign countries to players in a round-robin fashion
         for(Country l_country : l_listOfCountries.values()){
             System.out.println("Assigning " + l_country.getName() + " to " + d_Players.get(l_playerIndex).getName());
-            GameEngineController.d_Log.notify("Assigning " + l_country.getName() + " to " + d_Players.get(l_playerIndex).getName());
             d_Players.get(l_playerIndex++).addCountryToCountriesOwned(l_country);
             if(l_playerIndex == l_NumPlayers){
                 l_playerIndex = 0;
@@ -494,65 +467,6 @@ public class GameEngineController {
             p.setD_hasCommunicatedCompletedOrders(false);
             p.setD_isTurnCompleted(false);
         }
-    }
-
-
-    public void startTournament(Command p_command){
-        //tournament -M listofmapfiles -P listofplayerstrategies -G numberofgames -D maxnumberofturns
-        System.out.println("Tournament started!");
-        String[] l_maps = p_command.getArgs()[0].split(",");
-        String[] l_strategies = p_command.getArgs()[1].split(",");
-        int l_games = Integer.parseInt(p_command.getArgs()[2]);
-        int l_turns = Integer.parseInt(p_command.getArgs()[3]);
-        ArrayList<Strategy> l_allowedStrategies = new ArrayList<>();
-        for(String l_strategy : l_strategies){
-            l_allowedStrategies.add(Strategy.valueOf(l_strategy));
-        }
-
-        String[][] l_winners = new String[l_maps.length][l_games];
-
-        for(int i = 0; i < l_maps.length ; i++){
-            for(int j = 0 ; j < l_games ; j++){
-                l_winners[i][j] = startGame(l_maps[i], l_allowedStrategies, l_turns);
-            }
-        }
-
-        for(int i = 0; i < l_maps.length ; i++){
-            for(int j = 0 ; j < l_games ; j++){
-                System.out.print(l_winners[i][j] + "      ");
-            }
-            System.out.println();
-        }
-    }
-
-    public String startGame(String p_map, ArrayList<Strategy> p_strategies, int p_turns){
-        resetGame();
-        executeLoadMap(p_map);
-        for(Strategy l_strategy : p_strategies){
-            Player l_player = new Player(l_strategy.name(), l_strategy);
-            d_Players.add(l_player);
-        }
-        executeAssignCountries();
-        for(int i = 0 ; i < p_turns ; i++){
-            if(d_Players.size() == 1){
-                break;
-            }
-            for(Player l_player : d_Players){
-                l_player.issueOrder();
-            }
-
-            executeAllOrders();
-            d_Players.removeIf(l_player -> l_player.getCountriesOwned().isEmpty());
-            Reinforcement.assignReinforcements(d_Players);
-        }
-        return checkWinner();
-    }
-
-    public String checkWinner(){
-        if(d_Players.size() == 1){
-            return d_Players.getFirst().getName();
-        }
-        return "Draw";
     }
 
 }

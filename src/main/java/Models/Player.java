@@ -8,7 +8,7 @@ package Models;
 import Controller.GameEngineController;
 import Controller.MapsController;
 import Orders.*;
-import Strategy.*;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,8 +31,6 @@ public class Player {
     private ArrayList<Order> d_orderList = new ArrayList<>();
     private Order d_currentOrder;
     private boolean d_hasCommunicatedCompletedOrders = false;
-    private Strategy d_playerStrategyType;
-    private PlayerStrategy d_playerStrategy;
 
     /**
      * Constructs a player with the given name.
@@ -41,16 +39,6 @@ public class Player {
      */
     public Player(String p_name) {
         this.setName(p_name);
-    }
-
-    /**
-     * Constructs a player with the given name.
-     *
-     * @param p_name The name of the player.
-     */
-    public Player(String p_name, Strategy p_strategy) {
-        this.setName(p_name);
-        this.set_playerStrategyType(p_strategy);
     }
 
     /**
@@ -257,10 +245,10 @@ public class Player {
     /**
      * Sets the list of orders associated with the player.
      *
-     * @param p_order The order to be associated with the player.
+     * @param p_orderList The list of orders to be associated with the player.
      */
-    public void setD_orderList(Order p_order) {
-        this.d_orderList.add(p_order);
+    public void setD_orderList(ArrayList<Order> p_orderList) {
+        this.d_orderList = p_orderList;
     }
 
     /**
@@ -306,107 +294,63 @@ public class Player {
         return null;
     }
 
-    public PlayerStrategy get_playerStrategy() {
-        return d_playerStrategy;
-    }
-
-    public void set_playerStrategy(PlayerStrategy p_playerStrategy) {
-        this.d_playerStrategy = p_playerStrategy;
-    }
-
-    public void set_playerStrategyType(Strategy p_playerStrategyType){
-        this.d_playerStrategyType = p_playerStrategyType;
-    }
-
-    public Strategy get_playerStrategyType(){
-        return d_playerStrategyType;
-    }
-
     /**
      * Allows the player to issue orders for reinforcement deployment.
      * The method prompts the player to issue orders for deploying reinforcements based on their available armies
      * and the countries they own. It ensures that the issued orders are valid before processing them.
     */
     public void issueOrder() {
-        if(this.get_playerStrategyType().name().equals("Human")){
-            switch (d_orderType) {
-                case "deploy":
-                    System.out.println("Deploy order issued for " + this.getName());
-                    GameEngineController.d_Log.notify("Deploy order issued for " + this.getName());
-                    setD_currentOrder(new Deploy(this, MapsController.getCountryByName(d_orderArgsValues[0]), Integer.parseInt(d_orderArgsValues[1])));
-                    d_orderList.add(getD_currentOrder());
-                    break;
+        switch (d_orderType) {
+            case "deploy":
+                System.out.println("Deploy order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Deploy order issued for " + this.getName());
+                setD_currentOrder(new Deploy(this, MapsController.getCountryByName(d_orderArgsValues[0]), Integer.parseInt(d_orderArgsValues[1])));
+                d_orderList.add(getD_currentOrder());
+                break;
 
-                case "advance":
-                    System.out.println("Advance order issued for " + this.getName());
-                    GameEngineController.d_Log.notify("Advance order issued for " + this.getName());
-                    setD_currentOrder(new Advance(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
-                    d_orderList.add(getD_currentOrder());
-                    break;
+            case "advance":
+                System.out.println("Advance order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Advance order issued for " + this.getName());
+                setD_currentOrder(new Advance(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
+                d_orderList.add(getD_currentOrder());
+                break;
 
-                case "airlift":
-                    System.out.println("Airlift order issued for " + this.getName());
-                    GameEngineController.d_Log.notify("Airlift order issued for " + this.getName());
-                    setD_currentOrder(new Airlift(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
-                    d_orderList.add(getD_currentOrder());
-                    break;
+            case "airlift":
+                System.out.println("Airlift order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Airlift order issued for " + this.getName());
+                setD_currentOrder(new Airlift(this, MapsController.getCountryByName(d_orderArgsValues[0]), MapsController.getCountryByName(d_orderArgsValues[1]), Integer.parseInt(d_orderArgsValues[2])));
+                d_orderList.add(getD_currentOrder());
+                break;
 
-                case "bomb":
-                    System.out.println("Bomb order issued for " + this.getName());
-                    GameEngineController.d_Log.notify("Bomb order issued for " + this.getName());
-                    setD_currentOrder(new Bomb(this, MapsController.getCountryByName(d_orderArgsValues[0])));
-                    d_orderList.add(getD_currentOrder());
-                    break;
+            case "bomb":
+                System.out.println("Bomb order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Bomb order issued for " + this.getName());
+                setD_currentOrder(new Bomb(this, MapsController.getCountryByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
 
-                case "blockade":
-                    System.out.println("Blockade order issued for " + this.getName());
-                    GameEngineController.d_Log.notify("Blockade order issued for " + this.getName());
-                    setD_currentOrder(new Blockade(this, MapsController.getCountryByName(d_orderArgsValues[0])));
-                    d_orderList.add(getD_currentOrder());
-                    break;
+            case "blockade":
+                System.out.println("Blockade order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Blockade order issued for " + this.getName());
+                setD_currentOrder(new Blockade(this, MapsController.getCountryByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
 
-                case "negotiate":
-                    System.out.println("Negotiate order issued for " + this.getName());
-                    GameEngineController.d_Log.notify("Negotiate order issued for " + this.getName());
-                    setD_currentOrder(new Diplomacy(this, getPlayerByName(d_orderArgsValues[0])));
-                    d_orderList.add(getD_currentOrder());
-                    break;
+            case "negotiate":
+                System.out.println("Negotiate order issued for " + this.getName());
+                GameEngineController.d_Log.notify("Negotiate order issued for " + this.getName());
+                setD_currentOrder(new Diplomacy(this, getPlayerByName(d_orderArgsValues[0])));
+                d_orderList.add(getD_currentOrder());
+                break;
 
-                case "endturn":
-                    setD_isTurnCompleted(true);
-                    return;
+            case "endturn":
+                setD_isTurnCompleted(true);
+                return;
 
-                default:
-                    System.out.println("Please enter correct order!");
+            default:
+                System.out.println("Please enter correct order!");
 //                GameEngineController.d_Log.notify("Deploy order issued!");
-                    break;
-            }
-        } else {
-            switch (this.get_playerStrategyType().name()) {
-                case "Aggressive":
-                    set_playerStrategy(new AggressiveStrategy(this, new ArrayList<>(MapsController.getD_countries().values())));
-                    setD_currentOrder(get_playerStrategy().createOrder());
-                    d_orderList.add(getD_currentOrder());
-                    break;
-
-                case "Benevolent":
-                    set_playerStrategy(new BenevolentStrategy(this, new ArrayList<>(MapsController.getD_countries().values())));
-                    setD_currentOrder(get_playerStrategy().createOrder());
-                    d_orderList.add(getD_currentOrder());
-                    break;
-
-                case "Cheater":
-                    set_playerStrategy(new CheaterStrategy(this, new ArrayList<>(MapsController.getD_countries().values())));
-                    setD_currentOrder(get_playerStrategy().createOrder());
-                    d_orderList.add(getD_currentOrder());
-                    break;
-
-                case "Random":
-                    set_playerStrategy(new RandomStrategy(this, new ArrayList<>(MapsController.getD_countries().values())));
-                    setD_currentOrder(get_playerStrategy().createOrder());
-                    d_orderList.add(getD_currentOrder());
-                    break;
-            }
+                break;
         }
     }
 

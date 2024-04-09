@@ -175,11 +175,6 @@ public abstract class Phases {
     public void execute(Command[] p_command) {
         for (Command l_command : p_command) {
             switch (l_command.getD_cmd()) {
-                case "tournament":
-                    d_ge.getD_phase().startTournament(l_command);
-                    System.out.println("Tournament ended!");
-                    System.exit(0);
-
                 case "showmap":
                     d_ge.getD_phase().showMap(l_command);
                     break;
@@ -270,14 +265,7 @@ public abstract class Phases {
      */
     public void printInvalidMessage() {
         System.out.println("Invalid Command in the state " + this.getClass().getSimpleName());
-    }
-
-    /**
-     * Prints an invalid command message.
-     * This method prints a message indicating that the command is invalid in the current state.
-     */
-    public void startTournament(Command p_command) {
-        d_ge.getD_gc().startTournament(p_command);
+        //d_ge.nextUserInput();
     }
 
     /**

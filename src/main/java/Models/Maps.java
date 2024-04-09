@@ -58,14 +58,5 @@ public class Maps {
     public void setMapValid(boolean p_isMapValid) {
         this.d_isMapValid = p_isMapValid;
     }
-
-    /**
-     * Resets the given instance of the map
-     *
-     */
-    public void resetMap(){
-        d_Continents.clear();
-        d_Countries.clear();
-    }
 }
 
