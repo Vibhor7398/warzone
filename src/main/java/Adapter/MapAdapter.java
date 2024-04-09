@@ -10,12 +10,12 @@ public class MapAdapter extends ConquestMapIO {
     }
 
     @Override
-    public void loadMap(Maps p_gameMap, String p_fileName) {
-            d_dominationMapIO.loadMap(p_gameMap, p_fileName);
+    public boolean loadMap(Maps p_gameMap, String p_fileName) {
+            return d_dominationMapIO.loadMap(p_gameMap, p_fileName);
     }
 
     @Override
-    public void saveMap(Maps p_gameMap, String p_fileName){
-            d_dominationMapIO.saveMap(p_gameMap, p_fileName);
+    public boolean saveMap(Maps p_gameMap, String p_fileName){
+        return d_dominationMapIO.saveMap(p_gameMap, p_fileName);
     }
 }

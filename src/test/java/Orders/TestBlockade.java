@@ -7,6 +7,7 @@ package Orders;
 import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
+import Models.Strategy;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.ByteArrayOutputStream;
@@ -30,7 +31,7 @@ public class TestBlockade {
         // Initialize a game engine controller
         GameEngineController l_gameEngineController = new GameEngineController();
         // Add a test player to the game
-        l_gameEngineController.executeAddGamePlayer("TestPlayer");
+        l_gameEngineController.executeAddGamePlayer("TestPlayer", Strategy.Human);
         // Initialize the test player
         d_player = new Player("TestPlayer");
         // Add the test player to the list of players in the game engine controller

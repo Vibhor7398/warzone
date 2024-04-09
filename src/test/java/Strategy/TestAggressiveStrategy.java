@@ -3,6 +3,7 @@ package Strategy;
 import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
+import Models.Strategy;
 import Orders.Advance;
 import Orders.Order;
 import org.junit.Before;
@@ -19,7 +20,7 @@ public class TestAggressiveStrategy {
 
     @Before
     public void setUp() {
-        d_gc.executeAddGamePlayer("TestPlayer");
+        d_gc.executeAddGamePlayer("TestPlayer", Strategy.Human);
         d_testPlayer = GameEngineController.d_Players.getFirst();
 
         List<Country> l_countriesOwned = new ArrayList<>();
