@@ -7,11 +7,27 @@ import Orders.Order;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements a cheater strategy for a player in a game similar to Risk.
+ * This strategy aims to cheat by stealing opponent's territories and doubling the armies of adjacent enemy territories.
+ */
 public class CheaterStrategy extends PlayerStrategy{
+    /**
+     * Constructs a CheaterStrategy with a specified player and a list of countries owned by the player.
+     *
+     * @param p_player The player adopting this strategy.
+     * @param p_country The list of countries owned by the player.
+     */
     public CheaterStrategy(Player p_player, List<Country> p_country) {
         super(p_player, p_country);
     }
 
+    /**
+     * Creates an order for the player using the cheater strategy.
+     * This strategy involves stealing opponent's territories and doubling the armies of adjacent enemy territories.
+     *
+     * @return An Order object representing the action taken by the player.
+     */
     @Override
     public Order createOrder() {
         List<Country> l_tempCountry = new ArrayList<>();
@@ -40,21 +56,40 @@ public class CheaterStrategy extends PlayerStrategy{
         return null;
     }
 
+    /**
+     * Not implemented for cheater strategy as it does not involve traditional attacks.
+     *
+     * @return null Always returns null since attacking is not part of the cheater strategy.
+     */
     @Override
     protected Country toAttack() {
         return null;
     }
 
+    /**
+     * Not implemented for cheater strategy as it does not involve traditional attacks.
+     *
+     * @return null Always returns null since selecting a country to attack from is not part of the cheater strategy.
+     */
     @Override
     protected Country toAttackFrom() {
         return null;
     }
 
+    /**
+     * Not implemented for cheater strategy as it focuses on cheating actions, not traditional moves.
+     *
+     * @return null Always returns null since moving armies is not part of the cheater strategy.
+     */
     @Override
     protected Country toMoveFrom() {
         return null;
     }
-
+    /**
+     * Not implemented for cheater strategy as it focuses on attacking and cheating, not defense.
+     *
+     * @return null Always returns null since defending is not part of the cheater strategy.
+     */
     @Override
     protected Country toDefend() {
         return null;
