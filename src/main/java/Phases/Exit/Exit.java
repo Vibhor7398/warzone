@@ -239,4 +239,14 @@ public class Exit extends Phases {
     public void next() {
         System.exit(0);
     }
+
+    @Override
+    public void saveGame(Command p_command) {
+        printInvalidMessage();
+    }
+
+    @Override
+    public void loadGame(Command p_command) {
+        printInvalidMessage();
+    }
 }
