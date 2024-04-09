@@ -5,14 +5,15 @@
 
 package Models;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
  * Represents the collection of continents and countries in the game map.
  */
-public class Maps {
-    private static LinkedHashMap<String, Continent> d_Continents;
-    private static LinkedHashMap<String, Country> d_Countries;
+public class Maps implements Serializable {
+    private LinkedHashMap<String, Continent> d_Continents;
+    private LinkedHashMap<String, Country> d_Countries;
     private boolean d_isMapValid;
 
     /**
