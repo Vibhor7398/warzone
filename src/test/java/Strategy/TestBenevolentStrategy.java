@@ -50,8 +50,8 @@ public class TestBenevolentStrategy {
 
         // Then
         assertTrue(l_order instanceof Advance);
-        assertEquals("Country2", d_benevolentStrategy.toDefend().getName());
-        assertEquals(2, d_benevolentStrategy.toDefend().getArmies());
+        assertEquals("Country1", d_benevolentStrategy.toDefend().getName());
+        assertEquals(1, d_benevolentStrategy.toDefend().getArmies());
     }
 
     @Test
