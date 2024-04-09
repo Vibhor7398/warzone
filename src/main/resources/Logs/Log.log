@@ -1,4 +1,5 @@
 [
+<<<<<<< HEAD
 Log: Target country is not adjacent to the source country., 
 Log: Player1 Army cannot be advanced., 
 Log: Source country does not belong to the current player., 
@@ -131,3 +132,9 @@ Log: Currently in phase: Players,
 Log: Currently in phase: Players, 
 Log: Currently in phase: Players, 
 Log: Currently in phase: MainPlay]
+=======
+Log: Game has started!, 
+Log: Currently in phase: MapEditor, 
+Log: Map brasil.map loaded successfully!, 
+Log: Currently in phase: Players]
+>>>>>>> feat/javadocs

@@ -11,10 +11,29 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Implements a benevolent strategy for a player in a game similar to Risk.
+ * This strategy focuses on fortifying the player's weakest countries by deploying
+ * available armies to them or using airlift cards to move armies between their countries.
+ */
 public class BenevolentStrategy extends PlayerStrategy{
+    /**
+     * Constructs a BenevolentStrategy with a specified player and a list of countries owned by the player.
+     *
+     * @param p_player The player adopting this strategy.
+     * @param p_country The list of countries owned by the player.
+     */
     public BenevolentStrategy(Player p_player, List<Country> p_country) {
         super(p_player, p_country);
     }
+
+    /**
+     * Creates an order for the player using the benevolent strategy. It deploys available armies
+     * to the weakest country owned by the player. If an Airlift card is available, it uses it
+     * to move armies from the country with the most armies to the weakest one.
+     *
+     * @return An Order object representing the action taken by the player.
+     */
 
     @Override
     public Order createOrder() {
@@ -45,16 +64,33 @@ public class BenevolentStrategy extends PlayerStrategy{
         }
     }
 
+    /**
+     * Not implemented for benevolent strategy as it focuses on defense and support.
+     *
+     * @return null Always returns null since attacking is not part of the benevolent strategy.
+     */
     @Override
     protected Country toAttack() {
         return null;
     }
 
+
+    /**
+     * Not implemented for benevolent strategy as it does not focus on attacking.
+     *
+     * @return null Always returns null since selecting a country to attack from is not part of the benevolent strategy.
+     */
     @Override
     protected Country toAttackFrom() {
         return null;
     }
 
+    /**
+     * Selects the country with the most armies that is also a neighbor to another owned country.
+     * This country is considered for moving armies from, to support weaker countries.
+     *
+     * @return The country from which armies should be moved to support weaker territories.
+     */
     @Override
     protected Country toMoveFrom() {
         List<Country> l_countryList = d_player.getCountriesOwned();
@@ -67,6 +103,12 @@ public class BenevolentStrategy extends PlayerStrategy{
         return l_maxArmy;
     }
 
+    /**
+     * Determines the weakest country owned by the player, to prioritize its defense.
+     * This is calculated by finding the country with the least number of armies.
+     *
+     * @return The weakest country owned by the player.
+     */
     @Override
     protected Country toDefend() {
         List<Country> l_countryList = d_player.getCountriesOwned();

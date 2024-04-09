@@ -9,11 +9,32 @@ import Orders.Order;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an aggressive strategy for a player in a risk-like game.
+ * This strategy focuses on aggressive actions, primarily attacking.
+ * It selects the country with the highest number of armies to attack from
+ * and targets the enemy country with the lowest number of armies for attack.
+ */
 public class AggressiveStrategy extends PlayerStrategy{
+
+    /**
+     * Constructs an AggressiveStrategy with a specified player and a list of countries owned by the player.
+     *
+     * @param p_player The player adopting this strategy.
+     * @param p_country The list of countries owned by the player.
+     */
     public AggressiveStrategy(Player p_player, List<Country> p_country) {
         super(p_player, p_country);
     }
 
+    /**
+     * Creates an order for the player using the aggressive strategy.
+     * If the player has available armies, it will first deploy all available armies to the country
+     * with the highest number of armies. Then, it will create an advance order to attack
+     * the weakest neighboring country.
+     *
+     * @return An order (Deploy or Advance) based on the strategy.
+     */
     @Override
     public Order createOrder() {
         Country l_AttackFrom = toAttackFrom();
@@ -29,6 +50,13 @@ public class AggressiveStrategy extends PlayerStrategy{
         return new Advance(d_player, l_AttackFrom, l_countryToAttack, l_armyForAttack);
     }
 
+    /**
+     * Determines the country to attack based on the aggressive strategy.
+     * It selects the neighboring country of the player's strongest country
+     * that is not owned by the player and has the lowest number of armies.
+     *
+     * @return The country to be attacked.
+     */
     @Override
     protected Country toAttack() {
         Country l_attackFrom = toAttackFrom();
@@ -40,7 +68,7 @@ public class AggressiveStrategy extends PlayerStrategy{
         }
 
         List<Country> l_countryList = new ArrayList<>(l_attackFrom.getNeighbors().values());
-        Country l_countryToAttack = l_countryList.getFirst();
+        Country l_countryToAttack = l_countryList.get(0);
 
         for (Country l_tempCountryToAttack : l_countryList) {
             if(l_tempCountryToAttack.getArmies() > l_countryToAttack.getArmies()){
@@ -51,24 +79,40 @@ public class AggressiveStrategy extends PlayerStrategy{
         return l_countryToAttack;
     }
 
+    /**
+     * Selects the country from which to launch an attack.
+     * This is determined as the country owned by the player with the highest number of armies.
+     *
+     * @return The country from which to attack.
+     */
     @Override
     protected Country toAttackFrom() {
-        Country l_attackFrom = d_player.getCountriesOwned().getFirst();
+        Country l_attackFrom = d_player.getCountriesOwned().get(0);
         List<Country> l_countryList = d_player.getCountriesOwned();
 
         for (Country l_tempCountry : l_countryList) {
-            if (l_attackFrom.getArmies()< l_tempCountry.getArmies()) {
+            if (l_attackFrom.getArmies() < l_tempCountry.getArmies()) {
                 l_attackFrom = l_tempCountry;
             }
         }
         return l_attackFrom;
     }
 
+    /**
+     * Not implemented for aggressive strategy as it focuses solely on attacking.
+     *
+     * @return null Always returns null as moving armies is not part of the aggressive strategy.
+     */
     @Override
     protected Country toMoveFrom() {
         return null;
     }
 
+    /**
+     * Not implemented for aggressive strategy as it does not prioritize defending.
+     *
+     * @return null Always returns null as defending is not part of the aggressive strategy.
+     */
     @Override
     protected Country toDefend() {
         return null;
