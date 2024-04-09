@@ -93,6 +93,9 @@ public class GameEngineController {
         updateGameModel();
     }
 
+    /**
+     * Updates the game model with the current game state.
+     */
     public void updateGameModel(){
         d_Map = d_gameModel.getD_Map();
         d_Players = d_gameModel.getD_Players();
@@ -327,7 +330,6 @@ public class GameEngineController {
      * Otherwise, a new player with the provided name is added to the list of players.
      *
      * @param p_gamePlayer The name of the player to be added.
-     * @param p_strategy The name of the strategy to be added
     */
     public void executeAddGamePlayer(String p_gamePlayer, Strategy p_strategy){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
@@ -466,7 +468,6 @@ public class GameEngineController {
             } else {
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);
                 d_Players.get(d_currentPlayer).issueOrder();
-                incrementNextPlayer();
             }
         } else {
             executeAllOrders();
@@ -681,6 +682,12 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Loads a game state from a file.
+     * This method loads a game state from the specified file.
+     *
+     * @param p_fileName The name of the file from which the game state will be loaded.
+     */
     public boolean executeLoadGame(String p_fileName){
         try {
             d_gameModel = GameLoader.LoadGame(p_fileName);
