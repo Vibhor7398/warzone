@@ -4,8 +4,7 @@ import static org.junit.Assert.*;
 
 import Models.Country;
 import Models.Player;
-import Orders.Advance;
-import Orders.Order;
+import Orders.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class TestRandomStrategy {
         Order l_order;
         d_player.setArmies(0);
         l_order = d_randomStrategy.createOrder();
-        assertTrue(l_order instanceof Advance || l_order == null);
+        assertTrue(l_order instanceof Advance || l_order == null || l_order instanceof Airlift || l_order instanceof Bomb ||l_order instanceof Blockade);
     }
 
     @Test
