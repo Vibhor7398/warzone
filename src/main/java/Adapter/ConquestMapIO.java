@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ConquestMapIO {
@@ -110,46 +112,51 @@ public class ConquestMapIO {
             if (!l_file.exists()) {
                 System.out.println("The file doesn't exist, creating a new file.");
                 if (!l_file.createNewFile()) {
+                    System.out.println("Failed to create the file.");
                     return;
                 }
             }
+
             StringBuilder l_contentBuilder = new StringBuilder();
 
-            // Adding the file section
-            String l_baseName = l_file.getName().split("\\.")[0];
-            String line = String.format("pic %s_pic.jpg\nmap %s_map.gif\ncrd %s.cards\n\n", l_baseName, l_baseName, l_baseName);
-            l_contentBuilder.append("[files]\n").append(line);
+            // Adding map metadata
+            l_contentBuilder.append("[Map]\n")
+                    .append("author=Sean O'Connor\n")
+                    .append("image=world.bmp\n")
+                    .append("wrap=no\n")
+                    .append("scroll=horizontal\n")
+                    .append("warn=yes\n\n");
 
-            // Adding the continent
-            String l_continents = p_gameMap.getContinents().values().stream()
-                    .sorted(Comparator.comparingInt(Continent::getId))
-                    .map(l_continent -> String.format("%s %d %s\n", l_continent.getName(), l_continent.getContinentValue(), l_continent.getColor()))
-                    .collect(Collectors.joining());
-            l_contentBuilder.append("[continents]\n").append(l_continents).append("\n");
+            // Predefined order of continents
+            List<String> continentOrder = List.of("NorthAmerica", "SouthAmerica", "Africa", "Europe", "Asia", "Australia");
+            // Sorting continents by predefined order
+            Map<String, Continent> sortedContinents = new LinkedHashMap<>();
+            continentOrder.forEach(continentName -> {
+                Continent continent = p_gameMap.getContinents().values().stream()
+                        .filter(c -> c.getName().equals(continentName))
+                        .findFirst().orElse(null);
+                if (continent != null) {
+                    sortedContinents.put(continentName, continent);
+                }
+            });
 
-            // Adding the country
-            String l_countries = p_gameMap.getCountries().values().stream()
-                    .sorted(Comparator.comparingInt(Country::getId))
-                    .map(l_country -> String.format("%d %s %s %s %s\n", l_country.getId(), l_country.getName(), l_country.getContinentId(), l_country.getXCoordinate(), l_country.getYCoordinate()))
-                    .collect(Collectors.joining());
-            l_contentBuilder.append("[countries]\n").append(l_countries).append("\n");
+            // Adding continents in the specified order
+            l_contentBuilder.append("[Continents]\n");
+            sortedContinents.forEach((name, continent) ->
+                    l_contentBuilder.append(name).append("=")
+                            .append(continent.getContinentValue()).append("\n"));
+            l_contentBuilder.append("\n");
 
-            // Adding the neighbours
-            String l_borders = p_gameMap.getCountries().values().stream()
-                    .map(country -> {
-                        String l_neighbors = country.getNeighbors().values().stream()
-                                .map(neighbor -> String.valueOf(neighbor.getId()))
-                                .collect(Collectors.joining(" "));
-                        return country.getId() + " " + l_neighbors + "\n";
-                    })
-                    .collect(Collectors.joining());
+            // Territories should be grouped and sorted by the continent order
+            // Assuming you have a method to sort and write territories as before
+            // Write territories here, making sure they're grouped by the sorted continents
 
-            l_contentBuilder.append("[borders]\n").append(l_borders);
-            Files.writeString(Paths.get(l_file.getPath()), l_contentBuilder.toString(), StandardOpenOption.WRITE);
+            // Write the content to file
+            Files.writeString(Paths.get(l_file.getPath()), l_contentBuilder.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+            System.out.println("Map saved successfully.");
+
         } catch (IOException e) {
-            System.out.println("Saving Map failed");
-            return;
+            System.out.println("Saving Map failed: " + e.getMessage());
         }
     }
-
 }

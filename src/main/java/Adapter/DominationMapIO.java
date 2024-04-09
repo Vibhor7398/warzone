@@ -4,6 +4,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import Models.Continent;
 import Models.Country;
 import Models.Maps;
@@ -107,27 +109,58 @@ public class DominationMapIO {
 
     }
     public void saveMap(Maps p_gameMap, String p_fileName) {
-        StringBuilder mapContent = new StringBuilder();
-        mapContent.append("[Continents]\n");
-        for (Continent continent : p_gameMap.getContinents().values()) {
-            mapContent.append(continent.getName()).append("=").append(continent.getContinentValue()).append("\n");
-        }
-        mapContent.append("\n");
-        mapContent.append("[Territories]\n");
-        for (Country country : p_gameMap.getCountries().values()) {
-//            Continent continent = findContinentIdByName(p_gameMap, country.getContinentId());
-//            mapContent.append(country.getName()).append(",").append(country.getXCoordinate()).append(",").append(country.getYCoordinate()).append(",").append(continent.getName());
-//            if (country.getNeighbors() != null) {
-////                country.getNeighbors().values().stream().map(neighbor ->  mapContent.append(",").append(neighbor.getName()));
-//            }
-//            mapContent.append("\n");
-        }
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(p_fileName))) {
-            writer.write(mapContent.toString());
+        try {
+            File l_file = new File(p_fileName);
+            if (!l_file.exists()) {
+                System.out.println("The file doesn't exist, creating a new file.");
+                if (!l_file.createNewFile()) {
+                    System.out.println("Failed to create the file.");
+                    return;
+                }
+            }
+            StringBuilder l_contentBuilder = new StringBuilder();
+            l_contentBuilder.append("[Map]\n")
+                    .append("author=Sean O'Connor\n")
+                    .append("image=world.bmp\n")
+                    .append("wrap=no\n")
+                    .append("scroll=horizontal\n")
+                    .append("warn=yes\n\n");
+            l_contentBuilder.append("[Continents]\n");
+
+            // Append continents to the content builder in the order they were read
+            p_gameMap.getContinents().values().forEach(continent ->
+                    l_contentBuilder.append(continent.getName()).append("=")
+                            .append(continent.getContinentValue()).append("\n"));
+            l_contentBuilder.append("\n");
+            l_contentBuilder.append("[Territories]\n");
+
+            // Map countries by continent
+            Map<String, List<Country>> countriesByContinent = new HashMap<>();
+            p_gameMap.getCountries().values().forEach(country -> {
+                String continentName = p_gameMap.getContinents().get(country.getContinentId()).getName();
+                countriesByContinent.computeIfAbsent(continentName, k -> new ArrayList<>()).add(country);
+            });
+
+            // Print territories based on the order of continents read
+            for (Continent continent : p_gameMap.getContinents().values()) {
+                String continentName = continent.getName();
+                List<Country> countries = countriesByContinent.getOrDefault(continentName, new ArrayList<>());
+                countries.forEach(country -> {
+                    l_contentBuilder.append(country.getName()).append(",").append(country.getXCoordinate()).append(",").append(country.getYCoordinate())
+                            .append(",").append(continentName);
+                    country.getNeighbors().values().forEach(neighbor ->
+                            l_contentBuilder.append(",").append(neighbor.getName()));
+                    l_contentBuilder.append("\n");
+                });
+                l_contentBuilder.append("\n");
+            }
+
+            Files.writeString(Paths.get(l_file.getPath()), l_contentBuilder.toString());
+            System.out.println("Map saved successfully.");
+
         } catch (IOException e) {
-            System.out.println("Failed to save map: " + e.getMessage());
+            System.out.println("Saving Map failed: " + e.getMessage());
         }
     }
-
-
 }
+
