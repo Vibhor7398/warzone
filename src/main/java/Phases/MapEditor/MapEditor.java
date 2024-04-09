@@ -3,6 +3,7 @@ package Phases.MapEditor;
 import Controller.GameEngineController;
 import GameEngine.GameEngine;
 import Models.Command;
+import Phases.GamePlay.MainPlay.MainPlay;
 import Phases.GamePlay.Players.Players;
 import Phases.Phases;
 
@@ -111,14 +112,14 @@ public class MapEditor extends Phases {
      */
     @Override
     public void loadMap(Command p_command) {
-        boolean isSuccessful = d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0]);
-         if (isSuccessful){
-             GameEngineController.d_Log.notify("Map " + p_command.getArgs()[0] + " loaded successfully!");
-             next();
-         }
-         else{
-             GameEngineController.d_Log.notify("Map " + p_command.getArgs()[0] + " failed to load!");
-         }
+        if (d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0])){
+           System.out.println("Map " + p_command.getArgs()[0] + " loaded successfully!");
+            GameEngineController.d_Log.notify("Map " + p_command.getArgs()[0] + " loaded successfully!");
+            next();
+        }
+        else{
+            GameEngineController.d_Log.notify("Map " + p_command.getArgs()[0] + " failed to load!");
+        }
     }
 
     /**
@@ -238,5 +239,22 @@ public class MapEditor extends Phases {
     @Override
     public void next() {
         d_ge.setD_phase(new Players(d_ge));
+    }
+
+    @Override
+    public void saveGame(Command p_command) {
+        printInvalidMessage();
+    }
+
+    @Override
+    public void loadGame(Command p_command) {
+        if(d_ge.getD_gc().executeLoadGame(p_command.getArgs()[0])){
+            d_ge.setD_phase(new MainPlay(d_ge));
+            System.out.println("Game " + p_command.getArgs()[0] + " loaded successfully!");
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " loaded successfully!");
+        }
+        else{
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " failed to load!");
+        }
     }
 }
