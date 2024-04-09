@@ -9,6 +9,8 @@ import Controller.GameEngineController;
 import Controller.MapsController;
 import Orders.*;
 import Strategy.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.Queue;
 /**
  * Represents a player in the game.
  */
-public class Player {
+public class Player implements Serializable {
     private String d_name;
     private static int d_ReinforcementsCompleted;
     private boolean d_isTurnCompleted = false;
