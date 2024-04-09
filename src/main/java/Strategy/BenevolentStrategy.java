@@ -96,7 +96,7 @@ public class BenevolentStrategy extends PlayerStrategy{
         List<Country> l_countryList = d_player.getCountriesOwned();
         Country l_maxArmy = l_countryList.getFirst();
         for(Country l_country : l_countryList){
-            if(l_maxArmy.getArmies()<l_country.getArmies() && l_maxArmy.getNeighbors().containsValue(l_country)){
+            if(l_maxArmy.getArmies()<l_country.getArmies() && l_maxArmy.getNeighbors().containsValue(l_country) && !toDefend().equals(l_country)){
                 l_maxArmy = l_country;
             }
         }
@@ -115,7 +115,7 @@ public class BenevolentStrategy extends PlayerStrategy{
         Country l_minArmy = l_countryList.getFirst();
 
         for(Country l_country : l_countryList){
-            if(l_minArmy.getArmies()<l_country.getArmies()){
+            if(l_minArmy.getArmies()>l_country.getArmies()){
                 l_minArmy = l_country;
             }
         }
