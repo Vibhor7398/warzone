@@ -49,7 +49,7 @@ public class AggressiveStrategy extends PlayerStrategy{
             d_player.setD_orderList(new Deploy(d_player, l_AttackFrom, d_player.getArmies()));
         }
 
-        int l_armyForAttack = l_AttackFrom.getArmies();
+        int l_armyForAttack = l_AttackFrom.getArmies() + d_player.getArmies();
         if(l_armyForAttack>0){
             return new Advance(d_player, l_AttackFrom, l_countryToAttack, l_armyForAttack);
         }
