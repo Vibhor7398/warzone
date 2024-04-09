@@ -11,14 +11,32 @@ import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
+
+/**
+ * The ConquestMapIO class provides functionality to load and save Conquest mode maps from/to files.
+ * It implements ConquestMapInterface for map loading and saving operations.
+ */
 public class ConquestMapIO {
 
+    /**
+     * Processes a line containing continent data from the map file and updates the provided Maps object accordingly.
+     *
+     * @param p_gameMap The Maps object to be updated with the continent data.
+     * @param p_line The line from the map file containing continent information.
+     */
     private void processContinentLine(Maps p_gameMap,String p_line) {
         String[] l_parts = p_line.split(" ");
         Continent l_continent = new Continent(p_gameMap.getContinents().size() + 1, l_parts[0], Integer.parseInt(l_parts[1]), l_parts[2]);
         p_gameMap.getContinents().put(String.valueOf(p_gameMap.getContinents().size() + 1), l_continent);
     }
 
+
+    /**
+     * Processes a line containing country data from the map file and updates the provided Maps object accordingly.
+     *
+     * @param p_gameMap The Maps object to be updated with the country data.
+     * @param p_line The line from the map file containing country information.
+     */
     private void processCountryLine(Maps p_gameMap,String p_line) {
         String[] l_parts = p_line.split(" ");
         Country l_country = new Country(Integer.parseInt(l_parts[0]), l_parts[1], l_parts[2], l_parts[3], l_parts[4]);
@@ -30,6 +48,12 @@ public class ConquestMapIO {
         p_gameMap.getContinents().get(l_parts[2].trim()).addCountry(l_country);
     }
 
+    /**
+     * Processes a line containing border data from the map file and updates the provided Maps object accordingly.
+     *
+     * @param p_gameMap The Maps object to be updated with the border data.
+     * @param p_line The line from the map file containing border information.
+     */
     private void processBorderLine(Maps p_gameMap,String p_line) {
         String[] l_parts = p_line.split(" ");
         if (l_parts.length < 2) return;
@@ -47,6 +71,13 @@ public class ConquestMapIO {
         }
     }
 
+    /**
+     * Finds a country in the provided Maps object based on its ID.
+     *
+     * @param p_gameMap The Maps object to search for the country.
+     * @param p_id The ID of the country to find.
+     * @return The Country object with the specified ID if found, null otherwise.
+     */
     private Country findCountryById(Maps p_gameMap,String p_id) {
         for (Country l_country : p_gameMap.getCountries().values()) {
             if (String.valueOf(l_country.getId()).equals(p_id)) {
@@ -56,6 +87,12 @@ public class ConquestMapIO {
         return null;
     }
 
+    /**
+     * Loads a Conquest mode map from the specified file into the provided Maps object.
+     *
+     * @param p_gameMap The Maps object to populate with the loaded map data.
+     * @param p_fileName The name of the file containing the map data.
+     */
     public void loadMap(Maps p_gameMap, String p_fileName) {
         try {
             p_gameMap.resetMap();
@@ -104,6 +141,12 @@ public class ConquestMapIO {
         }
     }
 
+    /**
+     * Saves the current state of the game map, represented by the provided Maps object, to a file.
+     *
+     * @param p_gameMap The Maps object containing the map data to be saved.
+     * @param p_fileName The name of the file to which the map data will be saved.
+     */
     public void saveMap(Maps p_gameMap, String p_fileName) {
         try {
             File l_file = new File(p_fileName);
