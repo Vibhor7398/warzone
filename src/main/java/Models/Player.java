@@ -31,7 +31,7 @@ public class Player {
     private ArrayList<Order> d_orderList = new ArrayList<>();
     private Order d_currentOrder;
     private boolean d_hasCommunicatedCompletedOrders = false;
-    private String d_playerStrategyType;
+    private Strategy d_playerStrategyType;
     private PlayerStrategy d_playerStrategy;
 
     /**
@@ -41,6 +41,16 @@ public class Player {
      */
     public Player(String p_name) {
         this.setName(p_name);
+    }
+
+    /**
+     * Constructs a player with the given name.
+     *
+     * @param p_name The name of the player.
+     */
+    public Player(String p_name, Strategy p_strategy) {
+        this.setName(p_name);
+        this.set_playerStrategyType(p_strategy);
     }
 
     /**
@@ -299,13 +309,16 @@ public class Player {
     public PlayerStrategy get_playerStrategy() {
         return d_playerStrategy;
     }
+
     public void set_playerStrategy(PlayerStrategy p_playerStrategy) {
         this.d_playerStrategy = p_playerStrategy;
     }
-    public void set_playerStrategyType(String p_playerStrategyType){
+
+    public void set_playerStrategyType(Strategy p_playerStrategyType){
         this.d_playerStrategyType = p_playerStrategyType;
     }
-    public String get_playerStrategyType(){
+
+    public Strategy get_playerStrategyType(){
         return d_playerStrategyType;
     }
 
@@ -315,7 +328,7 @@ public class Player {
      * and the countries they own. It ensures that the issued orders are valid before processing them.
     */
     public void issueOrder() {
-        if(this.get_playerStrategyType().equals("human")){
+        if(this.get_playerStrategyType().name().equals("Human")){
             switch (d_orderType) {
                 case "deploy":
                     System.out.println("Deploy order issued for " + this.getName());
@@ -369,26 +382,26 @@ public class Player {
                     break;
             }
         } else {
-            switch (this.get_playerStrategyType()) {
-                case "aggressive":
+            switch (this.get_playerStrategyType().name()) {
+                case "Aggressive":
                     set_playerStrategy(new AggressiveStrategy(this, new ArrayList<>(MapsController.getD_countries().values())));
                     setD_currentOrder(get_playerStrategy().createOrder());
                     d_orderList.add(getD_currentOrder());
                     break;
 
-                case "benevolent":
+                case "Benevolent":
                     set_playerStrategy(new BenevolentStrategy(this, new ArrayList<>(MapsController.getD_countries().values())));
                     setD_currentOrder(get_playerStrategy().createOrder());
                     d_orderList.add(getD_currentOrder());
                     break;
 
-                case "cheater":
+                case "Cheater":
                     set_playerStrategy(new CheaterStrategy(this, new ArrayList<>(MapsController.getD_countries().values())));
                     setD_currentOrder(get_playerStrategy().createOrder());
                     d_orderList.add(getD_currentOrder());
                     break;
 
-                case "random":
+                case "Random":
                     set_playerStrategy(new RandomStrategy(this, new ArrayList<>(MapsController.getD_countries().values())));
                     setD_currentOrder(get_playerStrategy().createOrder());
                     d_orderList.add(getD_currentOrder());

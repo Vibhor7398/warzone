@@ -91,7 +91,7 @@ public class CommandValidator {
                     new String[]{"String"}),
             new ValidCommands("gameplayer",
                     "-cpu",
-                    1,
+                    2,
                     new String[]{"playerName", "strategy"},
                     new String[]{"String", "String"}),
             new ValidCommands("assigncountries",

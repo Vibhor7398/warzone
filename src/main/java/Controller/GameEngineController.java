@@ -15,6 +15,7 @@ import Logger.LogHandler;
 import Models.Command;
 import Models.Country;
 import Models.Player;
+import Models.Strategy;
 import Orders.Order;
 import Services.CommandValidator;
 import Services.Reinforcement;
@@ -280,13 +281,13 @@ public class GameEngineController {
      *
      * @param p_gamePlayer The name of the player to be added.
     */
-    public void executeAddGamePlayer(String p_gamePlayer){
+    public void executeAddGamePlayer(String p_gamePlayer, Strategy p_strategy){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
         if (l_playerIndex != -1){
             System.out.println("Player name already exists!");
         }
         else{
-            d_Players.add(new Player(p_gamePlayer));
+            d_Players.add(new Player(p_gamePlayer, p_strategy));
         }
     }
 
