@@ -10,6 +10,7 @@ package Phases.GamePlay.Players;
 
 import GameEngine.GameEngine;
 import Models.Command;
+import Models.Strategy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,8 +68,8 @@ public class TestPlayers {
     public void assignCountries_valid(){
         command = new Command("assigncountries","",null);
         d_ge.getD_gc().executeLoadMap("brasil.map");
-        d_ge.getD_gc().executeAddGamePlayer("a");
-        d_ge.getD_gc().executeAddGamePlayer("b");
+        d_ge.getD_gc().executeAddGamePlayer("a", Strategy.Human);
+        d_ge.getD_gc().executeAddGamePlayer("b",Strategy.Human);
         instance.assignCountries(command);
         assertEquals("MainPlay", d_ge.getD_phase().getClass().getSimpleName());
     }
