@@ -212,4 +212,26 @@ public class MainPlay extends Phases {
         d_ge.setD_phase(new Exit(d_ge));
     }
 
+    @Override
+    public void saveGame(Command p_command) {
+        if(d_ge.getD_gc().executeSaveGame(p_command.getArgs()[0])){
+            System.out.println("Game " + p_command.getArgs()[0] + " saved successfully!");
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " saved successfully!");
+        }
+        else{
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " failed to save!");
+        }
+    }
+
+    @Override
+    public void loadGame(Command p_command) {
+        if(d_ge.getD_gc().executeLoadGame(p_command.getArgs()[0])){
+            System.out.println("Game " + p_command.getArgs()[0] + " loaded successfully!");
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " loaded successfully!");
+        }
+        else{
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " failed to load!");
+        }
+    }
+
 }
