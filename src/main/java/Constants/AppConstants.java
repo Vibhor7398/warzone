@@ -18,4 +18,8 @@ public final class AppConstants {
      * The path to the log file.
      */
     public static final String LogFilePath = "./src/main/resources/Logs/Log.log";
+    /**
+     * The path to the directory containing saved game files.
+     */
+    public static final String savedFilesPath = "./src/main/resources/SavedGames/";
 }
