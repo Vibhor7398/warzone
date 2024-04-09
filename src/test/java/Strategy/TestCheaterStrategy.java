@@ -2,6 +2,7 @@ package Strategy;
 
 import static org.junit.Assert.*;
 import Controller.GameEngineController;
+import Models.Strategy;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.*;
@@ -18,7 +19,7 @@ public class TestCheaterStrategy {
 
     @Before
     public void setUp() {
-        d_gc.executeAddGamePlayer("TestPlayer");
+        d_gc.executeAddGamePlayer("TestPlayer", Strategy.Human);
         d_player = GameEngineController.d_Players.getFirst();
 
         d_countries = new ArrayList<>();
@@ -37,13 +38,13 @@ public class TestCheaterStrategy {
     @Test
     public void testCreateOrder() {
         // Creating some neighbors for countries
-        d_gc.executeAddGamePlayer("Player1");
+        d_gc.executeAddGamePlayer("Player1",Strategy.Human);
         Player l_player1 = GameEngineController.d_Players.get(1);
         Country l_neighborsCountry1 = new Country("Neighbor1");
         l_player1.addCountryToCountriesOwned(l_neighborsCountry1);
         d_countries.getFirst().addNeighbor(l_neighborsCountry1);
 
-        d_gc.executeAddGamePlayer("Player2");
+        d_gc.executeAddGamePlayer("Player2",Strategy.Human);
         Player l_player2 = GameEngineController.d_Players.get(2);
         Country l_neighborsCountry2 = new Country("Neighbor2");
         l_player2.addCountryToCountriesOwned(l_neighborsCountry2);
@@ -61,7 +62,7 @@ public class TestCheaterStrategy {
             assertEquals(d_player, l_country.getOwner());
         }
 
-        d_gc.executeAddGamePlayer("Player3");
+        d_gc.executeAddGamePlayer("Player3",Strategy.Human);
         Player l_player3 = GameEngineController.d_Players.get(3);
         Country l_neighborsCountry3 = new Country("Neighbor3");
         l_player3.addCountryToCountriesOwned(l_neighborsCountry3);

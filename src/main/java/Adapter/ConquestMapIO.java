@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Comparator;
-import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import Exception.MapValidationException;
 
 public class ConquestMapIO {
 
@@ -56,7 +58,7 @@ public class ConquestMapIO {
         return null;
     }
 
-    public void loadMap(Maps p_gameMap, String p_fileName) {
+    public boolean loadMap(Maps p_gameMap, String p_fileName)  {
         try {
             p_gameMap.resetMap();
             String l_content = Files.readString(Paths.get(p_fileName));
@@ -81,13 +83,9 @@ public class ConquestMapIO {
                         continue;
                     }
                 }
-
-                // Skip empty lines or lines outside of any known section
                 if (l_line.isEmpty() || (!(l_readingContinents || l_readingCountries || l_readingBorders))) {
                     continue;
                 }
-
-                // Process the line based on the current section being read
                 if (l_readingContinents) {
                     processContinentLine(p_gameMap, l_line);
                 }
@@ -98,58 +96,48 @@ public class ConquestMapIO {
                     processBorderLine(p_gameMap, l_line);
                 }
             }
+            return true;
         }catch(IOException e){
-            System.out.println("Map loading failed");
-            return;
+            return false;
         }
     }
 
-    public void saveMap(Maps p_gameMap, String p_fileName) {
+    public boolean saveMap(Maps p_gameMap, String p_fileName) {
         try {
             File l_file = new File(p_fileName);
             if (!l_file.exists()) {
                 System.out.println("The file doesn't exist, creating a new file.");
                 if (!l_file.createNewFile()) {
-                    return;
+                    System.out.println("Failed to create the file.");
+                    return false;
                 }
             }
             StringBuilder l_contentBuilder = new StringBuilder();
-
-            // Adding the file section
-            String l_baseName = l_file.getName().split("\\.")[0];
-            String line = String.format("pic %s_pic.jpg\nmap %s_map.gif\ncrd %s.cards\n\n", l_baseName, l_baseName, l_baseName);
-            l_contentBuilder.append("[files]\n").append(line);
-
-            // Adding the continent
-            String l_continents = p_gameMap.getContinents().values().stream()
-                    .sorted(Comparator.comparingInt(Continent::getId))
-                    .map(l_continent -> String.format("%s %d %s\n", l_continent.getName(), l_continent.getContinentValue(), l_continent.getColor()))
-                    .collect(Collectors.joining());
-            l_contentBuilder.append("[continents]\n").append(l_continents).append("\n");
-
-            // Adding the country
-            String l_countries = p_gameMap.getCountries().values().stream()
-                    .sorted(Comparator.comparingInt(Country::getId))
-                    .map(l_country -> String.format("%d %s %s %s %s\n", l_country.getId(), l_country.getName(), l_country.getContinentId(), l_country.getXCoordinate(), l_country.getYCoordinate()))
-                    .collect(Collectors.joining());
-            l_contentBuilder.append("[countries]\n").append(l_countries).append("\n");
-
-            // Adding the neighbours
-            String l_borders = p_gameMap.getCountries().values().stream()
-                    .map(country -> {
-                        String l_neighbors = country.getNeighbors().values().stream()
-                                .map(neighbor -> String.valueOf(neighbor.getId()))
-                                .collect(Collectors.joining(" "));
-                        return country.getId() + " " + l_neighbors + "\n";
-                    })
-                    .collect(Collectors.joining());
-
-            l_contentBuilder.append("[borders]\n").append(l_borders);
-            Files.writeString(Paths.get(l_file.getPath()), l_contentBuilder.toString(), StandardOpenOption.WRITE);
+            l_contentBuilder.append("[Map]\n")
+                    .append("author=Sean O'Connor\n")
+                    .append("image=world.bmp\n")
+                    .append("wrap=no\n")
+                    .append("scroll=horizontal\n")
+                    .append("warn=yes\n\n");
+            List<String> continentOrder = List.of("NorthAmerica", "SouthAmerica", "Africa", "Europe", "Asia", "Australia");
+            Map<String, Continent> sortedContinents = new LinkedHashMap<>();
+            continentOrder.forEach(continentName -> {
+                Continent continent = p_gameMap.getContinents().values().stream()
+                        .filter(c -> c.getName().equals(continentName))
+                        .findFirst().orElse(null);
+                if (continent != null) {
+                    sortedContinents.put(continentName, continent);
+                }
+            });
+            l_contentBuilder.append("[Continents]\n");
+            sortedContinents.forEach((name, continent) ->
+                    l_contentBuilder.append(name).append("=")
+                            .append(continent.getContinentValue()).append("\n"));
+            l_contentBuilder.append("\n");
+            Files.writeString(Paths.get(l_file.getPath()), l_contentBuilder.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+            return true;
         } catch (IOException e) {
-            System.out.println("Saving Map failed");
-            return;
+            return false;
         }
     }
-
 }
