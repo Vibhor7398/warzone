@@ -42,17 +42,13 @@ public class BenevolentStrategy extends PlayerStrategy{
             Country weakestCountry = toDefend();
             if (weakestCountry != null) {
                 d_player.setD_orderList(new Deploy(d_player, weakestCountry, d_player.getArmies()));
-//                d_player.setArmies(0);
             }
         }
 
         if (d_player.getCardList().contains("Airlift")) {
-            ArrayList<Country> l_countries = new ArrayList<>();
-            for(Country l_country : d_player.getCountriesOwned()){
-                l_countries.add(l_country);
-            }
+            ArrayList<Country> l_countries = new ArrayList<>(d_player.getCountriesOwned());
             l_countries.remove(toMoveFrom());
-            Country l_weakest_country = l_countries.get(d_random.nextInt(d_player.getCountriesOwned().size()));
+            Country l_weakest_country = l_countries.get(d_random.nextInt(l_countries.size()));
             for(Country l_country : l_countries){
                 if(l_country.getArmies()<l_weakest_country.getArmies()){
                     l_weakest_country = l_country;
