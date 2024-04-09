@@ -2,9 +2,8 @@ package Strategy;
 
 import Models.Country;
 import Models.Player;
-import Orders.Advance;
-import Orders.Deploy;
-import Orders.Order;
+import Orders.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -39,16 +38,17 @@ public class RandomStrategy extends PlayerStrategy{
 
         Country l_randomCountry = d_player.getCountriesOwned().get(l_random.nextInt(d_player.getCountriesOwned().size()));
 
-        if(d_player.getArmies()!=0){
+        if(d_player.getArmies()>0){
             d_player.setD_orderList(new Deploy(d_player, l_randomCountry, d_player.getArmies()));
-//            d_player.setArmies(0);
         }
 
-        int l_randomValue = l_random.nextInt(2);
+        int l_randomValue = l_random.nextInt(4);
 
         return switch (l_randomValue) {
             case (0) -> new Advance(d_player, toAttackFrom(), toAttack(), (toAttackFrom().getArmies()));
-            case (1) -> new Advance(d_player, toMoveFrom(), toDefend(), (toDefend().getArmies()));
+            case (1) -> new Airlift(d_player, toMoveFrom(), toDefend(), (toDefend().getArmies()));
+            case (2) -> new Bomb(d_player, toAttack());
+            case (3) -> new Blockade(d_player, toMoveFrom());
             default -> null;
         };
     }
