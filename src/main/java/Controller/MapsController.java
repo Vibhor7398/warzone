@@ -28,7 +28,9 @@ import java.util.stream.Collectors;
  * The class also handles operations related to neighbors of countries, such as adding and removing neighbors.
  */
 public class MapsController{
-
+    public Maps getD_maps() {
+        return d_maps;
+    }
 
     private final Maps d_maps;
     private static LinkedHashMap<String, Continent> d_Continents;
@@ -43,21 +45,13 @@ public class MapsController{
         d_Continents = this.d_maps.getContinents();
         d_Countries = this.d_maps.getCountries();
     }
-    /**
-     * Retrieves a reference to the map
-     *
-     * @return A {@code LinkedHashMap} complete map of the game.
-     */
-    public Maps getD_maps() {
-        return d_maps;
-    }
 
     /**
      * Retrieves a reference to the collection of countries in the game map.
      *
      * @return A {@code LinkedHashMap} containing the countries, where the keys are country names and the values are country objects.
     */
-    public LinkedHashMap<String, Country> getD_countries() {
+    public static LinkedHashMap<String, Country> getD_countries() {
         return d_Countries;
     }
 
