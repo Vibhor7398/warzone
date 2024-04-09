@@ -12,9 +12,8 @@ import Constants.AppConstants;
 import GameEngine.GameEngine;
 import Logger.LogEntryBuffer;
 import Logger.LogHandler;
-import Models.Command;
-import Models.Country;
-import Models.Player;
+import Services.GameLoader;
+import Models.*;
 import Models.Strategy;
 import Orders.Order;
 import Services.CommandValidator;
@@ -60,7 +59,7 @@ public class GameEngineController {
      * ArrayList containing cards owned by players.
      * Each element in the ArrayList is a Player object.
      */
-    public static ArrayList<Player> d_cardsOwnedByPlayer = new ArrayList<>();
+    public static ArrayList<Player> d_cardsOwnedByPlayer;
 
     /**
      * Static variable representing a log entry buffer.
@@ -70,13 +69,23 @@ public class GameEngineController {
     public static LogHandler d_logHandler = new LogHandler(d_Log);
     private ConquestMapIO l_adapter;
 
+    private GameModel d_gameModel;
+
     /**
      * Constructs a new instance of GameEngineController.
      * Initializes the game map and player list.
      */
     public GameEngineController(){
-        d_Map = new MapsController();
-        d_Players = new ArrayList<>();
+        d_gameModel = new GameModel();
+        updateGameModel();
+    }
+
+    public void updateGameModel(){
+        d_Map = d_gameModel.getD_Map();
+        d_Players = d_gameModel.getD_Players();
+        d_currentPlayer = d_gameModel.getD_currentPlayer();
+        d_completedTurns = d_gameModel.getD_completedTurns();
+        d_cardsOwnedByPlayer = d_gameModel.getD_cardsOwnedByPlayer();
     }
 
     /**
@@ -491,4 +500,32 @@ public class GameEngineController {
         }
     }
 
+    public boolean executeSaveGame(String p_fileName){
+        try {
+            GameLoader.SaveGame(d_gameModel,p_fileName);
+            return true;
+        } catch (IOException l_e) {
+            System.out.println(l_e);
+            System.out.println("Save game failed. Check for file path. " + l_e.getMessage());
+            GameEngineController.d_Log.notify(l_e.toString());
+            return false;
+        }
+    }
+
+    public boolean executeLoadGame(String p_fileName){
+        try {
+            d_gameModel = GameLoader.LoadGame(p_fileName);
+            updateGameModel();
+            d_Map.updateMaps();
+            return true;
+        } catch (IOException l_e) {
+            System.out.println("Load game failed. Check for file path. " + l_e.getMessage());
+            d_Log.notify(l_e.toString());
+            return false;
+        } catch (ClassNotFoundException l_e) {
+            System.out.println(l_e.getMessage());
+            d_Log.notify(l_e.toString());
+            return false;
+        }
+    }
 }
