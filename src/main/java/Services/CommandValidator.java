@@ -1,8 +1,15 @@
 package Services;
 
+import Constants.AppConstants;
+import Controller.GameEngineController;
+import Controller.MapsController;
 import Models.Command;
+import Models.Strategy;
 import Models.ValidCommands;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import Exception.InvalidCommandException;
@@ -82,6 +89,11 @@ public class CommandValidator {
                     1,
                     new String[]{"playerName"},
                     new String[]{"String"}),
+            new ValidCommands("gameplayer",
+                    "-cpu",
+                    2,
+                    new String[]{"playerName", "strategy"},
+                    new String[]{"String", "String"}),
             new ValidCommands("assigncountries",
                     "",
                     0,
@@ -207,7 +219,7 @@ public class CommandValidator {
      * @return true if the subcommand is valid, false otherwise.
      */
     private boolean isValidSubCommand(String p_subCommand) {
-        return p_subCommand.equals("-add") || p_subCommand.equals("-remove");
+        return p_subCommand.equals("-add") || p_subCommand.equals("-remove") || p_subCommand.equals("-cpu");
     }
 
     /**
@@ -299,15 +311,24 @@ public class CommandValidator {
     public Command[] validateCommand(String p_command) throws InvalidCommandException {
             String[] l_cmd = p_command.trim().split(" ");
             String l_baseCommand = l_cmd[0];
+            if(l_baseCommand.equals("tournament")){
+                Command res = validateTournamentCmd(l_cmd);
+                if(res == null){
+                    throw new InvalidCommandException("Invalid Command!");
+                }
+                else{
+                    return new Command[]{res};
+                }
+            }
             if (!validateBaseCommand(l_baseCommand)) {
-                throw new InvalidCommandException("Invalid Command!!");
+                throw new InvalidCommandException("Invalid Command!");
             }
             int commandPointer = 1;
 
             if (!hasSubCommand(l_baseCommand) && !hasArguments(l_baseCommand)) {
                 if(l_cmd.length!=1)
                 {
-                    throw new InvalidCommandException("Invalid Command");
+                    throw new InvalidCommandException("Invalid Command!");
                 }
                 return new Command[]{new Command(l_baseCommand, "", new String[]{})};
             }
@@ -323,7 +344,7 @@ public class CommandValidator {
                 if (l_validCommand == null) {
                     throw new InvalidCommandException(getValidCommand(l_baseCommand));
                 }
-                if (!l_cmd[1].equals("-add") && !l_cmd[1].equals("-remove")) {
+                if (!l_cmd[1].equals("-add") && !l_cmd[1].equals("-remove") && !l_cmd[1].equals("-cpu")) {
                     throw new InvalidCommandException(getValidCommand(l_baseCommand));
                 }
                 commandPointer++;
@@ -359,5 +380,90 @@ public class CommandValidator {
             return l_commands;
     }
 
+    private Command validateTournamentCmd(String[] p_cmd){
+        // tournament -M listofmapfiles -P listofplayerstrategies -G numberofgames -D maxnumberofturns
+        if(!(p_cmd[1].equals("-M") && p_cmd[3].equals("-P") && p_cmd[5].equals("-G") && p_cmd[7].equals("-D"))){
+            return null;
+        }
+        try{
+            boolean isValid = validateMaps(p_cmd[2]) && validatePlayerStrategies(p_cmd[4]) && validateGames(p_cmd[6]) && validateTurns(p_cmd[8]);
+            if(!isValid){
+                return null;
+            }
+            String[] l_args = new String[4];
+            l_args[0] = p_cmd[2]; //maps
+            l_args[1] = p_cmd[4]; //players
+            l_args[2] = p_cmd[6]; //games
+            l_args[3] = p_cmd[8]; //turns
+            return new Command(p_cmd[0],"",l_args);
+        }
+        catch(Exception ex){
+            return null;
+        }
+    }
 
+    private boolean validateMaps(String p_listOfMaps) throws IOException {
+        GameEngineController l_gc = new GameEngineController();
+        String[] l_listOfMaps = p_listOfMaps.split(",");
+        if(l_listOfMaps.length > 5 || l_listOfMaps.length < 1){
+            System.out.println("Invalid number of maps");
+            return false;
+        }
+        for(String l_filename: l_listOfMaps){
+            if(!l_gc.executeLoadMap(l_filename.trim())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validatePlayerStrategies(String p_listOfPlayerStrategies){
+        String[] l_listOfPlayerStrategies = p_listOfPlayerStrategies.split(",");
+        if(l_listOfPlayerStrategies.length > 4 || l_listOfPlayerStrategies.length < 2){
+            System.out.println("Invalid number of player strategies");
+            return false;
+        }
+        for(String l_strategy: l_listOfPlayerStrategies){
+            boolean isValid = false;
+            for(int i = 0; i <Strategy.values().length; i++){
+                if(l_strategy.equals(Strategy.values()[i].name())){
+                    isValid = true;
+                    break;
+                }
+            }
+            if (!isValid){
+                System.out.println("Invalid Strategy: " + l_strategy);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateGames(String p_games){
+        try {
+            int x = Integer.parseInt(p_games);
+            if(x < 1 || x > 5){
+                throw new Exception();
+            }
+            return true;
+        }
+        catch (Exception ex){
+            System.out.println("Invalid number of games!");
+            return false;
+        }
+    }
+
+    private boolean validateTurns(String p_turns){
+        try {
+            int x = Integer.parseInt(p_turns);
+//            if(x < 10 || x > 50){
+//                throw new Exception();
+//            }
+            return true;
+        }
+        catch (Exception ex){
+            System.out.println("Invalid number of turns!");
+            return false;
+        }
+    }
 }

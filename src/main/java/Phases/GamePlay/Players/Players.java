@@ -3,6 +3,7 @@ package Phases.GamePlay.Players;
 import Controller.GameEngineController;
 import GameEngine.GameEngine;
 import Models.Command;
+import Models.Strategy;
 import Phases.GamePlay.MainPlay.MainPlay;
 import Phases.Phases;
 
@@ -107,7 +108,10 @@ public class Players extends Phases {
     @Override
     public void assignPlayers(Command p_command) {
         if(p_command.getD_subCmd().equals("-add")){
-            d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0]);
+            d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0], Strategy.Human);
+        }
+        else if(p_command.getD_subCmd().equals("-cpu")){
+            d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0], Strategy.valueOf(p_command.getArgs()[1]));
         }
         else{
             d_ge.getD_gc().executeRemoveGamePlayer(p_command.getArgs()[0]);
