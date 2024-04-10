@@ -111,6 +111,17 @@ public class Players extends Phases {
             d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0], Strategy.Human);
         }
         else if(p_command.getD_subCmd().equals("-cpu")){
+            boolean isValid = false;
+            for(int i = 0; i <Strategy.values().length; i++){
+                if(p_command.getArgs()[1].equals(Strategy.values()[i].name())){
+                    isValid = true;
+                    break;
+                }
+            }
+            if (!isValid){
+                System.out.println("Invalid Strategy: " + p_command.getArgs()[1]);
+                return;
+            }
             d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0], Strategy.valueOf(p_command.getArgs()[1]));
         }
         else{
