@@ -77,13 +77,15 @@ public class GameEngineController {
     public static LogEntryBuffer d_Log = new LogEntryBuffer();
     public static LogHandler d_logHandler = new LogHandler(d_Log);
     private ConquestMapIO l_adapter;
+    private GameModel d_gameModel;
 
+    /**
+     * Resets the game to have a fresh start
+     */
     private void resetGame(){
         d_Map = new MapsController();
         d_Players = new ArrayList<>();
     }
-    private GameModel d_gameModel;
-
     /**
      * Constructs a new instance of GameEngineController.
      * Initializes the game map and player list.
@@ -112,7 +114,6 @@ public class GameEngineController {
     public GameEngineController(MapsController p_mc){
         d_Map = p_mc;
     }
-
 
     /**
      * Prompts the user for the next command input and processes it.
@@ -222,7 +223,6 @@ public class GameEngineController {
         l_adapter.saveMap(d_Map.getD_maps(),AppConstants.MapsPath + p_filename);
     }
 
-
     /**
      * Edits the current game map using data from the specified file.
      * This method attempts to edit the map by reading data from the given file and updating the map accordingly.
@@ -330,6 +330,7 @@ public class GameEngineController {
      * Otherwise, a new player with the provided name is added to the list of players.
      *
      * @param p_gamePlayer The name of the player to be added.
+     * @param p_strategy The name of the strategy to be added
     */
     public void executeAddGamePlayer(String p_gamePlayer, Strategy p_strategy){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
@@ -431,7 +432,6 @@ public class GameEngineController {
         return true;
     }
 
-
     /**
      * Executes the CPU player's move.
      * This method invokes the issueOrder() method of the current CPU player to generate
@@ -443,9 +443,6 @@ public class GameEngineController {
         d_Players.get(d_currentPlayer).issueOrder();
         setOrders(new Command("endturn", "automatic", null));
     }
-
-
-
 
     /**
      * Sets orders for the current player based on the given command.
@@ -468,13 +465,13 @@ public class GameEngineController {
             } else {
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);
                 d_Players.get(d_currentPlayer).issueOrder();
+                incrementNextPlayer();
             }
         } else {
             executeAllOrders();
             Reinforcement.assignReinforcements(d_Players);
         }
     }
-
 
     /**
      * Checks if all player turns have been completed.
@@ -485,7 +482,6 @@ public class GameEngineController {
      *         {@code false} otherwise
      *
      */
-
     private boolean ifTurnsCompleted(){
         if(d_completedTurns == d_Players.size()){
             executeAllOrders();
@@ -494,7 +490,6 @@ public class GameEngineController {
         }
         return false;
     }
-
 
     /**
      * Sets the next player as the current player.
@@ -553,7 +548,7 @@ public class GameEngineController {
                         }
                         if (d_Players.size() == 1) {
                             System.out.println("Game Over! " + d_Players.getFirst().getName() + " has won the game!");
-                            return;
+                            System.exit(0);
                         }
                         ///                gameplayer -cpu cpu1 Cheater cpu2 Cheater cpu3 Cheater
                         if (d_Players.get(i).getCountriesOwned().isEmpty()) {
@@ -588,7 +583,6 @@ public class GameEngineController {
             p.setD_isTurnCompleted(false);
         }
     }
-
 
     /**
      * Starts a tournament with the provided command parameters.
@@ -656,7 +650,6 @@ public class GameEngineController {
         }
         return checkWinner();
     }
-
 
     /**
      * Checks for the winner of the game.
