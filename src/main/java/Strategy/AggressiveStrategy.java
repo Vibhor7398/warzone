@@ -5,7 +5,6 @@ import Models.Player;
 import Orders.Advance;
 import Orders.Deploy;
 import Orders.Order;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
