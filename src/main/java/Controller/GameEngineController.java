@@ -12,9 +12,8 @@ import Constants.AppConstants;
 import GameEngine.GameEngine;
 import Logger.LogEntryBuffer;
 import Logger.LogHandler;
-import Models.Command;
-import Models.Country;
-import Models.Player;
+import Services.GameLoader;
+import Models.*;
 import Models.Strategy;
 import Orders.Order;
 import Phases.GamePlay.MainPlay.MainPlay;
@@ -69,7 +68,7 @@ public class GameEngineController {
      * ArrayList containing cards owned by players.
      * Each element in the ArrayList is a Player object.
      */
-    public static ArrayList<Player> d_cardsOwnedByPlayer = new ArrayList<>();
+    public static ArrayList<Player> d_cardsOwnedByPlayer;
 
     /**
      * Static variable representing a log entry buffer.
@@ -83,13 +82,26 @@ public class GameEngineController {
         d_Map = new MapsController();
         d_Players = new ArrayList<>();
     }
+    private GameModel d_gameModel;
+
     /**
      * Constructs a new instance of GameEngineController.
      * Initializes the game map and player list.
      */
     public GameEngineController(){
-        d_Map = new MapsController();
-        d_Players = new ArrayList<>();
+        d_gameModel = new GameModel();
+        updateGameModel();
+    }
+
+    /**
+     * Updates the game model with the current game state.
+     */
+    public void updateGameModel(){
+        d_Map = d_gameModel.getD_Map();
+        d_Players = d_gameModel.getD_Players();
+        d_currentPlayer = d_gameModel.getD_currentPlayer();
+        d_completedTurns = d_gameModel.getD_completedTurns();
+        d_cardsOwnedByPlayer = d_gameModel.getD_cardsOwnedByPlayer();
     }
 
     /**
@@ -318,7 +330,6 @@ public class GameEngineController {
      * Otherwise, a new player with the provided name is added to the list of players.
      *
      * @param p_gamePlayer The name of the player to be added.
-     * @param p_strategy The name of the strategy to be added
     */
     public void executeAddGamePlayer(String p_gamePlayer, Strategy p_strategy){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);
@@ -457,7 +468,6 @@ public class GameEngineController {
             } else {
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);
                 d_Players.get(d_currentPlayer).issueOrder();
-                incrementNextPlayer();
             }
         } else {
             executeAllOrders();
@@ -660,4 +670,45 @@ public class GameEngineController {
         return "Draw";
     }
 
+
+    /**
+     * Saves the current game state to a file.
+     * This method saves the current game state to the specified file.
+     *
+     * @param p_fileName The name of the file to which the game state will be saved.
+     */
+    public boolean executeSaveGame(String p_fileName){
+        try {
+            GameLoader.SaveGame(d_gameModel,p_fileName);
+            return true;
+        } catch (IOException l_e) {
+            System.out.println(l_e);
+            System.out.println("Save game failed. Check for file path. " + l_e.getMessage());
+            GameEngineController.d_Log.notify(l_e.toString());
+            return false;
+        }
+    }
+
+    /**
+     * Loads a game state from a file.
+     * This method loads a game state from the specified file.
+     *
+     * @param p_fileName The name of the file from which the game state will be loaded.
+     */
+    public boolean executeLoadGame(String p_fileName){
+        try {
+            d_gameModel = GameLoader.LoadGame(p_fileName);
+            updateGameModel();
+            d_Map.updateMaps();
+            return true;
+        } catch (IOException l_e) {
+            System.out.println("Load game failed. Check for file path. " + l_e.getMessage());
+            d_Log.notify(l_e.toString());
+            return false;
+        } catch (ClassNotFoundException l_e) {
+            System.out.println(l_e.getMessage());
+            d_Log.notify(l_e.toString());
+            return false;
+        }
+    }
 }

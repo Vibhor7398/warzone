@@ -4,6 +4,7 @@
  */
 package TestSuites;
 
+import Services.GameLoaderTest;
 import Services.TestCommandValidator;
 import Services.TestReinforcement;
 import org.junit.runner.RunWith;
@@ -14,6 +15,6 @@ import org.junit.runners.Suite;
  * It includes test cases for CommandValidationService and ReinforcementService.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TestCommandValidator.class,TestReinforcement.class})
+@Suite.SuiteClasses({TestCommandValidator.class,TestReinforcement.class, GameLoaderTest.class})
 public class ServicesTestSuite {
 }
