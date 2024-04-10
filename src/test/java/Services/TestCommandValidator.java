@@ -4,7 +4,11 @@
  */
 package Services;
 
+import Constants.AppConstants;
+import Controller.GameEngineController;
 import Models.Command;
+import Models.Player;
+import Models.Strategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -438,6 +442,18 @@ public class TestCommandValidator {
         assertThrows(InvalidCommandException.class, () -> {
             service.validateCommand("advance India Nepal three");
         });
+    }
+
+    @Test
+    public void cpuCommandValidator() {
+        CommandValidator l_cmd=new CommandValidator();
+        Command[] l_commands;
+        try {
+            l_commands = l_cmd.validateCommand("gameplayer -cpu cpu1 Aggresive");
+        } catch (InvalidCommandException e) {
+            throw new RuntimeException(e);
+        }
+        assertTrue(l_commands[0] instanceof Command);;
     }
 
 }
