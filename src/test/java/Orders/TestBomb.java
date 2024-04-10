@@ -95,7 +95,7 @@ public class TestBomb {
         System.setOut(System.out);
 
         // Assert the output
-        String expectedOutput = "Invalid Order! \n";
+        String expectedOutput = "Invalid Bomb Order! by TestPlayer";
         assertEquals(expectedOutput.trim(), outContent.toString().trim());
     }
 }
