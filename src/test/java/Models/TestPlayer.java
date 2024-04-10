@@ -42,4 +42,13 @@ public class TestPlayer {
         assertTrue(outContent.toString().contains("Deploy order issued for Human"));
     }
 
+    @Test
+    public void testPlayerConstructorWithStrategy() {
+        Strategy strategy = Strategy.Aggressive;
+
+        Player player = new Player("TestPlayer", strategy);
+
+        assertEquals(strategy, player.get_playerStrategyType());
+    }
+
 }
