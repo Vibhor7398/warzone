@@ -127,6 +127,16 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Checks if the content of a file contains a specific type representation, '[Map]'.
+     * This method reads the content of the file specified by the file name and searches
+     * for the presence of the specified type representation.
+     *
+     * @param p_fileName the name of the file to be checked
+     * @return {@code true} if the content of the file contains the type representation '[Map]',
+     *         {@code false} otherwise or if an IOException occurs while reading the file
+     */
+
     private boolean isMapofOtherType(String p_fileName){
         try {
             String l_content = Files.readString(Paths.get(p_fileName));
@@ -400,6 +410,13 @@ public class GameEngineController {
     }
 
 
+    /**
+     * Executes the CPU player's move.
+     * This method invokes the issueOrder() method of the current CPU player to generate
+     * and execute its orders. After executing the CPU player's orders, it sets the orders
+     * for the current player to end their turn automatically.
+     *
+     */
     public void executeCPUMove(){
         d_Players.get(d_currentPlayer).issueOrder();
         setOrders(new Command("endturn", "automatic", null));
@@ -442,6 +459,15 @@ public class GameEngineController {
     }
 
 
+    /**
+     * Checks if all player turns have been completed.
+     * If all player turns have been completed, this method executes all pending orders,
+     * assigns reinforcements to all players, and returns true. Otherwise, it returns false.
+     *
+     * @return {@code true} if all player turns have been completed and orders have been executed,
+     *         {@code false} otherwise
+     *
+     */
 
     private boolean ifTurnsCompleted(){
         if(d_completedTurns == d_Players.size()){
@@ -452,6 +478,12 @@ public class GameEngineController {
         return false;
     }
 
+
+    /**
+     * Sets the next player as the current player.
+     * This method iterates through players until it finds a player whose turn has not been completed,
+     * and sets that player as the current player.
+     */
     private void setNextPlayer(){
         while(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
             d_currentPlayer++;
@@ -543,6 +575,15 @@ public class GameEngineController {
     }
 
 
+    /**
+     * Starts a tournament with the provided command parameters.
+     *
+     * @param p_command the command containing tournament parameters:
+     *                  -M listofmapfiles
+     *                  -P listofplayerstrategies
+     *                  -G numberofgames
+     *                  -D maxnumberofturns
+     */
     public void startTournament(Command p_command){
         //tournament -M listofmapfiles -P listofplayerstrategies -G numberofgames -D maxnumberofturns
         System.out.println("Tournament started!");
@@ -570,6 +611,14 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Starts a game with the given map, player strategies, and number of turns.
+     *
+     * @param p_map the map file for the game
+     * @param p_strategies the list of player strategies for the game
+     * @param p_turns the maximum number of turns for the game
+     * @return the name of the winner or "Draw" if it's a draw
+     */
     public String startGame(String p_map, ArrayList<Strategy> p_strategies, int p_turns){
         resetGame();
         executeLoadMap(p_map);
@@ -593,6 +642,12 @@ public class GameEngineController {
         return checkWinner();
     }
 
+
+    /**
+     * Checks for the winner of the game.
+     *
+     * @return the name of the winner or "Draw" if it's a draw
+     */
     public String checkWinner(){
         if(d_Players.size() == 1){
             return d_Players.getFirst().getName();
