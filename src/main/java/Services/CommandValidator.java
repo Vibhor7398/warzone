@@ -456,9 +456,9 @@ public class CommandValidator {
     private boolean validateTurns(String p_turns){
         try {
             int x = Integer.parseInt(p_turns);
-//            if(x < 10 || x > 50){
-//                throw new Exception();
-//            }
+            if(x < 10 || x > 50){
+                throw new Exception();
+            }
             return true;
         }
         catch (Exception ex){
