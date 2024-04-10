@@ -50,6 +50,7 @@ public class GameLoaderTest {
     @Test
     public void loadGameSuccessfully() {
         try {
+            saveGameSuccessfully();
             GameLoader.LoadGame(fileName);
         } catch (IOException | ClassNotFoundException e) {
             fail("Exception should not be thrown");

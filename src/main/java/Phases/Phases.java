@@ -166,8 +166,18 @@ public abstract class Phases {
      */
     abstract public void next();
 
+    /**
+     * Saves the game state.
+     *
+     * @param p_command The command object.
+     */
     abstract public void saveGame(Command p_command);
 
+    /**
+     * Loads the game state.
+     *
+     * @param p_command The command object.
+     */
     abstract public void loadGame(Command p_command);
 
     /**
