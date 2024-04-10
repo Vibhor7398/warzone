@@ -14,11 +14,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
+/**
+ * This class contains unit tests for the AggressiveStrategy class.
+ * It tests the creation of orders based on the aggressive strategy.
+ */
 public class TestAggressiveStrategy {
     private AggressiveStrategy d_aggressiveStrategy;
     private Player d_testPlayer;
     GameEngineController d_gc = new GameEngineController();
-
+    /**
+     * Set up the necessary objects for testing.
+     */
     @Before
     public void setUp() {
         d_gc.executeAddGamePlayer("TestPlayer", Strategy.Human);
@@ -39,6 +45,10 @@ public class TestAggressiveStrategy {
         d_aggressiveStrategy = new AggressiveStrategy(d_testPlayer, l_countriesOwned);
     }
 
+    /**
+     * Test creating a deploy order when armies are available.
+     * Expected: Deploy order or null should be returned.
+     */
     @Test
     public void testCreateOrder_DeployWhenArmiesAvailable() {
         d_testPlayer.setArmies(5);
@@ -46,6 +56,10 @@ public class TestAggressiveStrategy {
         assertTrue(l_order instanceof Advance || l_order == null);
     }
 
+    /**
+     * Test creating an advance order when no armies are available.
+     * Expected: Advance order should be returned.
+     */
     @Test
     public void testCreateOrder_AdvanceWhenNoArmiesAvailable() {
         d_testPlayer.setArmies(0);

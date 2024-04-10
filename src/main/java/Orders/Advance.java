@@ -113,7 +113,7 @@ public class Advance implements Order{
         // target country belongs to current player, move the armies to the target country
         if (d_player.getCountriesOwned().contains(d_target_country)) {
             // Removed army from source country
-            d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
+            d_source_country.setArmies(Math.max((d_source_country.getArmies() - d_advance_armies), 0));
             // Added army to target country
             d_target_country.setArmies(d_advance_armies + d_target_country.getArmies());
         } else {
@@ -126,8 +126,10 @@ public class Advance implements Order{
             if (l_prob_attacker > l_prob_defender) {
                 // Attacker wins, move armies to the target territory
                 Player l_target_player = d_target_country.getOwner();
-                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
-                d_target_country.setArmies(l_attackerArmies - l_defenderArmies);
+                d_source_country.setArmies(Math.max((d_source_country.getArmies() - d_advance_armies), 0));
+
+                d_target_country.setArmies(Math.max(l_attackerArmies - l_defenderArmies, 0));
+
                 d_player.addCountryToCountriesOwned(d_target_country);
                 if (l_target_player != null) {
                     l_target_player.removeCountryFromCountriesOwned(d_target_country);
@@ -142,8 +144,11 @@ public class Advance implements Order{
                 }
             } else {
                 // Defender wins, update armies in source territory
-                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
-                d_target_country.setArmies(d_target_country.getArmies() - (int) l_prob_attacker);
+                d_source_country.setArmies(Math.max(d_source_country.getArmies() - d_advance_armies, 0));
+
+
+                d_target_country.setArmies(Math.max(d_target_country.getArmies() - (int) l_prob_attacker, 0));
+
                 d_attack_successful = false;
             }
             print();

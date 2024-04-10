@@ -11,12 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class contains unit tests for the RandomStrategy class.
+ * It tests the creation of orders based on the random strategy.
+ */
 public class TestRandomStrategy {
 
     private Player d_player;
     private List<Country> d_countries;
     private RandomStrategy d_randomStrategy;
 
+    /**
+     * Set up the necessary objects for testing.
+     */
     @Before
     public void setUp() {
         d_player = new Player("Abhi");
@@ -32,6 +39,10 @@ public class TestRandomStrategy {
         d_countries.add(l_neighboutCountry);
     }
 
+    /**
+     * Test creating orders for the random strategy.
+     * Expected: The method should return an Advance, Airlift, Bomb, Blockade order, or null.
+     */
     @Test
     public void testCreateOrder() {
         Order l_order;
@@ -40,6 +51,10 @@ public class TestRandomStrategy {
         assertTrue(l_order instanceof Advance || l_order == null || l_order instanceof Airlift || l_order instanceof Bomb ||l_order instanceof Blockade);
     }
 
+    /**
+     * Test determining the country to attack.
+     * Expected: At least one neighboring country should be returned.
+     */
     @Test
     public void testToAttack() {
         Country l_country = new Country("Country1");
@@ -59,6 +74,10 @@ public class TestRandomStrategy {
         assertTrue(l_neighbors.containsKey("Neighbor1") || l_neighbors.containsKey("Neighbor2"));
     }
 
+    /**
+     * Test determining the country to attack from.
+     * Expected: The returned country should be one owned by the player.
+     */
     @Test
     public void testToAttackFrom() {
         Country l_country1 = new Country("Country1");
@@ -70,6 +89,10 @@ public class TestRandomStrategy {
         assertTrue(d_countries.contains(d_randomStrategy.toAttackFrom()));
     }
 
+    /**
+     * Test determining the country to move armies from.
+     * Expected: The returned country should be one owned by the player.
+     */
     @Test
     public void testToMoveFrom() {
         Country l_country1 = new Country("Country1");
@@ -81,6 +104,10 @@ public class TestRandomStrategy {
         assertTrue(d_countries.contains(d_randomStrategy.toMoveFrom()));
     }
 
+    /**
+     * Test determining the country to defend.
+     * Expected: At least one neighboring country should be returned.
+     */
     @Test
     public void testToDefend() {
         Country l_country = new Country("Country1");
