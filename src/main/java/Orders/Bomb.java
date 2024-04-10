@@ -81,7 +81,7 @@ public class Bomb implements Order {
             d_player.removeCard("Bomb");
             print();
         } else {
-            System.out.println("Invalid Order! ");
+            System.out.println("Invalid Bomb Order! by "+d_player.getName());
             GameEngineController.d_Log.notify("Invalid Bomb Order! by "+d_player.getName());
         }
     }

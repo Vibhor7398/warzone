@@ -17,6 +17,7 @@ import Models.Country;
 import Models.Player;
 import Models.Strategy;
 import Orders.Order;
+import Phases.GamePlay.MainPlay.MainPlay;
 import Services.CommandValidator;
 import Services.Reinforcement;
 
@@ -35,6 +36,10 @@ import Exception.InvalidCommandException;
  */
 
 public class GameEngineController {
+    public static ArrayList<Player> getD_Players() {
+        return d_Players;
+    }
+
     /**
      * Represents the list of players participating in the game.
      * This ArrayList stores Player objects.
@@ -49,7 +54,7 @@ public class GameEngineController {
      * Represents the MapsController instance used in the game.
      * This variable holds a reference to the MapsController object.
      */
-    private static int d_currentPlayer;
+    public static int d_currentPlayer;
     /**
      * Represents the number of completed turns in the game.
      * This variable stores an integer value indicating the total number of completed turns.
@@ -100,16 +105,25 @@ public class GameEngineController {
      * If an invalid command is entered, the user is prompted again.
      */
     public void nextUserInput() {
-        CommandValidator l_cv = new CommandValidator();
-        try{
-            Scanner l_sc = new Scanner(System.in);
-            System.out.println("Enter your command");
-            String l_command = l_sc.nextLine();
-            Command[] l_val= l_cv.validateCommand(l_command);
-            GameEngine.getPhase().execute(l_val);
-        } catch (InvalidCommandException e) {
-            System.out.println(e.getMessage());
-            nextUserInput();
+        try {
+            if (GameEngine.getPhase() instanceof MainPlay && GameEngineController.d_Players.get(GameEngineController.d_currentPlayer).get_playerStrategyType() != Strategy.Human) {
+                Command[] l_val = new Command[]{new Command("cpu-gameplay", "", new String[]{" "})};
+                GameEngine.getPhase().execute(l_val);
+            } else {
+                CommandValidator l_cv = new CommandValidator();
+                try {
+                    Scanner l_sc = new Scanner(System.in);
+                    System.out.println("Enter your command");
+                    String l_command = l_sc.nextLine();
+                    Command[] l_val = l_cv.validateCommand(l_command);
+                    GameEngine.getPhase().execute(l_val);
+                } catch (InvalidCommandException e) {
+                    System.out.println(e.getMessage());
+                    nextUserInput();
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e);
         }
     }
 
@@ -385,6 +399,15 @@ public class GameEngineController {
         return true;
     }
 
+
+    public void executeCPUMove(){
+        d_Players.get(d_currentPlayer).issueOrder();
+        setOrders(new Command("endturn", "automatic", null));
+    }
+
+
+
+
     /**
      * Sets orders for the current player based on the given command.
      * If not all players have completed their turns, sets orders for the current player.
@@ -393,27 +416,28 @@ public class GameEngineController {
      * @param p_cmd The command specifying the action to be taken.
      */
     public void setOrders(Command p_cmd) {
-
-        if(d_completedTurns != d_Players.size()){
-            setNextPlayer();
-            if(p_cmd.getD_cmd().equals("endturn")){
-                d_Players.get(d_currentPlayer).setD_isTurnCompleted(true);
-                d_completedTurns++;
-                if(!ifTurnsCompleted()){
-                    incrementNextPlayer();
+        try {
+            if (d_completedTurns != d_Players.size()) {
+                setNextPlayer();
+                if (p_cmd.getD_cmd().equals("endturn")) {
+                    d_Players.get(d_currentPlayer).setD_isTurnCompleted(true);
+                    d_completedTurns++;
+                    if (!ifTurnsCompleted()) {
+                        incrementNextPlayer();
+                    }
+                    getD_cardsOwnedByPlayer().clear();
+                    d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
+                } else {
+                    d_Players.get(d_currentPlayer).setOrder(p_cmd);
+                    d_Players.get(d_currentPlayer).issueOrder();
                 }
-                getD_cardsOwnedByPlayer().clear();
-                d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
+            } else {
+                executeAllOrders();
+                Reinforcement.assignReinforcements(d_Players);
             }
-            else{
-                d_Players.get(d_currentPlayer).setOrder(p_cmd);
-                d_Players.get(d_currentPlayer).issueOrder();
-                incrementNextPlayer();
-            }
-        }
-        else{
-            executeAllOrders();
-            Reinforcement.assignReinforcements(d_Players);
+        }catch (Exception e){
+            System.out.println("LOL");
+            return;
         }
     }
 
@@ -457,28 +481,50 @@ public class GameEngineController {
      * Once all orders have been executed, the method resets the game state.
      */
     public void executeAllOrders() {
-        Order l_order;
-        boolean still_more_orders;
-        int l_playersCompleted = 0;
-        do {
-            still_more_orders = false;
-            for (Player p : d_Players) {
-                l_order = p.next_order();
-
-                if(l_order!=null){
-                    still_more_orders = true;
-                    l_order.execute();
+        try {
+            Order l_order;
+            boolean still_more_orders;
+            int l_playersCompleted = 0;
+            do {
+                try {
+                    still_more_orders = false;
+                    for (int i = 0; i < d_Players.size(); i++) {
+                        if (d_Players.get(i).getCountriesOwned().isEmpty()) {
+                            d_Players.remove(d_Players.get(i));
+                            i--;
+                            continue;
+                        }
+                        l_order = d_Players.get(i).next_order();
+                        if (l_order != null) {
+                            still_more_orders = true;
+                            l_order.execute();
+                        } else if (!d_Players.get(i).hasCommunicatedCompletedOrders()) {
+                            l_playersCompleted++;
+                            d_Players.get(i).setD_hasCommunicatedCompletedOrders(true);
+                        }
+                        if (d_Players.size() == 1) {
+                            System.out.println("Game Over! " + d_Players.getFirst().getName() + " has won the game!");
+                            return;
+                        }
+                        ///                gameplayer -cpu cpu1 Cheater cpu2 Cheater cpu3 Cheater
+                        if (d_Players.get(i).getCountriesOwned().isEmpty()) {
+                            d_Players.remove(d_Players.get(i));
+                        }
+                    }
+                    if (l_playersCompleted < d_Players.size()) {
+                        still_more_orders = true;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Game is draw");
+                    return;
                 }
-                else if(!p.hasCommunicatedCompletedOrders()){
-                    l_playersCompleted++;
-                    p.setD_hasCommunicatedCompletedOrders(true);
-                }
-            }
-            if(l_playersCompleted < d_Players.size()){
-                still_more_orders = true;
-            }
-        } while (still_more_orders);
-        reset();
+//                gameplayer -cpu cpu1 Cheater cpu2 Cheater cpu3 Cheater
+            } while (still_more_orders);
+            reset();
+        }catch (Exception e){
+            System.out.println(e);
+            return;
+        }
     }
 
     /**
@@ -508,7 +554,6 @@ public class GameEngineController {
         for(String l_strategy : l_strategies){
             l_allowedStrategies.add(Strategy.valueOf(l_strategy));
         }
-
         String[][] l_winners = new String[l_maps.length][l_games];
 
         for(int i = 0; i < l_maps.length ; i++){

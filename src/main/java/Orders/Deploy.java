@@ -85,7 +85,7 @@ public class Deploy implements Order {
             d_player.setArmies(d_player.getArmies() - d_armyToBeDeployed);
             print();
         } else {
-            System.out.println("Invalid order!");
+            System.out.println("Invalid deploy Order! by "+d_player.getName());
             GameEngineController.d_Log.notify("Invalid deploy order by "+d_player.getName());
         }
     }

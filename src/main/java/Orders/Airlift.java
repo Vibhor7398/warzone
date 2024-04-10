@@ -102,7 +102,7 @@ public class Airlift implements Order {
             d_player.removeCard("Airlift");
             print();
         } else {
-            System.out.println("Invalid Order! ");
+            System.out.println("Invalid Airlift Order! by "+d_player.getName());
             GameEngineController.d_Log.notify("Invalid Airlift Order! by "+d_player.getName());
         }
     }

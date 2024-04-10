@@ -68,7 +68,7 @@ public class Diplomacy implements Order{
             d_player.removeCard("Negotiate");
             print();
         } else {
-            System.out.println("Invalid Order! ");
+            System.out.println("Invalid diplomacy Order! by "+d_player.getName());
             GameEngineController.d_Log.notify("Invalid Diplomacy Order! by "+d_player.getName());
         }
     }
