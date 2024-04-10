@@ -453,7 +453,7 @@ public class TestCommandValidator {
         } catch (InvalidCommandException e) {
             throw new RuntimeException(e);
         }
-        assertTrue(l_commands[0] instanceof Command);;
+        assertNotNull(l_commands[0]);;
     }
 
 }

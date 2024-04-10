@@ -61,15 +61,15 @@ public class TestRandomStrategy {
         d_player.addCountryToCountriesOwned(l_country);
         d_countries.add(l_country);
 
-        Country neighbor1 = new Country("Neighbor1");
-        Player player1 =  new Player("Inder");
-        player1.addCountryToCountriesOwned(neighbor1);
-        d_countries.add(neighbor1);
-        Country neighbor2 = new Country("Neighbor2");
-        d_player.addCountryToCountriesOwned(neighbor2);
-        d_countries.add(neighbor2);
-        l_country.addNeighbor(neighbor1);
-        l_country.addNeighbor(neighbor2);
+        Country l_neighbor1 = new Country("Neighbor1");
+        Player l_player1 =  new Player("Inder");
+        l_player1.addCountryToCountriesOwned(l_neighbor1);
+        d_countries.add(l_neighbor1);
+        Country l_neighbor2 = new Country("Neighbor2");
+        d_player.addCountryToCountriesOwned(l_neighbor2);
+        d_countries.add(l_neighbor2);
+        l_country.addNeighbor(l_neighbor1);
+        l_country.addNeighbor(l_neighbor2);
         Map<String, Country> l_neighbors = l_country.getNeighbors();
         assertTrue(l_neighbors.containsKey("Neighbor1") || l_neighbors.containsKey("Neighbor2"));
     }

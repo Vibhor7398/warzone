@@ -17,8 +17,8 @@ import Exception.InvalidCommandException;
  */
 public class TestPlayer {
 
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream d_outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream d_errContent = new ByteArrayOutputStream();
 
 
     /**
@@ -26,8 +26,8 @@ public class TestPlayer {
      */
     @Before
     public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
+        System.setOut(new PrintStream(d_outContent));
+        System.setErr(new PrintStream(d_errContent));
     }
 
     /**
@@ -35,22 +35,22 @@ public class TestPlayer {
      */
     @Test
     public void testIssueOrder_Human_Deploy() {
-        GameEngineController gc = new GameEngineController();
-        gc.executeLoadMap(AppConstants.MapsPath + "brasil.map");
-        gc.executeAddGamePlayer("Human", Strategy.Human);
-        gc.executeAddGamePlayer("Human1", Strategy.Human);
-        Player player = GameEngineController.d_Players.getFirst();
-        gc.executeAssignCountries();
+        GameEngineController l_gc = new GameEngineController();
+        l_gc.executeLoadMap(AppConstants.MapsPath + "brasil.map");
+        l_gc.executeAddGamePlayer("Human", Strategy.Human);
+        l_gc.executeAddGamePlayer("Human1", Strategy.Human);
+        Player l_player = GameEngineController.d_Players.getFirst();
+        l_gc.executeAssignCountries();
         CommandValidator l_cmd = new CommandValidator();
         try {
             Command[] l_commands = l_cmd.validateCommand("deploy Parana 5");
-            player.setOrder(l_commands[0]);
+            l_player.setOrder(l_commands[0]);
 
         } catch (InvalidCommandException e) {
             throw new RuntimeException(e);
         }
-        player.issueOrder();
-        assertTrue(outContent.toString().contains("Deploy order issued for Human"));
+        l_player.issueOrder();
+        assertTrue(d_outContent.toString().contains("Deploy order issued for Human"));
     }
 
     /**
@@ -58,11 +58,11 @@ public class TestPlayer {
      */
     @Test
     public void testPlayerConstructorWithStrategy() {
-        Strategy strategy = Strategy.Aggressive;
+        Strategy l_strategy = Strategy.Aggressive;
 
-        Player player = new Player("TestPlayer", strategy);
+        Player l_player = new Player("TestPlayer", l_strategy);
 
-        assertEquals(strategy, player.get_playerStrategyType());
+        assertEquals(l_strategy, l_player.get_playerStrategyType());
     }
 
 }
