@@ -167,6 +167,20 @@ public abstract class Phases {
     abstract public void next();
 
     /**
+     * Saves the game state.
+     *
+     * @param p_command The command object.
+     */
+    abstract public void saveGame(Command p_command);
+
+    /**
+     * Loads the game state.
+     *
+     * @param p_command The command object.
+     */
+    abstract public void loadGame(Command p_command);
+
+    /**
      * Executes a series of commands.
      * This method iterates through the commands and executes them based on their type.
      *
@@ -174,88 +188,104 @@ public abstract class Phases {
      */
     public void execute(Command[] p_command) {
         for (Command l_command : p_command) {
-            switch (l_command.getD_cmd()) {
-                case "showmap":
-                    d_ge.getD_phase().showMap(l_command);
-                    break;
+                switch (l_command.getD_cmd()) {
+                    case "tournament":
+                        d_ge.getD_phase().startTournament(l_command);
+                        System.out.println("Tournament ended!");
+                        System.exit(0);
+                    case "cpu-gameplay":
+                        d_ge.getD_gc().executeCPUMove();
+                        break;
 
-                case "editmap":
-                    d_ge.getD_phase().editMap(l_command);
-                    break;
+                    case "showmap":
+                        d_ge.getD_phase().showMap(l_command);
+                        break;
 
-                case "savemap":
-                    d_ge.getD_phase().saveMap(l_command);
-                    break;
 
-                case "validatemap":
-                    d_ge.getD_phase().validateMap(l_command);
-                    break;
+                    case "editmap":
+                        d_ge.getD_phase().editMap(l_command);
+                        break;
 
-                case "editcontinent":
-                    d_ge.getD_phase().editContinent(l_command);
-                    break;
+                    case "savemap":
+                        d_ge.getD_phase().saveMap(l_command);
+                        break;
 
-                case "editcountry":
-                    d_ge.getD_phase().editCountry(l_command);
-                    break;
+                    case "validatemap":
+                        d_ge.getD_phase().validateMap(l_command);
+                        break;
 
-                case "editneighbor":
-                    d_ge.getD_phase().editNeighbor(l_command);
-                    break;
+                    case "editcontinent":
+                        d_ge.getD_phase().editContinent(l_command);
+                        break;
 
-                case "loadmap":
-                    d_ge.getD_phase().loadMap(l_command);
-                    break;
+                    case "editcountry":
+                        d_ge.getD_phase().editCountry(l_command);
+                        break;
 
-                case "assigncountries":
-                    d_ge.getD_phase().assignCountries(l_command);
-                    break;
+                    case "editneighbor":
+                        d_ge.getD_phase().editNeighbor(l_command);
+                        break;
 
-                case "gameplayer":
-                    d_ge.getD_phase().assignPlayers(l_command);
-                    break;
+                    case "loadmap":
+                        d_ge.getD_phase().loadMap(l_command);
+                        break;
 
-                case "deploy":
-                    d_ge.getD_phase().deploy(l_command);
-                    break;
+                    case "assigncountries":
+                        d_ge.getD_phase().assignCountries(l_command);
+                        break;
 
-                case "advance":
-                    d_ge.getD_phase().advance(l_command);
-                    break;
+                    case "gameplayer":
+                        d_ge.getD_phase().assignPlayers(l_command);
+                        break;
 
-                case "bomb":
-                    d_ge.getD_phase().bomb(l_command);
-                    break;
+                    case "deploy":
+                        d_ge.getD_phase().deploy(l_command);
+                        break;
 
-                case "blockade":
-                    d_ge.getD_phase().blockade(l_command);
-                    break;
+                    case "advance":
+                        d_ge.getD_phase().advance(l_command);
+                        break;
 
-                case "airlift":
-                    d_ge.getD_phase().airlift(l_command);
-                    break;
+                    case "bomb":
+                        d_ge.getD_phase().bomb(l_command);
+                        break;
 
-                case "negotiate":
-                    d_ge.getD_phase().negotiate(l_command);
-                    break;
+                    case "blockade":
+                        d_ge.getD_phase().blockade(l_command);
+                        break;
 
-                case "endturn":
-                    d_ge.getD_phase().endTurn(l_command);
-                    break;
+                    case "airlift":
+                        d_ge.getD_phase().airlift(l_command);
+                        break;
 
-                case "endgame":
-                    d_ge.getD_phase().endGame(l_command);
-                    break;
+                    case "negotiate":
+                        d_ge.getD_phase().negotiate(l_command);
+                        break;
 
-                case "next":
-                    d_ge.getD_phase().next();
-                    break;
+                    case "endturn":
+                        d_ge.getD_phase().endTurn(l_command);
+                        break;
 
-                default:
-                    printInvalidMessage();
-                    break;
+                    case "endgame":
+                        d_ge.getD_phase().endGame(l_command);
+                        break;
+
+                    case "next":
+                        d_ge.getD_phase().next();
+                        break;
+                    case "savegame":
+                        d_ge.getD_phase().saveGame(l_command);
+                        break;
+
+                    case "loadgame":
+                        d_ge.getD_phase().loadGame(l_command);
+                        break;
+
+                        default:
+                            printInvalidMessage();
+                            break;
+                }
             }
-        }
         d_ge.getD_gc().nextUserInput();
     }
 
@@ -265,7 +295,16 @@ public abstract class Phases {
      */
     public void printInvalidMessage() {
         System.out.println("Invalid Command in the state " + this.getClass().getSimpleName());
-        //d_ge.nextUserInput();
+    }
+
+    /**
+     * Prints an invalid command message.
+     * This method prints a message indicating that the command is invalid in the current state.
+     *
+     * @param p_command command to start the tournament
+     */
+    public void startTournament(Command p_command) {
+        d_ge.getD_gc().startTournament(p_command);
     }
 
     /**

@@ -1,12 +1,13 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
 
 import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
+import Models.Strategy;
 import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -23,10 +24,10 @@ public class TestAdvance {
     @Test
     public void testAdvanceMove() {
         // Setup - create actual objects rather than mocks
-        Player l_player1 = new Player("Player1");
+        Player l_player1 = new Player("Player1",Strategy.Human);
         GameEngineController l_gameC = new GameEngineController();
         l_gameC.executeLoadMap("brasil.map");
-        l_gameC.executeAddGamePlayer("player2");
+        l_gameC.executeAddGamePlayer("player2", Strategy.Human);
 
         Country l_sourceCountry = new Country(1, "Source", "Continent1", "0", "0");
         Country l_targetCountry = new Country(2, "Target", "Continent1", "1", "1");
@@ -57,7 +58,7 @@ public class TestAdvance {
     public void testIsValid_SourceTerritoryNotOwnedByPlayer() {
         GameEngineController l_gameC = new GameEngineController();
         l_gameC.executeLoadMap("brasil.map");
-        l_gameC.executeAddGamePlayer("player2");
+        l_gameC.executeAddGamePlayer("player2",Strategy.Human);
         // Create a player
         Player l_player = new Player("Player1");
         // Create source and target territories

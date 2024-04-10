@@ -212,4 +212,49 @@ public class MainPlay extends Phases {
         d_ge.setD_phase(new Exit(d_ge));
     }
 
+    /**
+     * Prints the error message
+     * Since this is the exit phase, this method does nothing.
+     */
+    /**
+     * Saves the current state of the game with the specified file name.
+     *
+     * @param p_command The command object containing the file name.
+     */
+    @Override
+    public void saveGame(Command p_command) {
+        // Check if the save operation was successful
+        if(d_ge.getD_gc().executeSaveGame(p_command.getArgs()[0])){
+            // Print success message
+            System.out.println("Game " + p_command.getArgs()[0] + " saved successfully!");
+            // Notify the log
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " saved successfully!");
+        }
+        else{
+            // Notify the log about the failure
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " failed to save!");
+        }
+    }
+
+    /**
+     * Loads a previously saved game state from the specified file name.
+     *
+     * @param p_command The command object containing the file name.
+     */
+    @Override
+    public void loadGame(Command p_command) {
+        // Check if the load operation was successful
+        if(d_ge.getD_gc().executeLoadGame(p_command.getArgs()[0])){
+            // Print success message
+            System.out.println("Game " + p_command.getArgs()[0] + " loaded successfully!");
+            // Notify the log
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " loaded successfully!");
+        }
+        else{
+            // Notify the log about the failure
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " failed to load!");
+        }
+    }
+
+
 }

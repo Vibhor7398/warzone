@@ -1,11 +1,12 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Services;
 
 import Controller.GameEngineController;
 import Models.Player;
+import Models.Strategy;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -25,8 +26,8 @@ public class TestReinforcement {
         // Create a list of players
         GameEngineController l_gameC = new GameEngineController();
         l_gameC.executeLoadMap("brasil.map");
-        l_gameC.executeAddGamePlayer("player1");
-        l_gameC.executeAddGamePlayer("player2");
+        l_gameC.executeAddGamePlayer("player1", Strategy.Human);
+        l_gameC.executeAddGamePlayer("player2",Strategy.Human);
 
         Player l_player1 = new Player("player1");
         Player l_player2 = new Player("player2");

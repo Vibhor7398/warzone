@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Services;
 
@@ -16,6 +16,10 @@ import java.util.LinkedHashMap;
  * This class provides functionality for assigning reinforcements to players in a game.
  */
 public class Reinforcement {
+
+    public static boolean isAllArmiesDeployed(Player p_player) {
+        return p_player.getArmies() == 0;
+    }
 
     /**
      * Assigns reinforcements to players based on the number of countries owned and continents controlled.

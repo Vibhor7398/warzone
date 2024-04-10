@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
 
@@ -82,10 +82,11 @@ public class Deploy implements Order {
             int l_previousArmies = d_country.getArmies();
             int l_newArmies = d_armyToBeDeployed + l_previousArmies;
             d_country.setArmies(l_newArmies);
-            d_player.setArmies(d_player.getArmies() - d_armyToBeDeployed);
+            d_player.setArmies(Math.max(d_player.getArmies() - d_armyToBeDeployed, 0));
+
             print();
         } else {
-            System.out.println("Invalid order!");
+            System.out.println("Invalid deploy Order! by "+d_player.getName());
             GameEngineController.d_Log.notify("Invalid deploy order by "+d_player.getName());
         }
     }

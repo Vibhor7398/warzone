@@ -1,21 +1,22 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 
 package Models;
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
  * This class represents a continent in the game map.
  * It contains information about the countries it contains, its ID, name, control value, and color.
  */
-public class Continent {
+public class Continent implements Serializable {
     private final LinkedHashMap<String, Country> d_countries;
     private int d_id;
     private String d_name;
     private final int d_continentValue;
-    private final String d_color;
+    private String d_color;
 
     /**
      * Constructs a Continent object with the specified ID, name, control value, and color.

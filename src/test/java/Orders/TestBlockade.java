@@ -1,12 +1,13 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
 
 import Controller.GameEngineController;
 import Models.Country;
 import Models.Player;
+import Models.Strategy;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.ByteArrayOutputStream;
@@ -30,7 +31,7 @@ public class TestBlockade {
         // Initialize a game engine controller
         GameEngineController l_gameEngineController = new GameEngineController();
         // Add a test player to the game
-        l_gameEngineController.executeAddGamePlayer("TestPlayer");
+        l_gameEngineController.executeAddGamePlayer("TestPlayer", Strategy.Human);
         // Initialize the test player
         d_player = new Player("TestPlayer");
         // Add the test player to the list of players in the game engine controller
@@ -143,7 +144,6 @@ public class TestBlockade {
         System.setOut(System.out);
 
         // Assert the output
-//        String expectedOutput = "Blockade is successful on TestCountry by TestPlayer\nArmies on TestCountry after blockade is 0\n";
         assertTrue(outContent.toString().startsWith("Blockade is successful on TestCountry by TestPlayer"));
     }
 }

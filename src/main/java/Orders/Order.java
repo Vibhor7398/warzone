@@ -1,15 +1,17 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
+
+import java.io.Serializable;
 
 /**
  * Represents a generic game order in a strategy game framework. This interface defines the basic structure
  * for orders that can be issued by players, such as moving armies, attacking, or deploying special actions.
  * Implementing classes are expected to define specific behaviors for validation, execution, and reporting of these orders.
  */
-public interface Order {
+public interface Order extends Serializable {
     /**
      * Validates whether the order is legal and can be executed within the current game state.
      * This method should check all necessary conditions such as ownership of territories, availability of resources,

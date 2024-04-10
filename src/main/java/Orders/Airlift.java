@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
 
@@ -93,7 +93,7 @@ public class Airlift implements Order {
     @Override
     public void execute() {
         if (isValid()) {
-            d_sourceCountry.setArmies(d_sourceCountry.getArmies() - d_armyToBeAirlift);
+            d_sourceCountry.setArmies(Math.max((d_sourceCountry.getArmies() - d_armyToBeAirlift), 0));
             System.out.println("Armies remaining on source country " + d_sourceCountry.getName() + " after airlift is " + d_sourceCountry.getArmies());
             GameEngineController.d_Log.notify("Armies remaining on source country " + d_sourceCountry.getName() + " after airlift is " + d_sourceCountry.getArmies());
             d_targetCountry.setArmies(d_targetCountry.getArmies() + d_armyToBeAirlift);
@@ -102,7 +102,7 @@ public class Airlift implements Order {
             d_player.removeCard("Airlift");
             print();
         } else {
-            System.out.println("Invalid Order! ");
+            System.out.println("Invalid Airlift Order! by "+d_player.getName());
             GameEngineController.d_Log.notify("Invalid Airlift Order! by "+d_player.getName());
         }
     }
