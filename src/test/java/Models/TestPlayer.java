@@ -1,7 +1,6 @@
 package Models;
 
 import static org.junit.Assert.*;
-
 import Constants.AppConstants;
 import Controller.GameEngineController;
 import Services.CommandValidator;

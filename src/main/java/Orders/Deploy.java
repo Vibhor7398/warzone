@@ -82,11 +82,7 @@ public class Deploy implements Order {
             int l_previousArmies = d_country.getArmies();
             int l_newArmies = d_armyToBeDeployed + l_previousArmies;
             d_country.setArmies(l_newArmies);
-            if(d_player.getArmies() - d_armyToBeDeployed < 0) {
-                d_player.setArmies(0);
-            } else {
-                d_player.setArmies(d_player.getArmies() - d_armyToBeDeployed);
-            }
+            d_player.setArmies(Math.max(d_player.getArmies() - d_armyToBeDeployed, 0));
 
             print();
         } else {
