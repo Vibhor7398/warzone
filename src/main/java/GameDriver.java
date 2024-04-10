@@ -18,6 +18,11 @@ public class GameDriver {
             System.out.println("---------Welcome to WARZONE-------");
             GameEngineController.d_Log.notify("Game has started!");
             GameEngine l_ge = new GameEngine();
-            l_ge.start();
+            try{
+                l_ge.start();
+            }
+            catch (StackOverflowError err){
+                System.out.println("Game will run infinitely!");
+            }
     }
 }
