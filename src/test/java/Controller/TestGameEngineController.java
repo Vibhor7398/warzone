@@ -34,7 +34,6 @@ public class TestGameEngineController {
     }
 
     /**
-     * Tests the {@link GameEngineController#(String)} method.
      * It verifies that a player is successfully added to the game.
      */
     @Test
