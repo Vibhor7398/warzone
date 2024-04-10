@@ -127,7 +127,13 @@ public class Advance implements Order{
                 // Attacker wins, move armies to the target territory
                 Player l_target_player = d_target_country.getOwner();
                 d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
-                d_target_country.setArmies(l_attackerArmies - l_defenderArmies);
+
+                if(l_attackerArmies - l_defenderArmies < 0) {
+                    d_target_country.setArmies(0);
+                } else {
+                    d_target_country.setArmies(l_attackerArmies - l_defenderArmies);
+                }
+
                 d_player.addCountryToCountriesOwned(d_target_country);
                 if (l_target_player != null) {
                     l_target_player.removeCountryFromCountriesOwned(d_target_country);
@@ -142,8 +148,19 @@ public class Advance implements Order{
                 }
             } else {
                 // Defender wins, update armies in source territory
-                d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
-                d_target_country.setArmies(d_target_country.getArmies() - (int) l_prob_attacker);
+                if(d_source_country.getArmies() - d_advance_armies < 0) {
+                    d_source_country.setArmies(0);
+                } else {
+                    d_source_country.setArmies(d_source_country.getArmies() - d_advance_armies);
+                }
+
+
+                if(d_target_country.getArmies() - (int) l_prob_attacker < 0) {
+                    d_target_country.setArmies(0);
+                } else {
+                    d_target_country.setArmies(d_target_country.getArmies() - (int) l_prob_attacker);
+                }
+
                 d_attack_successful = false;
             }
             print();
