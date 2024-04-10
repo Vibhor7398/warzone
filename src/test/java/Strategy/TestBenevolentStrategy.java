@@ -15,11 +15,18 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * This class contains unit tests for the BenevolentStrategy class.
+ * It tests the creation of orders based on the benevolent strategy.
+ */
 public class TestBenevolentStrategy {
     private BenevolentStrategy d_benevolentStrategy;
     private Player d_testPlayer;
     private GameEngineController d_gc;
 
+    /**
+     * Set up the necessary objects for testing.
+     */
     @Before
     public void setUp() {
         d_gc = new GameEngineController();
@@ -43,6 +50,10 @@ public class TestBenevolentStrategy {
         d_benevolentStrategy = new BenevolentStrategy(d_testPlayer, l_countriesOwned);
     }
 
+    /**
+     * Test creating a deploy order to the weakest country.
+     * Expected: Deploy order or null should be returned.
+     */
     @Test
     public void testCreateOrder_DeployToWeakestCountry() {
         // Given
@@ -57,6 +68,10 @@ public class TestBenevolentStrategy {
         assertEquals(1, d_benevolentStrategy.toDefend().getArmies());
     }
 
+    /**
+     * Test creating an airlift order if the card is available.
+     * Expected: Airlift order should be returned.
+     */
     @Test
     public void testCreateOrder_AirliftIfCardAvailable() {
         // Adjust initial conditions
@@ -78,6 +93,10 @@ public class TestBenevolentStrategy {
          assertEquals("Country2", d_benevolentStrategy.toMoveFrom().getName());
     }
 
+    /**
+     * Test creating an advance order if no airlift card is available.
+     * Expected: Advance order should be returned.
+     */
     @Test
     public void testCreateOrder_AdvanceIfNoAirliftCard() {
         // Make sure player does not have an Airlift card

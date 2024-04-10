@@ -10,6 +10,10 @@ import Models.Country;
 import Models.Player;
 import Orders.Order;
 
+/**
+ * This class contains unit tests for the CheaterStrategy class.
+ * It tests the creation of orders based on the cheater strategy.
+ */
 public class TestCheaterStrategy {
 
     private CheaterStrategy d_cheaterStrategy;
@@ -17,6 +21,9 @@ public class TestCheaterStrategy {
     private List<Country> d_countries;
     GameEngineController d_gc = new GameEngineController();
 
+    /**
+     * Set up the necessary objects for testing.
+     */
     @Before
     public void setUp() {
         d_gc.executeAddGamePlayer("TestPlayer", Strategy.Human);
@@ -35,6 +42,12 @@ public class TestCheaterStrategy {
         d_cheaterStrategy = new CheaterStrategy(d_player, d_countries);
     }
 
+
+    /**
+     * Test creating orders for the cheater strategy.
+     * Expected: Since the method returns null, no order should be created.
+     * However, the player should own all countries and all neighbors' owners should be the player.
+     */
     @Test
     public void testCreateOrder() {
         // Creating some neighbors for countries

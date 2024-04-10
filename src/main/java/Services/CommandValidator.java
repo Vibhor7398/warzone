@@ -129,6 +129,16 @@ public class CommandValidator {
                     1,
                     new String[]{"playerName"},
                     new String[]{"String"}),
+            new ValidCommands("savegame",
+                    "",
+                    1,
+                    new String[]{"filename"},
+                    new String[]{"String"}),
+            new ValidCommands("loadgame",
+                    "",
+                    1,
+                    new String[]{"filename"},
+                    new String[]{"String"}),
             new ValidCommands("endturn",
                     "",
                     0,
@@ -456,9 +466,9 @@ public class CommandValidator {
     private boolean validateTurns(String p_turns){
         try {
             int x = Integer.parseInt(p_turns);
-//            if(x < 10 || x > 50){
-//                throw new Exception();
-//            }
+            if(x < 10 || x > 50){
+                throw new Exception();
+            }
             return true;
         }
         catch (Exception ex){

@@ -4,13 +4,14 @@
  */
 
 package Models;
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
  * This class represents a continent in the game map.
  * It contains information about the countries it contains, its ID, name, control value, and color.
  */
-public class Continent {
+public class Continent implements Serializable {
     private final LinkedHashMap<String, Country> d_countries;
     private int d_id;
     private String d_name;

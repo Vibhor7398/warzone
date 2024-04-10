@@ -12,15 +12,13 @@ import Constants.AppConstants;
 import GameEngine.GameEngine;
 import Logger.LogEntryBuffer;
 import Logger.LogHandler;
-import Models.Command;
-import Models.Country;
-import Models.Player;
+import Services.GameLoader;
+import Models.*;
 import Models.Strategy;
 import Orders.Order;
 import Phases.GamePlay.MainPlay.MainPlay;
 import Services.CommandValidator;
 import Services.Reinforcement;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +34,11 @@ import Exception.InvalidCommandException;
  */
 
 public class GameEngineController {
+    /**
+     * Retrieves the list of players.
+     *
+     * @return The list of players.
+     */
     public static ArrayList<Player> getD_Players() {
         return d_Players;
     }
@@ -65,7 +68,7 @@ public class GameEngineController {
      * ArrayList containing cards owned by players.
      * Each element in the ArrayList is a Player object.
      */
-    public static ArrayList<Player> d_cardsOwnedByPlayer = new ArrayList<>();
+    public static ArrayList<Player> d_cardsOwnedByPlayer;
 
     /**
      * Static variable representing a log entry buffer.
@@ -79,13 +82,26 @@ public class GameEngineController {
         d_Map = new MapsController();
         d_Players = new ArrayList<>();
     }
+    private GameModel d_gameModel;
+
     /**
      * Constructs a new instance of GameEngineController.
      * Initializes the game map and player list.
      */
     public GameEngineController(){
-        d_Map = new MapsController();
-        d_Players = new ArrayList<>();
+        d_gameModel = new GameModel();
+        updateGameModel();
+    }
+
+    /**
+     * Updates the game model with the current game state.
+     */
+    public void updateGameModel(){
+        d_Map = d_gameModel.getD_Map();
+        d_Players = d_gameModel.getD_Players();
+        d_currentPlayer = d_gameModel.getD_currentPlayer();
+        d_completedTurns = d_gameModel.getD_completedTurns();
+        d_cardsOwnedByPlayer = d_gameModel.getD_cardsOwnedByPlayer();
     }
 
     /**
@@ -107,8 +123,14 @@ public class GameEngineController {
     public void nextUserInput() {
         try {
             if (GameEngine.getPhase() instanceof MainPlay && GameEngineController.d_Players.get(GameEngineController.d_currentPlayer).get_playerStrategyType() != Strategy.Human) {
-                Command[] l_val = new Command[]{new Command("cpu-gameplay", "", new String[]{" "})};
-                GameEngine.getPhase().execute(l_val);
+                if(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
+                    incrementNextPlayer();
+                    nextUserInput();
+                }
+                else{
+                    Command[] l_val = new Command[]{new Command("cpu-gameplay", "", new String[]{" "})};
+                    GameEngine.getPhase().execute(l_val);
+                }
             } else {
                 CommandValidator l_cv = new CommandValidator();
                 try {
@@ -122,10 +144,19 @@ public class GameEngineController {
                     nextUserInput();
                 }
             }
-        }catch (Exception e){
-            System.out.println(e);
+        }catch (Exception ignored){
         }
     }
+
+    /**
+     * Checks if the content of a file contains a specific type representation, '[Map]'.
+     * This method reads the content of the file specified by the file name and searches
+     * for the presence of the specified type representation.
+     *
+     * @param p_fileName the name of the file to be checked
+     * @return {@code true} if the content of the file contains the type representation '[Map]',
+     *         {@code false} otherwise or if an IOException occurs while reading the file
+     */
 
     private boolean isMapofOtherType(String p_fileName){
         try {
@@ -142,6 +173,7 @@ public class GameEngineController {
      * If the map is invalid, a message indicating the same is printed.
      *
      * @param p_filename The name of the file containing the map to be loaded.
+     * @return true, if the map loads successfully, false otherwise
      */
     public boolean executeLoadMap(String p_filename){
         if(isMapofOtherType(AppConstants.MapsPath + p_filename)){
@@ -400,6 +432,13 @@ public class GameEngineController {
     }
 
 
+    /**
+     * Executes the CPU player's move.
+     * This method invokes the issueOrder() method of the current CPU player to generate
+     * and execute its orders. After executing the CPU player's orders, it sets the orders
+     * for the current player to end their turn automatically.
+     *
+     */
     public void executeCPUMove(){
         d_Players.get(d_currentPlayer).issueOrder();
         setOrders(new Command("endturn", "automatic", null));
@@ -437,6 +476,15 @@ public class GameEngineController {
     }
 
 
+    /**
+     * Checks if all player turns have been completed.
+     * If all player turns have been completed, this method executes all pending orders,
+     * assigns reinforcements to all players, and returns true. Otherwise, it returns false.
+     *
+     * @return {@code true} if all player turns have been completed and orders have been executed,
+     *         {@code false} otherwise
+     *
+     */
 
     private boolean ifTurnsCompleted(){
         if(d_completedTurns == d_Players.size()){
@@ -447,6 +495,12 @@ public class GameEngineController {
         return false;
     }
 
+
+    /**
+     * Sets the next player as the current player.
+     * This method iterates through players until it finds a player whose turn has not been completed,
+     * and sets that player as the current player.
+     */
     private void setNextPlayer(){
         while(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
             d_currentPlayer++;
@@ -516,9 +570,7 @@ public class GameEngineController {
 //                gameplayer -cpu cpu1 Cheater cpu2 Cheater cpu3 Cheater
             } while (still_more_orders);
             reset();
-        }catch (Exception e){
-            System.out.println(e);
-            return;
+        }catch (Exception ignored){
         }
     }
 
@@ -538,6 +590,15 @@ public class GameEngineController {
     }
 
 
+    /**
+     * Starts a tournament with the provided command parameters.
+     *
+     * @param p_command the command containing tournament parameters:
+     *                  -M listofmapfiles
+     *                  -P listofplayerstrategies
+     *                  -G numberofgames
+     *                  -D maxnumberofturns
+     */
     public void startTournament(Command p_command){
         //tournament -M listofmapfiles -P listofplayerstrategies -G numberofgames -D maxnumberofturns
         System.out.println("Tournament started!");
@@ -565,6 +626,14 @@ public class GameEngineController {
         }
     }
 
+    /**
+     * Starts a game with the given map, player strategies, and number of turns.
+     *
+     * @param p_map the map file for the game
+     * @param p_strategies the list of player strategies for the game
+     * @param p_turns the maximum number of turns for the game
+     * @return the name of the winner or "Draw" if it's a draw
+     */
     public String startGame(String p_map, ArrayList<Strategy> p_strategies, int p_turns){
         resetGame();
         executeLoadMap(p_map);
@@ -588,6 +657,12 @@ public class GameEngineController {
         return checkWinner();
     }
 
+
+    /**
+     * Checks for the winner of the game.
+     *
+     * @return the name of the winner or "Draw" if it's a draw
+     */
     public String checkWinner(){
         if(d_Players.size() == 1){
             return d_Players.getFirst().getName();
@@ -595,4 +670,45 @@ public class GameEngineController {
         return "Draw";
     }
 
+
+    /**
+     * Saves the current game state to a file.
+     * This method saves the current game state to the specified file.
+     *
+     * @param p_fileName The name of the file to which the game state will be saved.
+     */
+    public boolean executeSaveGame(String p_fileName){
+        try {
+            GameLoader.SaveGame(d_gameModel,p_fileName);
+            return true;
+        } catch (IOException l_e) {
+            System.out.println(l_e);
+            System.out.println("Save game failed. Check for file path. " + l_e.getMessage());
+            GameEngineController.d_Log.notify(l_e.toString());
+            return false;
+        }
+    }
+
+    /**
+     * Loads a game state from a file.
+     * This method loads a game state from the specified file.
+     *
+     * @param p_fileName The name of the file from which the game state will be loaded.
+     */
+    public boolean executeLoadGame(String p_fileName){
+        try {
+            d_gameModel = GameLoader.LoadGame(p_fileName);
+            updateGameModel();
+            d_Map.updateMaps();
+            return true;
+        } catch (IOException l_e) {
+            System.out.println("Load game failed. Check for file path. " + l_e.getMessage());
+            d_Log.notify(l_e.toString());
+            return false;
+        } catch (ClassNotFoundException l_e) {
+            System.out.println(l_e.getMessage());
+            d_Log.notify(l_e.toString());
+            return false;
+        }
+    }
 }

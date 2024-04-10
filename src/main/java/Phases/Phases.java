@@ -1,10 +1,7 @@
 package Phases;
 
-import Controller.GameEngineController;
 import GameEngine.GameEngine;
 import Models.Command;
-import Models.Strategy;
-import Phases.GamePlay.MainPlay.MainPlay;
 
 /**
  * The Phases class represents the various phases of the game.
@@ -170,6 +167,20 @@ public abstract class Phases {
     abstract public void next();
 
     /**
+     * Saves the game state.
+     *
+     * @param p_command The command object.
+     */
+    abstract public void saveGame(Command p_command);
+
+    /**
+     * Loads the game state.
+     *
+     * @param p_command The command object.
+     */
+    abstract public void loadGame(Command p_command);
+
+    /**
      * Executes a series of commands.
      * This method iterates through the commands and executes them based on their type.
      *
@@ -262,10 +273,17 @@ public abstract class Phases {
                     case "next":
                         d_ge.getD_phase().next();
                         break;
-
-                    default:
-                        printInvalidMessage();
+                    case "savegame":
+                        d_ge.getD_phase().saveGame(l_command);
                         break;
+
+                    case "loadgame":
+                        d_ge.getD_phase().loadGame(l_command);
+                        break;
+
+                        default:
+                            printInvalidMessage();
+                            break;
                 }
             }
         d_ge.getD_gc().nextUserInput();
@@ -282,6 +300,8 @@ public abstract class Phases {
     /**
      * Prints an invalid command message.
      * This method prints a message indicating that the command is invalid in the current state.
+     *
+     * @param p_command command to start the tournament
      */
     public void startTournament(Command p_command) {
         d_ge.getD_gc().startTournament(p_command);
