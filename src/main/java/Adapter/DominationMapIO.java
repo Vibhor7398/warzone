@@ -157,6 +157,7 @@ public class DominationMapIO {
             return true;
 
         } catch (IOException e) {
+            System.out.println("Failed to save map!");
             return false;
         }
     }

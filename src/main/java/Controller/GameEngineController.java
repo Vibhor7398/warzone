@@ -416,28 +416,23 @@ public class GameEngineController {
      * @param p_cmd The command specifying the action to be taken.
      */
     public void setOrders(Command p_cmd) {
-        try {
-            if (d_completedTurns != d_Players.size()) {
-                setNextPlayer();
-                if (p_cmd.getD_cmd().equals("endturn")) {
-                    d_Players.get(d_currentPlayer).setD_isTurnCompleted(true);
-                    d_completedTurns++;
-                    if (!ifTurnsCompleted()) {
-                        incrementNextPlayer();
-                    }
-                    getD_cardsOwnedByPlayer().clear();
-                    d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
-                } else {
-                    d_Players.get(d_currentPlayer).setOrder(p_cmd);
-                    d_Players.get(d_currentPlayer).issueOrder();
+        if (d_completedTurns != d_Players.size()) {
+            setNextPlayer();
+            if (p_cmd.getD_cmd().equals("endturn")) {
+                d_Players.get(d_currentPlayer).setD_isTurnCompleted(true);
+                d_completedTurns++;
+                if (!ifTurnsCompleted()) {
+                    incrementNextPlayer();
                 }
+                getD_cardsOwnedByPlayer().clear();
+                d_Players.get(d_currentPlayer).getNegotiatePlayers().clear();
             } else {
-                executeAllOrders();
-                Reinforcement.assignReinforcements(d_Players);
+                d_Players.get(d_currentPlayer).setOrder(p_cmd);
+                d_Players.get(d_currentPlayer).issueOrder();
             }
-        }catch (Exception e){
-            System.out.println("LOL");
-            return;
+        } else {
+            executeAllOrders();
+            Reinforcement.assignReinforcements(d_Players);
         }
     }
 

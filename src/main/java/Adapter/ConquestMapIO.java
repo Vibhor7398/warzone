@@ -128,6 +128,7 @@ public class ConquestMapIO {
             }
             return true;
         }catch(IOException e){
+            System.out.println("Map is invalid!");
             return false;
         }
     }
@@ -167,6 +168,7 @@ public class ConquestMapIO {
             Files.writeString(Paths.get(l_file.getPath()), l_contentBuilder.toString(), StandardOpenOption.TRUNCATE_EXISTING);
             return true;
         } catch (IOException e) {
+            System.out.println("Failed to save map!");
             return false;
         }
     }
