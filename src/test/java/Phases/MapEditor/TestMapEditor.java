@@ -1,7 +1,7 @@
 /**
  * This package contains classes related to the Map Editor phase of the game.
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Phases.MapEditor;
 
