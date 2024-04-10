@@ -20,7 +20,6 @@ import Orders.Order;
 import Phases.GamePlay.MainPlay.MainPlay;
 import Services.CommandValidator;
 import Services.Reinforcement;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -112,8 +111,14 @@ public class GameEngineController {
     public void nextUserInput() {
         try {
             if (GameEngine.getPhase() instanceof MainPlay && GameEngineController.d_Players.get(GameEngineController.d_currentPlayer).get_playerStrategyType() != Strategy.Human) {
-                Command[] l_val = new Command[]{new Command("cpu-gameplay", "", new String[]{" "})};
-                GameEngine.getPhase().execute(l_val);
+                if(d_Players.get(d_currentPlayer).getD_isTurnCompleted()){
+                    incrementNextPlayer();
+                    nextUserInput();
+                }
+                else{
+                    Command[] l_val = new Command[]{new Command("cpu-gameplay", "", new String[]{" "})};
+                    GameEngine.getPhase().execute(l_val);
+                }
             } else {
                 CommandValidator l_cv = new CommandValidator();
                 try {
@@ -127,8 +132,7 @@ public class GameEngineController {
                     nextUserInput();
                 }
             }
-        }catch (Exception e){
-            System.out.println(e);
+        }catch (Exception ignored){
         }
     }
 
@@ -453,6 +457,7 @@ public class GameEngineController {
             } else {
                 d_Players.get(d_currentPlayer).setOrder(p_cmd);
                 d_Players.get(d_currentPlayer).issueOrder();
+                incrementNextPlayer();
             }
         } else {
             executeAllOrders();
@@ -555,9 +560,7 @@ public class GameEngineController {
 //                gameplayer -cpu cpu1 Cheater cpu2 Cheater cpu3 Cheater
             } while (still_more_orders);
             reset();
-        }catch (Exception e){
-            System.out.println(e);
-            return;
+        }catch (Exception ignored){
         }
     }
 

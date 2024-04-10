@@ -396,7 +396,6 @@ public class MapsController{
         d_Continents.clear();
         d_Countries.clear();
         // Read the entire content of the file into a string
-        //System.out.println((Paths.get(p_file)).toAbsolutePath());
         String l_content = Files.readString(Paths.get(p_file));
         
         // Split the content into lines
@@ -426,7 +425,7 @@ public class MapsController{
                 }
             }
             
-            // Skip empty lines or lines outside of any known section
+            // Skip empty lines or lines outside any known section
             if (l_line.isEmpty() || (!(l_readingContinents || l_readingCountries || l_readingBorders))) {
                 continue;
             }
