@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
 
@@ -81,7 +81,7 @@ public class Bomb implements Order {
             d_player.removeCard("Bomb");
             print();
         } else {
-            System.out.println("Invalid Order! ");
+            System.out.println("Invalid Bomb Order! by "+d_player.getName());
             GameEngineController.d_Log.notify("Invalid Bomb Order! by "+d_player.getName());
         }
     }

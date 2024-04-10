@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 
 package Controller;
@@ -11,6 +11,7 @@ import Models.Maps;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -27,7 +28,12 @@ import java.util.stream.Collectors;
  * Additionally, it checks for the existence and validity of continents and countries, as well as their connectivity.
  * The class also handles operations related to neighbors of countries, such as adding and removing neighbors.
  */
-public class MapsController{
+public class MapsController implements Serializable {
+    /**
+     * Returns the Maps object associated with this class.
+     *
+     * @return The Maps object.
+     */
     public Maps getD_maps() {
         return d_maps;
     }
@@ -41,9 +47,16 @@ public class MapsController{
      * Initializes the Maps object and retrieves the continents and countries data.
      */
     public MapsController() {
-        this.d_maps = new Maps();
-        d_Continents = this.d_maps.getContinents();
-        d_Countries = this.d_maps.getCountries();
+        d_maps = new Maps();
+        updateMaps();
+    }
+
+    /**
+     * Updates the continents and countries data based on the current state of the game map.
+     */
+    public void updateMaps() {
+        d_Continents = d_maps.getContinents();
+        d_Countries = d_maps.getCountries();
     }
 
     /**
@@ -391,7 +404,6 @@ public class MapsController{
         d_Continents.clear();
         d_Countries.clear();
         // Read the entire content of the file into a string
-        //System.out.println((Paths.get(p_file)).toAbsolutePath());
         String l_content = Files.readString(Paths.get(p_file));
         
         // Split the content into lines
@@ -421,7 +433,7 @@ public class MapsController{
                 }
             }
             
-            // Skip empty lines or lines outside of any known section
+            // Skip empty lines or lines outside any known section
             if (l_line.isEmpty() || (!(l_readingContinents || l_readingCountries || l_readingBorders))) {
                 continue;
             }

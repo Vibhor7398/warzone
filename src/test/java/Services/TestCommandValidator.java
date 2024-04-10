@@ -1,10 +1,14 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Services;
 
+import Constants.AppConstants;
+import Controller.GameEngineController;
 import Models.Command;
+import Models.Player;
+import Models.Strategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -438,6 +442,18 @@ public class TestCommandValidator {
         assertThrows(InvalidCommandException.class, () -> {
             service.validateCommand("advance India Nepal three");
         });
+    }
+
+    @Test
+    public void cpuCommandValidator() {
+        CommandValidator l_cmd=new CommandValidator();
+        Command[] l_commands;
+        try {
+            l_commands = l_cmd.validateCommand("gameplayer -cpu cpu1 Aggresive");
+        } catch (InvalidCommandException e) {
+            throw new RuntimeException(e);
+        }
+        assertNotNull(l_commands[0]);;
     }
 
 }

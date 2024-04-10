@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
 
@@ -144,7 +144,6 @@ public class TestBlockade {
         System.setOut(System.out);
 
         // Assert the output
-//        String expectedOutput = "Blockade is successful on TestCountry by TestPlayer\nArmies on TestCountry after blockade is 0\n";
         assertTrue(outContent.toString().startsWith("Blockade is successful on TestCountry by TestPlayer"));
     }
 }

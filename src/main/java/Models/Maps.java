@@ -1,18 +1,19 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 
 package Models;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
  * Represents the collection of continents and countries in the game map.
  */
-public class Maps {
-    private static LinkedHashMap<String, Continent> d_Continents;
-    private static LinkedHashMap<String, Country> d_Countries;
+public class Maps implements Serializable {
+    private LinkedHashMap<String, Continent> d_Continents;
+    private LinkedHashMap<String, Country> d_Countries;
     private boolean d_isMapValid;
 
     /**

@@ -239,4 +239,26 @@ public class Exit extends Phases {
     public void next() {
         System.exit(0);
     }
+
+    /**
+     * Prints the error message.
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
+    @Override
+    public void saveGame(Command p_command) {
+        printInvalidMessage();
+    }
+
+    /**
+     * Prints the error message.
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
+    @Override
+    public void loadGame(Command p_command) {
+        printInvalidMessage();
+    }
 }

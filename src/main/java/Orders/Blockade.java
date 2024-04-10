@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
 
@@ -74,7 +74,7 @@ public class Blockade implements Order{
             d_player.removeCard("Blockade");
             print();
         } else {
-            System.out.println("Invalid Order! ");
+            System.out.println("Invalid Blockade Order! by "+d_player.getName());
             GameEngineController.d_Log.notify("Invalid Blockade Order! by "+d_player.getName());
         }
     }

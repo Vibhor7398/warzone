@@ -5,7 +5,6 @@ import Models.Player;
 import Orders.Advance;
 import Orders.Deploy;
 import Orders.Order;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -43,16 +42,17 @@ public class AggressiveStrategy extends PlayerStrategy{
             return null;
         }
         Country l_AttackFrom = toAttackFrom();
+        Country l_countryToAttack = toAttack();
 
-        if(d_player.getArmies()!=0){
+        if(d_player.getArmies()>0){
             d_player.setD_orderList(new Deploy(d_player, l_AttackFrom, d_player.getArmies()));
-//            d_player.setArmies(0);
         }
 
-        Country l_countryToAttack = toAttack();
-        int l_armyForAttack = l_AttackFrom.getArmies();
-
-        return new Advance(d_player, l_AttackFrom, l_countryToAttack, l_armyForAttack);
+        int l_armyForAttack = l_AttackFrom.getArmies() + d_player.getArmies();
+        if(l_armyForAttack>0){
+            return new Advance(d_player, l_AttackFrom, l_countryToAttack, l_armyForAttack);
+        }
+        return null;
     }
 
     /**
@@ -70,17 +70,16 @@ public class AggressiveStrategy extends PlayerStrategy{
         Country l_attackFrom = toAttackFrom();
 
         for (Country l_countryToAttack : l_attackFrom.getNeighbors().values()) {
-            if (!l_countryToAttack.getOwner().getName().equals(d_player.getName())) {
+            if (l_countryToAttack.getOwner()==null || !l_countryToAttack.getOwner().getName().equals(d_player.getName())) {
                 return l_countryToAttack;
             }
         }
 
         List<Country> l_countryList = new ArrayList<>(l_attackFrom.getNeighbors().values());
-        //l_countryList = l_attackFrom.getNeighbors().values();
-        //d_player.getCountriesOwned().get(l_random.nextInt(d_player.getCountriesOwned().size()));
-        Country l_countryToAttack = l_countryList.get(d_random.nextInt(l_countryList.size()));
+        Country l_countryToAttack = null;
 
         for (Country l_tempCountryToAttack : l_countryList) {
+            l_countryToAttack = l_countryList.get(d_random.nextInt(l_countryList.size()));
             if(l_tempCountryToAttack.getArmies() > l_countryToAttack.getArmies()){
                 l_countryToAttack = l_tempCountryToAttack;
             }
@@ -105,7 +104,11 @@ public class AggressiveStrategy extends PlayerStrategy{
 
         for (Country l_tempCountry : l_countryList) {
             if (l_attackFrom.getArmies() < l_tempCountry.getArmies()) {
-                l_attackFrom = l_tempCountry;
+                for(Country l_countryNeighbor : l_tempCountry.getNeighbors().values()){
+                    if(l_countryNeighbor.getOwner()==null || !l_countryNeighbor.getOwner().getName().equals(d_player.getName())){
+                        return l_tempCountry;
+                    }
+                }
             }
         }
         return l_attackFrom;

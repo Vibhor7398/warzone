@@ -97,7 +97,14 @@ public class Players extends Phases {
      */
     @Override
     public void loadMap(Command p_command) {
-        d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0]);
+        if (d_ge.getD_gc().executeLoadMap(p_command.getArgs()[0])){
+            System.out.println("Map " + p_command.getArgs()[0] + " loaded successfully!");
+            GameEngineController.d_Log.notify("Map " + p_command.getArgs()[0] + " loaded successfully!");
+            next();
+        }
+        else{
+            GameEngineController.d_Log.notify("Map " + p_command.getArgs()[0] + " failed to load!");
+        }
     }
 
     /**
@@ -111,6 +118,17 @@ public class Players extends Phases {
             d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0], Strategy.Human);
         }
         else if(p_command.getD_subCmd().equals("-cpu")){
+            boolean isValid = false;
+            for(int i = 0; i <Strategy.values().length; i++){
+                if(p_command.getArgs()[1].equals(Strategy.values()[i].name())){
+                    isValid = true;
+                    break;
+                }
+            }
+            if (!isValid){
+                System.out.println("Invalid Strategy: " + p_command.getArgs()[1]);
+                return;
+            }
             d_ge.getD_gc().executeAddGamePlayer(p_command.getArgs()[0], Strategy.valueOf(p_command.getArgs()[1]));
         }
         else{
@@ -127,6 +145,7 @@ public class Players extends Phases {
     @Override
     public void assignCountries(Command p_command) {
         boolean l_res = d_ge.getD_gc().executeAssignCountries();
+
         if(l_res){
             next();
         }
@@ -227,5 +246,34 @@ public class Players extends Phases {
     @Override
     public void next() {
         d_ge.setD_phase(new MainPlay(d_ge));
+
+    }
+
+    /**
+     * Prints the error message.
+     * Since this is the exit phase, this method does nothing.
+     *
+     * @param p_command The command object.
+     */
+    @Override
+    public void saveGame(Command p_command) {
+        printInvalidMessage();
+    }
+
+    /**
+     * Loads a previously saved game state from the specified file name.
+     *
+     * @param p_command The command object containing the file name.
+     */
+    @Override
+    public void loadGame(Command p_command) {
+        if(d_ge.getD_gc().executeLoadGame(p_command.getArgs()[0])){
+            d_ge.setD_phase(new MainPlay(d_ge));
+            System.out.println("Game " + p_command.getArgs()[0] + " loaded successfully!");
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " loaded successfully!");
+        }
+        else{
+            GameEngineController.d_Log.notify("Game " + p_command.getArgs()[0] + " failed to load!");
+        }
     }
 }

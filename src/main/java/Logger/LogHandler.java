@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Logger;
 
@@ -37,8 +37,7 @@ public class LogHandler implements Observer {
             d_logHandler = new FileWriter(AppConstants.LogFilePath, false);
             d_logHandler.write(l_logCollector.toString());
             d_logHandler.close();
-        } catch (IOException p_ioException) {
-            System.out.println(p_ioException.getMessage());
+        } catch (IOException p_ignored) {
         }
     }
 }

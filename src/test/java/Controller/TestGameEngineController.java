@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Controller;
 
@@ -34,7 +34,8 @@ public class TestGameEngineController {
     }
 
     /**
-     * Tests the {@link GameEngineController#(String)} method.
+
+     * Tests the {@link GameEngineController} method.
      * It verifies that a player is successfully added to the game.
      */
     @Test

@@ -4,6 +4,7 @@ import Models.Country;
 import Models.Player;
 import Orders.Order;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
  * Each player strategy determines how players create orders, choose countries to attack or defend, and decide
  * from which countries to launch attacks or move armies.
  */
-public abstract class PlayerStrategy {
+public abstract class PlayerStrategy implements Serializable {
     /**
      * A list of countries owned by the player.
      */

@@ -1,19 +1,20 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 
 package Models;
 
 import Controller.GameEngineController;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
  * This class represents a country in the game map.
  * It contains information about the country's ID, name, continent ID, coordinates, armies, and neighboring countries.
  */
-public class Country {
+public class Country implements Serializable {
     private int d_id;
     private String d_name;
     private String d_continentId;

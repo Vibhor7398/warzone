@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 package Orders;
 
@@ -95,7 +95,7 @@ public class TestBomb {
         System.setOut(System.out);
 
         // Assert the output
-        String expectedOutput = "Invalid Order! \n";
+        String expectedOutput = "Invalid Bomb Order! by TestPlayer";
         assertEquals(expectedOutput.trim(), outContent.toString().trim());
     }
 }

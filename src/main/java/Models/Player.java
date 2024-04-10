@@ -1,6 +1,6 @@
 /**
  * @author Vibhor Gulati, Apoorva Sharma, Saphal Ghimire, Inderjeet Singh Chauhan, Mohammad Zaid Shaikh
- * @version 2.0
+ * @version 3.0
  */
 
 package Models;
@@ -9,6 +9,8 @@ import Controller.GameEngineController;
 import Controller.MapsController;
 import Orders.*;
 import Strategy.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.Queue;
 /**
  * Represents a player in the game.
  */
-public class Player {
+public class Player implements Serializable {
     private String d_name;
     private static int d_ReinforcementsCompleted;
     private boolean d_isTurnCompleted = false;
@@ -306,18 +308,38 @@ public class Player {
         return null;
     }
 
+    /**
+     * Returns the player's strategy associated with this class.
+     *
+     * @return The player's strategy.
+     */
     public PlayerStrategy get_playerStrategy() {
         return d_playerStrategy;
     }
 
+    /**
+     * Sets the player's strategy.
+     *
+     * @param p_playerStrategy The player's strategy to set.
+     */
     public void set_playerStrategy(PlayerStrategy p_playerStrategy) {
         this.d_playerStrategy = p_playerStrategy;
     }
 
+    /**
+     * Sets the player's strategy type.
+     *
+     * @param p_playerStrategyType The player's strategy type to set.
+     */
     public void set_playerStrategyType(Strategy p_playerStrategyType){
         this.d_playerStrategyType = p_playerStrategyType;
     }
 
+    /**
+     * Returns the player's strategy type associated with this class.
+     *
+     * @return The player's strategy type.
+     */
     public Strategy get_playerStrategyType(){
         return d_playerStrategyType;
     }
