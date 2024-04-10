@@ -670,6 +670,13 @@ public class GameEngineController {
         return "Draw";
     }
 
+
+    /**
+     * Saves the current game state to a file.
+     * This method saves the current game state to the specified file.
+     *
+     * @param p_fileName The name of the file to which the game state will be saved.
+     */
     public boolean executeSaveGame(String p_fileName){
         try {
             GameLoader.SaveGame(d_gameModel,p_fileName);

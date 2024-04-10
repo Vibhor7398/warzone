@@ -263,21 +263,17 @@ public abstract class Phases {
                     case "next":
                         d_ge.getD_phase().next();
                         break;
-                case "next":
-                    d_ge.getD_phase().next();
-                    break;
-
-                case "savegame":
-                    d_ge.getD_phase().saveGame(l_command);
-                    break;
-
-                case "loadgame":
-                    d_ge.getD_phase().loadGame(l_command);
-                    break;
-
-                    default:
-                        printInvalidMessage();
+                    case "savegame":
+                        d_ge.getD_phase().saveGame(l_command);
                         break;
+
+                    case "loadgame":
+                        d_ge.getD_phase().loadGame(l_command);
+                        break;
+
+                        default:
+                            printInvalidMessage();
+                            break;
                 }
             }
         d_ge.getD_gc().nextUserInput();
