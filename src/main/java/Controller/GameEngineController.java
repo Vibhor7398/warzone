@@ -36,6 +36,11 @@ import Exception.InvalidCommandException;
  */
 
 public class GameEngineController {
+    /**
+     * Retrieves the list of players.
+     *
+     * @return The list of players.
+     */
     public static ArrayList<Player> getD_Players() {
         return d_Players;
     }
@@ -152,6 +157,7 @@ public class GameEngineController {
      * If the map is invalid, a message indicating the same is printed.
      *
      * @param p_filename The name of the file containing the map to be loaded.
+     * @return true, if the map loads successfully, false otherwise
      */
     public boolean executeLoadMap(String p_filename){
         if(isMapofOtherType(AppConstants.MapsPath + p_filename)){
@@ -308,6 +314,7 @@ public class GameEngineController {
      * Otherwise, a new player with the provided name is added to the list of players.
      *
      * @param p_gamePlayer The name of the player to be added.
+     * @param p_strategy The name of the strategy to be added
     */
     public void executeAddGamePlayer(String p_gamePlayer, Strategy p_strategy){
         int l_playerIndex = doesPlayerExists(p_gamePlayer);

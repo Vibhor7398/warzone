@@ -28,6 +28,11 @@ import java.util.stream.Collectors;
  * The class also handles operations related to neighbors of countries, such as adding and removing neighbors.
  */
 public class MapsController{
+    /**
+     * Returns the Maps object associated with this class.
+     *
+     * @return The Maps object.
+     */
     public Maps getD_maps() {
         return d_maps;
     }

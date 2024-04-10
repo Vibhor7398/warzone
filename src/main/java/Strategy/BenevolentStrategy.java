@@ -18,6 +18,13 @@ import java.util.Random;
  */
 public class BenevolentStrategy extends PlayerStrategy{
     Random d_random = new Random();
+
+    /**
+     * Constructs a BenevolentStrategy object.
+     *
+     * @param p_player The player associated with this strategy.
+     * @param p_country The list of countries owned by the player.
+     */
     public BenevolentStrategy(Player p_player, List<Country> p_country) {
         super(p_player, p_country);
     }

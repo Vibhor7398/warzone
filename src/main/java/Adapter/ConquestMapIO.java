@@ -88,6 +88,13 @@ public class ConquestMapIO {
         return null;
     }
 
+    /**
+     * Loads a game map from a file into the provided Maps object.
+     *
+     * @param p_gameMap The Maps object to load the game map into.
+     * @param p_fileName The file name of the map file to load.
+     * @return true if the map is loaded successfully, false otherwise.
+     */
     public boolean loadMap(Maps p_gameMap, String p_fileName)  {
         try {
             p_gameMap.resetMap();
@@ -132,6 +139,13 @@ public class ConquestMapIO {
         }
     }
 
+    /**
+     * Saves the game map to a file.
+     *
+     * @param p_gameMap The Maps object representing the game map.
+     * @param p_fileName The name of the file to save the map to.
+     * @return true if the map is successfully saved, false otherwise.
+     */
     public boolean saveMap(Maps p_gameMap, String p_fileName) {
         try {
             File l_file = new File(p_fileName);

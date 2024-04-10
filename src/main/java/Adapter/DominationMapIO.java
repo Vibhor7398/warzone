@@ -10,8 +10,19 @@ import Models.Continent;
 import Models.Country;
 import Models.Maps;
 
+/**
+ * The DominationMapIO class provides methods to load and save maps in the Domination map format.
+ * It contains methods to load a map from a file and save a map to a file.
+ */
 public class DominationMapIO {
 
+    /**
+     * Finds the continent ID by its name in the provided game map.
+     *
+     * @param p_gameMap      the game map
+     * @param p_continentName the name of the continent
+     * @return the ID of the continent if found, otherwise returns "-1"
+     */
     private String findContinentIdByName(Maps p_gameMap, String p_continentName) {
         for (Continent l_continent : p_gameMap.getContinents().values()) {
             if (String.valueOf(l_continent.getName()).equals(p_continentName)) {
@@ -21,6 +32,13 @@ public class DominationMapIO {
         return "-1";
     }
 
+    /**
+     * Finds a country by its name in the provided game map.
+     *
+     * @param p_gameMap the game map
+     * @param p_id      the ID of the country
+     * @return the country object if found, otherwise returns null
+     */
     private Country findCountryByName(Maps p_gameMap, String p_id) {
         for (Country l_country : p_gameMap.getCountries().values()) {
             if (String.valueOf(l_country.getName()).equals(p_id)) {
@@ -29,6 +47,16 @@ public class DominationMapIO {
         }
         return null;
     }
+
+    /**
+     * Loads a map from the specified file and populates the provided game map.
+     * The file should be in the Domination map format. It reads the continents,
+     * countries, and their borders from the file and initializes the game map accordingly.
+     *
+     * @param p_gameMap  the game map to populate
+     * @param p_fileName the name of the file containing the map
+     * @return {@code true} if the map is loaded successfully, {@code false} otherwise
+     */
 
     public boolean loadMap(Maps p_gameMap, String p_fileName) {
         try {
@@ -114,6 +142,15 @@ public class DominationMapIO {
 
     }
 
+
+    /**
+     * Saves the provided game map to the specified file in the Domination map format.
+     * The method writes the continents, countries, and their borders to the file.
+     *
+     * @param p_gameMap  the game map to save
+     * @param p_fileName the name of the file to save the map
+     * @return {@code true} if the map is saved successfully, {@code false} otherwise
+     */
     public boolean saveMap(Maps p_gameMap, String p_fileName) {
         try {
             File l_file = new File(p_fileName);
