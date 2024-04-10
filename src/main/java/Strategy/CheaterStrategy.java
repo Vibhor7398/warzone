@@ -30,31 +30,32 @@ public class CheaterStrategy extends PlayerStrategy{
      */
     @Override
     public Order createOrder() {
-        List<Country> l_tempCountry = new ArrayList<>();
-        for(Country l_cheaterCountry : d_player.getCountriesOwned()){
-            for(Country l_cheaterNeighbour : l_cheaterCountry.getNeighbors().values()){
-                if(l_cheaterNeighbour.getOwner()!=d_player){
-                    Player l_player = l_cheaterNeighbour.getOwner();
-                    if(l_player!=null){
-                        l_player.removeCountryFromCountriesOwned(l_cheaterNeighbour);
-                        l_tempCountry.add(l_cheaterNeighbour);
+            List<Country> l_tempCountry = new ArrayList<>();
+            for (Country l_cheaterCountry : d_player.getCountriesOwned()) {
+                for (Country l_cheaterNeighbour : l_cheaterCountry.getNeighbors().values()) {
+                    if (l_cheaterNeighbour.getOwner() != d_player) {
+                        Player l_player = l_cheaterNeighbour.getOwner();
+                        if (l_player != null) {
+                            l_player.removeCountryFromCountriesOwned(l_cheaterNeighbour);
+                            l_tempCountry.add(l_cheaterNeighbour);
+                        }
                     }
                 }
             }
-        }
 
-        for(Country l_country : l_tempCountry){
-            d_player.addCountryToCountriesOwned(l_country);
-        }
+            for (Country l_country : l_tempCountry) {
+                d_player.addCountryToCountriesOwned(l_country);
+            }
 
-        for(Country l_cheaterCountry : d_player.getCountriesOwned()){
-            for(Country l_cheaterNeighbour : l_cheaterCountry.getNeighbors().values()){
-                if(l_cheaterNeighbour.getOwner()!=d_player){
-                    l_cheaterNeighbour.setArmies(l_cheaterNeighbour.getArmies() * 2);
-                    break;
+            for (Country l_cheaterCountry : d_player.getCountriesOwned()) {
+                for (Country l_cheaterNeighbour : l_cheaterCountry.getNeighbors().values()) {
+                    if (l_cheaterNeighbour.getOwner() != d_player) {
+                        l_cheaterNeighbour.setArmies(l_cheaterNeighbour.getArmies() * 2);
+                        break;
+                    }
                 }
             }
-        }
+
         return null;
     }
 

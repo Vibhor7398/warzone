@@ -1,7 +1,10 @@
 package Phases;
 
+import Controller.GameEngineController;
 import GameEngine.GameEngine;
 import Models.Command;
+import Models.Strategy;
+import Phases.GamePlay.MainPlay.MainPlay;
 
 /**
  * The Phases class represents the various phases of the game.
@@ -179,10 +182,14 @@ public abstract class Phases {
                     d_ge.getD_phase().startTournament(l_command);
                     System.out.println("Tournament ended!");
                     System.exit(0);
+                case "cpu-gameplay":
+                    d_ge.getD_gc().executeCPUMove();
+                    break;
 
                 case "showmap":
                     d_ge.getD_phase().showMap(l_command);
                     break;
+
 
                 case "editmap":
                     d_ge.getD_phase().editMap(l_command);
@@ -262,6 +269,8 @@ public abstract class Phases {
             }
         }
         d_ge.getD_gc().nextUserInput();
+
+
     }
 
     /**

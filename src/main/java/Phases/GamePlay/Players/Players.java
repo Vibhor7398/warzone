@@ -127,6 +127,8 @@ public class Players extends Phases {
     @Override
     public void assignCountries(Command p_command) {
         boolean l_res = d_ge.getD_gc().executeAssignCountries();
+        System.out.println((GameEngineController.getD_Players().getFirst()).get_playerStrategyType());
+
         if(l_res){
             next();
         }
@@ -227,5 +229,6 @@ public class Players extends Phases {
     @Override
     public void next() {
         d_ge.setD_phase(new MainPlay(d_ge));
+
     }
 }
